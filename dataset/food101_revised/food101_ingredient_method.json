@@ -1,0 +1,1676 @@
+[
+  {
+    "name": "Apple pie",
+    "class": "apple_pie",
+    "ingredients": [
+      "butter",
+      "apples",
+      "allspice",
+      "cinnamon",
+      "salt",
+      "sugar",
+      "flour",
+      "cornstarch",
+      "vinegar",
+      "dough",
+      "egg"
+    ],
+    "method": "bake"
+  },
+  {
+    "name": "Baby back ribs",
+    "class": "baby_back_ribs",
+    "ingredients": [
+      "ketchup",
+      "vinegar",
+      "sugar",
+      "piment\u00c3\u00b3n",
+      "cumin",
+      "salt",
+      "black_pepper",
+      "rib"
+    ],
+    "method": "grill"
+  },
+  {
+    "name": "Baklava",
+    "class": "baklava",
+    "ingredients": [
+      "pistachio",
+      "butter",
+      "dough",
+      "sugar",
+      "lemon"
+    ],
+    "method": "bake"
+  },
+  {
+    "name": "Beef carpaccio",
+    "class": "beef_carpaccio",
+    "ingredients": [
+      "tenderloin",
+      "oil",
+      "potato",
+      "salt",
+      "black_pepper",
+      "arugula",
+      "lemon",
+      "Parmesan"
+    ],
+    "method": "raw grill"
+  },
+  {
+    "name": "Beef tartare",
+    "class": "beef_tartare",
+    "ingredients": [
+      "tenderloin",
+      "bread",
+      "butter",
+      "mustard",
+      "Vegemite",
+      "onion",
+      "salt",
+      "capers",
+      "Watercress_leaves",
+      "Celery_leaves",
+      "parsley",
+      "black_pepper",
+      "Worcestershire_sauce",
+      "egg_yolk"
+    ],
+    "method": "grill"
+  },
+  {
+    "name": "Beet salad",
+    "class": "beet_salad",
+    "ingredients": [
+      "beet",
+      "shallots",
+      "oil",
+      "vinegar",
+      "salt",
+      "black_pepper",
+      "nut",
+      "pistachios",
+      "walnuts",
+      "pecans",
+      "herb_leaves"
+    ],
+    "method": "raw broil"
+  },
+  {
+    "name": "Beignets",
+    "class": "beignets",
+    "ingredients": [
+      "yeast",
+      "sugar",
+      "water",
+      "milk",
+      "egg",
+      "butter",
+      "salt",
+      "flour",
+      "oil",
+      "sugar"
+    ],
+    "method": "bake"
+  },
+  {
+    "name": "Bibimbap",
+    "class": "bibimbap",
+    "ingredients": [
+      "butternut",
+      "oil",
+      "soy_sauce",
+      "sugar",
+      "gochujang",
+      "mushrooms",
+      "broccoli",
+      "rice",
+      "eggs",
+      "sprouts",
+      "pickle",
+      "wedges"
+    ],
+    "method": "bake fry"
+  },
+  {
+    "name": "Bread pudding",
+    "class": "bread_pudding",
+    "ingredients": [
+      "milk",
+      "butter",
+      "vanilla",
+      "sugar",
+      "salt",
+      "bread",
+      "egg"
+    ],
+    "method": "bake"
+  },
+  {
+    "name": "Breakfast burrito",
+    "class": "breakfast_burrito",
+    "ingredients": [
+      "steak",
+      "beer",
+      "salt",
+      "oil",
+      "pork_lard",
+      "beans",
+      "tortillas",
+      "cheese",
+      "pico_de_gallo",
+      "salsa",
+      "sour_cream",
+      "avocado"
+    ],
+    "method": "stir"
+  },
+  {
+    "name": "Bruschetta",
+    "class": "bruschetta",
+    "ingredients": [
+      "tomatoes",
+      "salt",
+      "oil",
+      "garlic",
+      "basil_leaves",
+      "bread"
+    ],
+    "method": "bake toast drain"
+  },
+  {
+    "name": "Caesar salad",
+    "class": "caesar_salad",
+    "ingredients": [
+      "bread",
+      "oil",
+      "Salt",
+      "egg_yolk",
+      "oil",
+      "lemon",
+      "anchovy",
+      "garlic",
+      "vinegar",
+      "Parmesan",
+      "vinegar",
+      "Worcestershire_sauce",
+      "salt",
+      "black_pepper",
+      "lettuce"
+    ],
+    "method": "bake toast raw stir"
+  },
+  {
+    "name": "Cannoli",
+    "class": "cannoli",
+    "ingredients": [
+      "gelatin",
+      "squash",
+      "cream",
+      "limes",
+      "salt",
+      "ginger",
+      "oil",
+      "pearl",
+      "Mousse",
+      "Tuiles",
+      "chives"
+    ],
+    "method": "whip stir cool roast bake boil drain"
+  },
+  {
+    "name": "Caprese salad",
+    "class": "caprese_salad",
+    "ingredients": [
+      "mozzarella",
+      "tomato",
+      "basil",
+      "salt",
+      "black_pepper",
+      "oil"
+    ],
+    "method": "sprinkle raw"
+  },
+  {
+    "name": "Carrot cake",
+    "class": "carrot_cake",
+    "ingredients": [
+      "flour",
+      "powder",
+      "soda",
+      "cinnamon",
+      "salt",
+      "carrot",
+      "walnut",
+      "pecan",
+      "coconut",
+      "raisin",
+      "cranberry",
+      "sugar",
+      "oil",
+      "egg",
+      "cheese",
+      "butter",
+      "confectioner",
+      "lemon",
+      "coconut",
+      "nut",
+      "coconut"
+    ],
+    "method": "bake stir cool frost"
+  },
+  {
+    "name": "Ceviche",
+    "class": "ceviche",
+    "ingredients": [
+      "scallop",
+      "halibut",
+      "salt",
+      "lime",
+      "pepper",
+      "shallots",
+      "cilantro_leaves",
+      "oil",
+      "lettuce",
+      "grapefruits",
+      "avocado"
+    ],
+    "method": "refrigerate raw"
+  },
+  {
+    "name": "Cheesecake",
+    "class": "cheesecake",
+    "ingredients": [
+      "flour",
+      "sugar",
+      "lemon",
+      "butter",
+      "egg_yolk",
+      "vanilla",
+      "cheese",
+      "lemon_zest",
+      "salt",
+      "egg",
+      "cream"
+    ],
+    "method": "bake beat"
+  },
+  {
+    "name": "Cheese plate",
+    "class": "cheese_plate",
+    "ingredients": [
+      "cheese"
+    ],
+    "method": "raw"
+  },
+  {
+    "name": "Chicken curry",
+    "class": "chicken_curry",
+    "ingredients": [
+      "oil",
+      "onion",
+      "salt",
+      "black_pepper",
+      "curry",
+      "milk",
+      "chicken",
+      "tomato",
+      "basil",
+      "mint"
+    ],
+    "method": "stir"
+  },
+  {
+    "name": "Chicken quesadilla",
+    "class": "chicken_quesadilla",
+    "ingredients": [
+      "cilantro",
+      "lime_zest",
+      "lime",
+      "jalape\u00c3\u00b1o",
+      "salt",
+      "black_pepper",
+      "chicken",
+      "cheese",
+      "tortillas",
+      "oil",
+      "corn"
+    ],
+    "method": "mix bake broil"
+  },
+  {
+    "name": "Chicken wings",
+    "class": "chicken_wings",
+    "ingredients": [
+      "chicken_wing",
+      "chicken",
+      "hot_sauce",
+      "butter",
+      "vinegar",
+      "garlic",
+      "salt",
+      "pepper"
+    ],
+    "method": "grill"
+  },
+  {
+    "name": "Chocolate cake",
+    "class": "chocolate_cake",
+    "ingredients": [
+      "butter",
+      "cocoa",
+      "cocoa_powder",
+      "flour",
+      "baking_powder",
+      "baking_soda",
+      "salt",
+      "sugar",
+      "egg",
+      "vanilla",
+      "buttermilk",
+      "chocolate"
+    ],
+    "method": "mix bake melt frost"
+  },
+  {
+    "name": "Chocolate mousse",
+    "class": "chocolate_mousse",
+    "ingredients": [
+      "cracker",
+      "graham_cracker",
+      "butter",
+      "sugar",
+      "salt",
+      "chocolate",
+      "cream",
+      "espresso_powder",
+      "vanilla",
+      "whipped_cream",
+      "vanilla_extract"
+    ],
+    "method": "bake freeze stir"
+  },
+  {
+    "name": "Churros",
+    "class": "churros",
+    "ingredients": [
+      "oil",
+      "sugar",
+      "cinnamon",
+      "butter",
+      "salt",
+      "flour",
+      "egg"
+    ],
+    "method": "mix stir beat"
+  },
+  {
+    "name": "Clam chowder",
+    "class": "clam_chowder",
+    "ingredients": [
+      "clam",
+      "butter",
+      "leeks",
+      "potato",
+      "wine",
+      "sprigs_thyme",
+      "leaf",
+      "cream",
+      "black_pepper",
+      "parsley"
+    ],
+    "method": "broil stir boil"
+  },
+  {
+    "name": "Club sandwich",
+    "class": "club_sandwich",
+    "ingredients": [
+      "bread",
+      "mayonnaise",
+      "chicken",
+      "salt",
+      "pepper",
+      "bacon",
+      "tomato",
+      "lettuce"
+    ],
+    "method": "toast raw"
+  },
+  {
+    "name": "Crab cakes",
+    "class": "crab_cakes",
+    "ingredients": [
+      "egg",
+      "celery",
+      "Saltine_cracker",
+      "cracker",
+      "mayonnaise",
+      "mustard",
+      "Old_Bay_Seasoning",
+      "pepper",
+      "Worcestershire_sauce",
+      "parsley_sprigs",
+      "scallion",
+      "salt",
+      "pepper",
+      "crab",
+      "bread",
+      "oil"
+    ],
+    "method": "stir mix saute drain"
+  },
+  {
+    "name": "Creme brulee",
+    "class": "creme_brulee",
+    "ingredients": [
+      "ginger",
+      "sugar",
+      "cream",
+      "egg_yolks",
+      "extract",
+      "brown_sugar",
+      "vanilla",
+      "vanilla_extract"
+    ],
+    "method": "mix stir beat bake"
+  },
+  {
+    "name": "Croque madame",
+    "class": "croque_madame",
+    "ingredients": [
+      "butter",
+      "flour",
+      "milk",
+      "salt",
+      "nutmeg",
+      "bread",
+      "ham",
+      "cheese",
+      "egg"
+    ],
+    "method": "fry toast stir bake"
+  },
+  {
+    "name": "Cup cakes",
+    "class": "cup_cakes",
+    "ingredients": [
+      "butter",
+      "flour",
+      "milk",
+      "vanilla_extract",
+      "sugar",
+      "egg"
+    ],
+    "method": "mix beat bake"
+  },
+  {
+    "name": "Deviled eggs",
+    "class": "deviled_eggs",
+    "ingredients": [
+      "egg",
+      "mustard",
+      "Tabasco_sauce",
+      "Salt",
+      "black_pepper",
+      "chives",
+      "mayonnaise",
+      "Paprika"
+    ],
+    "method": "boil stir"
+  },
+  {
+    "name": "Donuts",
+    "class": "donuts",
+    "ingredients": [
+      "milk",
+      "yeast",
+      "egg",
+      "butter",
+      "sugar",
+      "salt",
+      "flour",
+      "oil"
+    ],
+    "method": "stir mix bake"
+  },
+  {
+    "name": "Dumplings",
+    "class": "dumplings",
+    "ingredients": [
+      "oil",
+      "ginger",
+      "garlic",
+      "shallots",
+      "scallion",
+      "soy_sauce",
+      "salt",
+      "black_pepper",
+      "flour",
+      "egg",
+      "sherry",
+      "pork"
+    ],
+    "method": "stir knead mix boil"
+  },
+  {
+    "name": "Edamame",
+    "class": "edamame",
+    "ingredients": [
+      "salt",
+      "edamame"
+    ],
+    "method": "boil"
+  },
+  {
+    "name": "Eggs benedict",
+    "class": "eggs_benedict",
+    "ingredients": [
+      "butter",
+      "egg_yolk",
+      "lemon",
+      "cayenne",
+      "paprika",
+      "salt",
+      "pepper",
+      "vinegar",
+      "egg",
+      "muffin",
+      "ham",
+      "chives",
+      "parsley",
+      "black_pepper"
+    ],
+    "method": "blende stir toast fry"
+  },
+  {
+    "name": "Escargots",
+    "class": "escargots",
+    "ingredients": [
+      "butter",
+      "garlic",
+      "parsley",
+      "cream",
+      "salt",
+      "pepper",
+      "escargot"
+    ],
+    "method": "heat stir mix fry"
+  },
+  {
+    "name": "Falafel",
+    "class": "falafel",
+    "ingredients": [
+      "chickpea",
+      "garlic",
+      "onion",
+      "coriander",
+      "cumin",
+      "cayenne",
+      "parsley",
+      "salt",
+      "black_pepper",
+      "baking_soda",
+      "lemon",
+      "oil"
+    ],
+    "method": "fry drain"
+  },
+  {
+    "name": "Filet mignon",
+    "class": "filet_mignon",
+    "ingredients": [
+      "mignon",
+      "salt",
+      "pepper",
+      "mushrooms",
+      "oil",
+      "butter",
+      "shallots",
+      "wine",
+      "broth",
+      "tomato"
+    ],
+    "method": "stir cook fry"
+  },
+  {
+    "name": "Fish and chips",
+    "class": "fish_and_chips",
+    "ingredients": [
+      "flour",
+      "oil",
+      "egg",
+      "beer",
+      "salt",
+      "potato",
+      "fat",
+      "dogfish"
+    ],
+    "method": "fry drain"
+  },
+  {
+    "name": "Foie gras",
+    "class": "foie_gras",
+    "ingredients": [
+      "foie_gras",
+      "wine",
+      "butter",
+      "shallots",
+      "chicken",
+      "salt",
+      "black_pepper",
+      "thyme",
+      "truffle",
+      "pappardelle"
+    ],
+    "method": "blend heat stir"
+  },
+  {
+    "name": "French fries",
+    "class": "french_fries",
+    "ingredients": [
+      "potato",
+      "oil",
+      "salt"
+    ],
+    "method": "fry"
+  },
+  {
+    "name": "French onion soup",
+    "class": "french_onion_soup",
+    "ingredients": [
+      "oil",
+      "onion",
+      "baguette",
+      "miso",
+      "thyme",
+      "salt",
+      "black_pepper",
+      "cheese"
+    ],
+    "method": "heat boil"
+  },
+  {
+    "name": "French toast",
+    "class": "french_toast",
+    "ingredients": [
+      "egg",
+      "egg_yolk",
+      "milk",
+      "vanilla_extract",
+      "salt",
+      "butter",
+      "bread",
+      "sugar"
+    ],
+    "method": "heat fry"
+  },
+  {
+    "name": "Fried calamari",
+    "class": "fried_calamari",
+    "ingredients": [
+      "salt",
+      "cornmeal",
+      "butter",
+      "black_pepper",
+      "squid",
+      "pepper",
+      "oil",
+      "garlic",
+      "lemon_zest",
+      "marjoram",
+      "mint",
+      "wine",
+      "parsley",
+      "scallion",
+      "lemon_wedge"
+    ],
+    "method": "stir fry boil"
+  },
+  {
+    "name": "Fried rice",
+    "class": "fried_rice",
+    "ingredients": [
+      "oil",
+      "onion",
+      "pepper",
+      "carrot",
+      "garlic",
+      "pea",
+      "ginger",
+      "rice",
+      "egg",
+      "wine",
+      "soy_sauce",
+      "salt",
+      "black_pepper",
+      "cilantro",
+      "scallion"
+    ],
+    "method": "stir fry heat"
+  },
+  {
+    "name": "Frozen yogurt",
+    "class": "frozen_yogurt",
+    "ingredients": [
+      "yogurt",
+      "sugar",
+      "vanilla_extract"
+    ],
+    "method": "mix stir freeze"
+  },
+  {
+    "name": "Garlic bread",
+    "class": "garlic_bread",
+    "ingredients": [
+      "butter",
+      "garlic",
+      "parmesan",
+      "parsley",
+      "salt",
+      "black_pepper",
+      "loaf",
+      "mozzarella",
+      "bread"
+    ],
+    "method": "stir heat bake"
+  },
+  {
+    "name": "Gnocchi",
+    "class": "gnocchi",
+    "ingredients": [
+      "salt",
+      "cheese",
+      "egg",
+      "parmesan",
+      "flour",
+      "butter",
+      "sage_leaves",
+      "black_pepper"
+    ],
+    "method": "stir fry"
+  },
+  {
+    "name": "Greek salad",
+    "class": "greek_salad",
+    "ingredients": [
+      "salt",
+      "garlic",
+      "lettuce",
+      "radish",
+      "scallion",
+      "green_pepper",
+      "tomato",
+      "oregano",
+      "mint",
+      "dill",
+      "oil",
+      "vinegar",
+      "salt",
+      "black_pepper",
+      "cheese",
+      "anchovy"
+    ],
+    "method": "stir raw"
+  },
+  {
+    "name": "Grilled cheese sandwich",
+    "class": "grilled_cheese_sandwich",
+    "ingredients": [
+      "bread",
+      "butter",
+      "mayonnaise",
+      "cheese"
+    ],
+    "method": "heat"
+  },
+  {
+    "name": "Grilled salmon",
+    "class": "grilled_salmon",
+    "ingredients": [
+      "salmon",
+      "salt",
+      "black_pepper",
+      "oil"
+    ],
+    "method": "grill"
+  },
+  {
+    "name": "Guacamole",
+    "class": "guacamole",
+    "ingredients": [
+      "onion",
+      "chili",
+      "cilantro_leaves",
+      "tomato",
+      "avocado",
+      "salt"
+    ],
+    "method": "blend mix chop"
+  },
+  {
+    "name": "Gyoza",
+    "class": "gyoza",
+    "ingredients": [
+      "soy_sauce",
+      "vinegar",
+      "oil",
+      "cabbage",
+      "salt",
+      "pork",
+      "ginger",
+      "garlic",
+      "chives",
+      "potato",
+      "flour"
+    ],
+    "method": "stir knead mix fry"
+  },
+  {
+    "name": "Hamburger",
+    "class": "hamburger",
+    "ingredients": [
+      "beef",
+      "salt",
+      "black_pepper",
+      "cheese",
+      "bread",
+      "bun"
+    ],
+    "method": "grill"
+  },
+  {
+    "name": "Hot and sour soup",
+    "class": "hot_and_sour_soup",
+    "ingredients": [
+      "pork",
+      "tofu",
+      "chestnut",
+      "mushroom",
+      "pea",
+      "fungus",
+      "egg",
+      "soy_sauce",
+      "pepper",
+      "sugar",
+      "chicken",
+      "vinegar",
+      "salt",
+      "oil"
+    ],
+    "method": "best mix boil stir"
+  },
+  {
+    "name": "Hot dog",
+    "class": "hot_dog",
+    "ingredients": [
+      "hot_dog",
+      "bun",
+      "bread"
+    ],
+    "method": "heat boil toast"
+  },
+  {
+    "name": "Huevos rancheros",
+    "class": "huevos_rancheros",
+    "ingredients": [
+      "tortillas",
+      "tomato",
+      "jalape\u00f1o",
+      "garlic",
+      "onion",
+      "oil",
+      "salt",
+      "egg",
+      "cilantro"
+    ],
+    "method": "fry"
+  },
+  {
+    "name": "Hummus",
+    "class": "hummus",
+    "ingredients": [
+      "chickpea",
+      "tahini",
+      "oil",
+      "garlic",
+      "lemon",
+      "salt",
+      "black_pepper",
+      "cumin",
+      "paprika",
+      "parsley_leaves"
+    ],
+    "method": "mix drizzle"
+  },
+  {
+    "name": "Ice cream",
+    "class": "ice_cream",
+    "ingredients": [
+      "cream",
+      "milk",
+      "sugar",
+      "salt",
+      "vanilla_extract"
+    ],
+    "method": "blend stir freeze"
+  },
+  {
+    "name": "Lasagna",
+    "class": "lasagna",
+    "ingredients": [
+      "oil",
+      "onion",
+      "garlic",
+      "pancetta",
+      "salt",
+      "black_pepper",
+      "wine",
+      "tomato",
+      "tomato_paste",
+      "sirloin",
+      "romano",
+      "egg",
+      "parsley",
+      "garlic",
+      "flour",
+      "sausage",
+      "cheese",
+      "mozzarella",
+      "noodle",
+      "noodle"
+    ],
+    "method": "stir heat bake"
+  },
+  {
+    "name": "Lobster bisque",
+    "class": "lobster_bisque",
+    "ingredients": [
+      "salt",
+      "lobster",
+      "oil",
+      "carrot",
+      "celery",
+      "onion",
+      "garlic",
+      "thyme",
+      "tarragon",
+      "tomato",
+      "sherry",
+      "broth",
+      "rice",
+      "cream",
+      "pepper"
+    ],
+    "method": "stir boil blend"
+  },
+  {
+    "name": "Lobster roll sandwich",
+    "class": "lobster_roll_sandwich",
+    "ingredients": [
+      "lobster",
+      "mayonnaise",
+      "lemon",
+      "celery",
+      "parsley_leaves",
+      "salt",
+      "black_pepper",
+      "butter"
+    ],
+    "method": "boil"
+  },
+  {
+    "name": "Macaroni and cheese",
+    "class": "macaroni_and_cheese",
+    "ingredients": [
+      "butter",
+      "cheese",
+      "milk",
+      "mustard",
+      "cayenne",
+      "nutmeg",
+      "salt",
+      "black_pepper",
+      "grated",
+      "pasta"
+    ],
+    "method": "bake stir"
+  },
+  {
+    "name": "Macarons",
+    "class": "macarons",
+    "ingredients": [
+      "sugar",
+      "flour",
+      "salt",
+      "egg",
+      "sugar"
+    ],
+    "method": "mix blend bake"
+  },
+  {
+    "name": "Miso soup",
+    "class": "miso_soup",
+    "ingredients": [
+      "oil",
+      "leek",
+      "pea",
+      "salt",
+      "pepper",
+      "broth",
+      "tofu",
+      "miso",
+      "scallion",
+      "shiso_leaves",
+      "perilla_leaves"
+    ],
+    "method": "boil blend"
+  },
+  {
+    "name": "Mussels",
+    "class": "mussels",
+    "ingredients": [
+      "mussel",
+      "butter",
+      "salt"
+    ],
+    "method": "boil"
+  },
+  {
+    "name": "Nachos",
+    "class": "nachos",
+    "ingredients": [
+      "dressing:",
+      "oil",
+      "vinegar",
+      "garlic",
+      "sugar",
+      "salt",
+      "black_pepper",
+      "tomato",
+      "onion",
+      "black_bean",
+      "pea",
+      "corn",
+      "pepper",
+      "jalape\u00f1o",
+      "cilantro_leaves",
+      "scallion",
+      "chip"
+    ],
+    "method": "RE-ENTER"
+  },
+  {
+    "name": "Omelette",
+    "class": "omelette",
+    "ingredients": [
+      "egg",
+      "salt",
+      "pepper",
+      "butter"
+    ],
+    "method": "stir fry"
+  },
+  {
+    "name": "Onion rings",
+    "class": "onion_rings",
+    "ingredients": [
+      "oil",
+      "flour",
+      "cornmeal",
+      "cornstarch",
+      "pepper",
+      "egg",
+      "buttermilk",
+      "onion",
+      "salt"
+    ],
+    "method": "fry"
+  },
+  {
+    "name": "Oysters",
+    "class": "oysters",
+    "ingredients": [
+      "oyster",
+      "salt"
+    ],
+    "method": "raw"
+  },
+  {
+    "name": "Pad thai",
+    "class": "pad_thai",
+    "ingredients": [
+      "noodle",
+      "oil",
+      "paste",
+      "fish_sauce",
+      "honey",
+      "vinegar",
+      "pepper",
+      "scallion",
+      "garlic",
+      "egg",
+      "cabbage",
+      "bean_sprout",
+      "shrimp",
+      "peanut",
+      "cilantro",
+      "lime"
+    ],
+    "method": "boil stir fry"
+  },
+  {
+    "name": "Paella",
+    "class": "paella",
+    "ingredients": [
+      "chip",
+      "saffron",
+      "broth",
+      "oil",
+      "thigh",
+      "salt",
+      "black_pepper",
+      "chorizo",
+      "onion\\",
+      "garlic",
+      "rice",
+      "shrimp",
+      "pea",
+      "clam",
+      "parsley"
+    ],
+    "method": "stir grill"
+  },
+  {
+    "name": "Pancakes",
+    "class": "pancakes",
+    "ingredients": [
+      "flour",
+      "baking_powder",
+      "salt",
+      "sugar",
+      "egg",
+      "milk",
+      "butter"
+    ],
+    "method": "stir fry"
+  },
+  {
+    "name": "Panna cotta",
+    "class": "panna_cotta",
+    "ingredients": [
+      "gelatin",
+      "salt",
+      "cream",
+      "vanilla_extract",
+      "milk",
+      "sugar",
+      "boil"
+    ],
+    "method": "heat mix boil"
+  },
+  {
+    "name": "Peking duck",
+    "class": "peking_duck",
+    "ingredients": [
+      "duck",
+      "soy_sauce",
+      "honey",
+      "five-spice_powder",
+      "oil",
+      "garlic",
+      "vinegar",
+      "plum_jam",
+      "hoisin_sauce",
+      "pancake",
+      "oil",
+      "scallion",
+      "cucumber",
+      "cilantro_leaves"
+    ],
+    "method": "roast heat"
+  },
+  {
+    "name": "Pho",
+    "class": "pho",
+    "ingredients": [
+      "broth",
+      "noodle",
+      "shallot",
+      "basil_leaves",
+      "scallion",
+      "cilantro",
+      "mint",
+      "bean_sprouts",
+      "chilies",
+      "lime"
+    ],
+    "method": "boil"
+  },
+  {
+    "name": "Pizza",
+    "class": "pizza",
+    "ingredients": [
+      "dough",
+      "cream",
+      "mozzarella",
+      "taleggio",
+      "black_pepper",
+      "parmesan"
+    ],
+    "method": "bake"
+  },
+  {
+    "name": "Pork chop",
+    "class": "pork_chop",
+    "ingredients": [
+      "pork",
+      "pork_chop",
+      "brine",
+      "oil",
+      "flour",
+      "onion",
+      "bay_leaves",
+      "salt",
+      "pepper",
+      "broth",
+      "parsley",
+      "fry"
+    ],
+    "method": "stir fry"
+  },
+  {
+    "name": "Poutine",
+    "class": "poutine",
+    "ingredients": [
+      "potato",
+      "oil",
+      "shallot",
+      "garlic",
+      "chicken_stock",
+      "beef_stock",
+      "ketchup",
+      "vinegar",
+      "peppercorn",
+      "worcestershire_sauce",
+      "butter",
+      "flour",
+      "pepper",
+      "cheese"
+    ],
+    "method": "fry boil bake"
+  },
+  {
+    "name": "Prime rib",
+    "class": "prime_rib",
+    "ingredients": [
+      "wine",
+      "garlic",
+      "salt",
+      "rib",
+      "black_pepper"
+    ],
+    "method": "roast stir"
+  },
+  {
+    "name": "Pulled pork sandwich",
+    "class": "pulled_pork_sandwich",
+    "ingredients": [
+      "pork",
+      "salt",
+      "sugar",
+      "bun",
+      "ketchup",
+      "garlic",
+      "worcestershire_sauce",
+      "black_pepper",
+      "mustard",
+      "cayenne"
+    ],
+    "method": "roast"
+  },
+  {
+    "name": "Ramen",
+    "class": "ramen",
+    "ingredients": [
+      "noodle",
+      "egg",
+      "butter",
+      "cheese",
+      "sesame_seed",
+      "scallion"
+    ],
+    "method": "boil"
+  },
+  {
+    "name": "Ravioli",
+    "class": "ravioli",
+    "ingredients": [
+      "oil",
+      "sugar",
+      "pepper",
+      "egg",
+      "nutmeg",
+      "flour",
+      "pasta_sheet",
+      "butter",
+      "sage_leaves",
+      "walnut",
+      "vinegar"
+    ],
+    "method": "roast boil"
+  },
+  {
+    "name": "Red velvet cake",
+    "class": "red_velvet_cake",
+    "ingredients": [
+      "butter",
+      "cocoa_powder",
+      "sugar",
+      "egg",
+      "vanilla_extract",
+      "coloring",
+      "salt",
+      "baking_soda",
+      "flour",
+      "buttermilk",
+      "vinegar"
+    ],
+    "method": "bake"
+  },
+  {
+    "name": "Risotto",
+    "class": "risotto",
+    "ingredients": [
+      "corn",
+      "butter",
+      "leek",
+      "salt",
+      "black_pepper",
+      "rice",
+      "wine",
+      "cheese",
+      "cream",
+      "chives",
+      "onion",
+      "carrot",
+      "rib",
+      "garlic",
+      "salt",
+      "peppercorn"
+    ],
+    "method": "stir boil"
+  },
+  {
+    "name": "Samosa",
+    "class": "samosa",
+    "ingredients": [
+      "flour",
+      "salt",
+      "cumin_seed",
+      "oil",
+      "potato",
+      "carrot",
+      "onion",
+      "salt",
+      "pepper",
+      "mustard_seed",
+      "garlic",
+      "ginger",
+      "serrano_chiles",
+      "turmeric",
+      "masala",
+      "lemon",
+      "cilantro"
+    ],
+    "method": "fry"
+  },
+  {
+    "name": "Sashimi",
+    "class": "sashimi",
+    "ingredients": [
+      "salmon",
+      "fish",
+      "tuna"
+    ],
+    "method": "raw"
+  },
+  {
+    "name": "Scallops",
+    "class": "scallops",
+    "ingredients": [
+      "scallop",
+      "butter",
+      "raw"
+    ],
+    "method": "raw"
+  },
+  {
+    "name": "Seaweed salad",
+    "class": "seaweed_salad",
+    "ingredients": [
+      "seaweed",
+      "sesame_seed"
+    ],
+    "method": "raw"
+  },
+  {
+    "name": "Shrimp and grits",
+    "class": "shrimp_and_grits",
+    "ingredients": [
+      "grits",
+      "salt",
+      "cheese",
+      "butter",
+      "onion",
+      "pepper",
+      "garlic",
+      "green_pepper",
+      "tomato",
+      "thyme",
+      "flour",
+      "shrimp",
+      "shrimp_stock",
+      "paste",
+      "cream",
+      "worcestershire_sauce",
+      "tabasco",
+      "salt",
+      "parsley"
+    ],
+    "method": "heat stir blend"
+  },
+  {
+    "name": "Spaghetti bolognese",
+    "class": "spaghetti_bolognese",
+    "ingredients": [
+      "oil",
+      "onion",
+      "garlic",
+      "red_pepper",
+      "vinegar",
+      "spaghetti",
+      "tomato",
+      "salt",
+      "black_pepper",
+      "parmesan",
+      "basil_leaves"
+    ],
+    "method": "heat stir sprinkle"
+  },
+  {
+    "name": "Spaghetti carbonara",
+    "class": "spaghetti_carbonara",
+    "ingredients": [
+      "salt",
+      "egg_yolk",
+      "egg",
+      "romano",
+      "parmesan",
+      "black_pepper",
+      "oil",
+      "guanciale",
+      "pancetta",
+      "bacon",
+      "spaghetti"
+    ],
+    "method": "boil heat stir"
+  },
+  {
+    "name": "Spring rolls",
+    "class": "spring_rolls",
+    "ingredients": [
+      "butter",
+      "garlic",
+      "mushroom",
+      "chili",
+      "salt",
+      "lemon",
+      "lemon_zest",
+      "ginger",
+      "tarragon",
+      "egg_yolk",
+      "wrapper",
+      "oil",
+      "pepper",
+      "lettuce"
+    ],
+    "method": "fry"
+  },
+  {
+    "name": "Steak",
+    "class": "steak",
+    "ingredients": [
+      "steak",
+      "beef",
+      "butter",
+      "salt",
+      "black_pepper"
+    ],
+    "method": "grill roast"
+  },
+  {
+    "name": "Strawberry shortcake",
+    "class": "strawberry_shortcake",
+    "ingredients": [
+      "strawberry",
+      "sugar",
+      "flour",
+      "salt",
+      "baking_powder",
+      "butter",
+      "cream",
+      "vanilla_extract"
+    ],
+    "method": "bake"
+  },
+  {
+    "name": "Sushi",
+    "class": "sushi",
+    "ingredients": [
+      "fish",
+      "rice"
+    ],
+    "method": "raw"
+  },
+  {
+    "name": "Tacos",
+    "class": "tacos",
+    "ingredients": [
+      "tomato",
+      "onion",
+      "garlic",
+      "cilantro",
+      "jalape\u00f1o",
+      "mayonnaise",
+      "sour_cream",
+      "lime",
+      "salt",
+      "black_pepper",
+      "pepper",
+      "flour",
+      "chili",
+      "milk",
+      "oil",
+      "butter",
+      "corn",
+      "corn_tortillas",
+      "cabbage",
+      "hot_sauce"
+    ],
+    "method": "heat sprinkle"
+  },
+  {
+    "name": "Takoyaki",
+    "class": "takoyaki",
+    "ingredients": [
+      "flour",
+      "baking_powder",
+      "egg",
+      "salt",
+      "soy_sauce",
+      "octopus",
+      "ginger",
+      "onion",
+      "tenkasu",
+      "mayo"
+    ],
+    "method": "grill"
+  },
+  {
+    "name": "Tiramisu",
+    "class": "tiramisu",
+    "ingredients": [
+      "egg_yolk",
+      "sugar",
+      "cream",
+      "mascarpone",
+      "coffee",
+      "rum",
+      "cognac",
+      "cocoa_powder",
+      "chocolate"
+    ],
+    "method": "mix bake"
+  },
+  {
+    "name": "Tuna tartare",
+    "class": "tuna_tartare",
+    "ingredients": [
+      "cucumber",
+      "salt",
+      "salmon",
+      "fish",
+      "albacore",
+      "shallot",
+      "cilantro",
+      "juice",
+      "vinegar",
+      "oil",
+      "capers",
+      "pepper",
+      "cayenne",
+      "lettuce",
+      "endive_leaves",
+      "cucumber"
+    ],
+    "method": "raw"
+  },
+  {
+    "name": "Waffles",
+    "class": "waffles",
+    "ingredients": [
+      "butter",
+      "flour",
+      "sugar",
+      "baking_powder",
+      "salt",
+      "baking_soda",
+      "yogurt",
+      "milk",
+      "egg"
+    ],
+    "method": "bake"
+  }
+]
