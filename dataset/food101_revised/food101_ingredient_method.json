@@ -96,7 +96,7 @@
       "pecans",
       "herb_leaves"
     ],
-    "method": "raw broil"
+    "method": "raw"
   },
   {
     "name": "Beignets",
@@ -165,7 +165,7 @@
       "sour_cream",
       "avocado"
     ],
-    "method": "stir"
+    "method": "bake fry"
   },
   {
     "name": "Bruschetta",
@@ -178,7 +178,7 @@
       "basil_leaves",
       "bread"
     ],
-    "method": "bake toast drain"
+    "method": "bake toast"
   },
   {
     "name": "Caesar salad",
@@ -218,7 +218,7 @@
       "Tuiles",
       "chives"
     ],
-    "method": "whip stir cool roast bake boil drain"
+    "method": "stir bake"
   },
   {
     "name": "Caprese salad",
@@ -231,7 +231,7 @@
       "black_pepper",
       "oil"
     ],
-    "method": "sprinkle raw"
+    "method": "raw"
   },
   {
     "name": "Carrot cake",
@@ -259,7 +259,7 @@
       "nut",
       "coconut"
     ],
-    "method": "bake stir cool frost"
+    "method": "bake stir frost"
   },
   {
     "name": "Ceviche",
@@ -277,7 +277,7 @@
       "grapefruits",
       "avocado"
     ],
-    "method": "refrigerate raw"
+    "method": "frost raw"
   },
   {
     "name": "Cheesecake",
@@ -295,7 +295,7 @@
       "egg",
       "cream"
     ],
-    "method": "bake beat"
+    "method": "bake stir"
   },
   {
     "name": "Cheese plate",
@@ -320,7 +320,7 @@
       "basil",
       "mint"
     ],
-    "method": "stir"
+    "method": "heat boil stir"
   },
   {
     "name": "Chicken quesadilla",
@@ -338,7 +338,7 @@
       "oil",
       "corn"
     ],
-    "method": "mix bake broil"
+    "method": "stir bake broil"
   },
   {
     "name": "Chicken wings",
@@ -372,7 +372,7 @@
       "buttermilk",
       "chocolate"
     ],
-    "method": "mix bake melt frost"
+    "method": "stir bake melt frost"
   },
   {
     "name": "Chocolate mousse",
@@ -390,7 +390,7 @@
       "whipped_cream",
       "vanilla_extract"
     ],
-    "method": "bake freeze stir"
+    "method": "bake frost stir"
   },
   {
     "name": "Churros",
@@ -404,7 +404,7 @@
       "flour",
       "egg"
     ],
-    "method": "mix stir beat"
+    "method": "stir beat bake"
   },
   {
     "name": "Clam chowder",
@@ -459,7 +459,7 @@
       "bread",
       "oil"
     ],
-    "method": "stir mix saute drain"
+    "method": "stir saute drain"
   },
   {
     "name": "Creme brulee",
@@ -474,7 +474,7 @@
       "vanilla",
       "vanilla_extract"
     ],
-    "method": "mix stir beat bake"
+    "method": "stir beat bake"
   },
   {
     "name": "Croque madame",
@@ -503,7 +503,7 @@
       "sugar",
       "egg"
     ],
-    "method": "mix beat bake"
+    "method": "beat bake"
   },
   {
     "name": "Deviled eggs",
@@ -533,7 +533,7 @@
       "flour",
       "oil"
     ],
-    "method": "stir mix bake"
+    "method": "stir bake"
   },
   {
     "name": "Dumplings",
@@ -552,7 +552,7 @@
       "sherry",
       "pork"
     ],
-    "method": "stir knead mix boil"
+    "method": "stir knead boil"
   },
   {
     "name": "Edamame",
@@ -582,7 +582,7 @@
       "parsley",
       "black_pepper"
     ],
-    "method": "blende stir toast fry"
+    "method": "blend stir toast fry"
   },
   {
     "name": "Escargots",
@@ -596,7 +596,7 @@
       "pepper",
       "escargot"
     ],
-    "method": "heat stir mix fry"
+    "method": "heat stir fry"
   },
   {
     "name": "Falafel",
@@ -615,13 +615,14 @@
       "lemon",
       "oil"
     ],
-    "method": "fry drain"
+    "method": "fry"
   },
   {
     "name": "Filet mignon",
     "class": "filet_mignon",
     "ingredients": [
-      "mignon",
+      "steak"
+      "filet",
       "salt",
       "pepper",
       "mushrooms",
@@ -632,7 +633,7 @@
       "broth",
       "tomato"
     ],
-    "method": "stir cook fry"
+    "method": "broil fry"
   },
   {
     "name": "Fish and chips",
@@ -647,7 +648,7 @@
       "fat",
       "dogfish"
     ],
-    "method": "fry drain"
+    "method": "fry"
   },
   {
     "name": "Foie gras",
@@ -899,7 +900,7 @@
       "salt",
       "oil"
     ],
-    "method": "best mix boil stir"
+    "method": "boil stir"
   },
   {
     "name": "Hot dog",
@@ -942,7 +943,7 @@
       "paprika",
       "parsley_leaves"
     ],
-    "method": "mix drizzle"
+    "method": "stir drizzle"
   },
   {
     "name": "Ice cream",
@@ -954,7 +955,7 @@
       "salt",
       "vanilla_extract"
     ],
-    "method": "blend stir freeze"
+    "method": "blend stir frost"
   },
   {
     "name": "Lasagna",
@@ -1047,7 +1048,7 @@
       "egg",
       "sugar"
     ],
-    "method": "mix blend bake"
+    "method": "stir blend bake"
   },
   {
     "name": "Miso soup",
@@ -1081,25 +1082,18 @@
     "name": "Nachos",
     "class": "nachos",
     "ingredients": [
-      "dressing:",
       "oil",
-      "vinegar",
-      "garlic",
-      "sugar",
-      "salt",
-      "black_pepper",
-      "tomato",
       "onion",
-      "black_bean",
-      "pea",
-      "corn",
+      "beef",
+      "black_beans",
+      "garlic",
       "pepper",
       "jalape\u00f1o",
       "cilantro_leaves",
-      "scallion",
+      "tomato",
       "chip"
     ],
-    "method": "RE-ENTER"
+    "method": "bake stir heat"
   },
   {
     "name": "Omelette",
@@ -1172,7 +1166,7 @@
       "salt",
       "black_pepper",
       "chorizo",
-      "onion\\",
+      "onion",
       "garlic",
       "rice",
       "shrimp",
@@ -1208,7 +1202,7 @@
       "sugar",
       "boil"
     ],
-    "method": "heat mix boil"
+    "method": "heat stir boil"
   },
   {
     "name": "Peking duck",
@@ -1632,7 +1626,7 @@
       "cocoa_powder",
       "chocolate"
     ],
-    "method": "mix bake"
+    "method": "stir bake"
   },
   {
     "name": "Tuna tartare",
