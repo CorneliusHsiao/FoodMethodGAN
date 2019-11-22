@@ -10,7 +10,7 @@ class Generator(nn.Module):
 	def __init__(self):
 		super().__init__()
 
-		# Input feature size: 1024
+		########################### Input feature size: 1024 ##############################
 		self.tconv1 = nn.ConvTranspose2d(1024, 448, 2, 1, bias=False)
 		self.bn1 = nn.BatchNorm2d(448)
 
