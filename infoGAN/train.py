@@ -79,19 +79,20 @@ plt.savefig('Training Images {}'.format(params['dataset']))
 plt.close('all')
 
 # Initialise the network.
-netG = Generator().to(device)
+########################## 4 nets are wrapped with nn.DataParallel ##############################
+netG = nn.DataParallel(Generator()).to(device)
 netG.apply(weights_init)
 print(netG)
 
-discriminator = Discriminator().to(device)
+discriminator = nn.DataParallel(Discriminator()).to(device)
 discriminator.apply(weights_init)
 print(discriminator)
 
-netD = DHead().to(device)
+netD = nn.DataParallel(DHead()).to(device)
 netD.apply(weights_init)
 print(netD)
 
-netQ = QHead().to(device)
+netQ = nn.DataParallel(QHead()).to(device)
 netQ.apply(weights_init)
 print(netQ)
 
