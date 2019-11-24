@@ -8,8 +8,8 @@ def get_parser():
     parser.add_argument('--no-cuda', action='store_true')
 
     # data
-    parser.add_argument('--img_path', default='./data/img_data/')
-    parser.add_argument('--data_path', default='./data/')
+    parser.add_argument('--img_path', default='../data/img_data/')
+    parser.add_argument('--data_path', default='../data/')
     parser.add_argument('--workers', default=0, type=int)
 
     # model

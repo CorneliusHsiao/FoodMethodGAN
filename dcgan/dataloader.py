@@ -8,7 +8,7 @@ import numpy as np
 import lmdb
 import torch
 import json
-from new_args import get_parser
+from text_args import get_parser
 
 parser = get_parser()
 opts = parser.parse_args()
@@ -42,9 +42,9 @@ class ImageLoader(data.Dataset):
         with open(os.path.join(data_path,self.partition+".json")) as f:
             self.data = json.load(f)
             if self.partition=='train':
-                self.data = self.data[:10000]
-            else:
                 self.data = self.data[:1000]
+            else:
+                self.data = self.data[:100]
 
         self.img_dir = os.path.join(data_path,"img_data",self.partition)
 
@@ -66,44 +66,15 @@ class ImageLoader(data.Dataset):
 
     def __getitem__(self, index):
 
-        # we force 80 percent of them to be a mismatch
+
+        imgs = self.data[index]["images"]
         if self.partition == 'train':
-            match = np.random.uniform() > self.mismtch
-        elif self.partition == 'val' or self.partition == 'test':
-            match = True
+            # We do only use the first five images per recipe during training
+            imgIdx = np.random.choice(range(min(5, len(imgs))))
         else:
-            raise 'Partition name not well defined'
+            imgIdx = 0
 
-        target = match and 1 or -1
-
-        # image
-        if target == 1:
-            imgs = self.data[index]["images"]
-            if self.partition == 'train':
-                # We do only use the first five images per recipe during training
-                imgIdx = np.random.choice(range(min(5, len(imgs))))
-            else:
-                imgIdx = 0
-
-            img_path = imgs[imgIdx]
-
-        else:
-            # we randomly pick one non-matching image
-            all_idx = range(len(self.data))
-            rndindex = np.random.choice(all_idx)
-            while rndindex == index:
-                rndindex = np.random.choice(all_idx)  # pick a random index
-
-            rndimgs = self.data[rndindex]['images']
-
-            if self.partition == 'train':  # if training we pick a random image
-                # We do only use the first five images per recipe during training
-                imgIdx = np.random.choice(range(min(5, len(rndimgs))))
-            else:
-                imgIdx = 0
-
-            img_path = rndimgs[imgIdx]
-            # path = self.imgPath + rndimgs[imgIdx]['id']
+        img_path = imgs[imgIdx]
 
         #load image
         img = default_loader(self.img_dir, img_path)
@@ -139,7 +110,7 @@ class ImageLoader(data.Dataset):
             target = self.target_transform(target)
 
         # output
-        return [img, instrs_encoding, instrs_len, ingrs_encoding, ingrs_len], [target]
+        return img, instrs_encoding, instrs_len, ingrs_encoding, ingrs_len
 
 
     def __len__(self):
