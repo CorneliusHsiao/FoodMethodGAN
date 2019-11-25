@@ -7,6 +7,7 @@ from utils.inception_score import get_inception_score
 from itertools import chain
 from torchvision import utils
 import time
+from models.textEncoder import textEncoder
 
 class Generator(torch.nn.Module):
     def __init__(self, channels):
@@ -41,11 +42,11 @@ class Generator(torch.nn.Module):
             nn.ReLU(True),
 
             nn.ConvTranspose2d(in_channels=64, out_channels=channels, kernel_size=4, stride=2, padding=1))
-       
 
         self.output = nn.Tanh()
 
     def forward(self, x):
+        print(x.size())
         x = self.main_module(x)
         return self.output(x)
 
@@ -116,7 +117,6 @@ class DCGAN_MODEL(object):
 
         self.epochs = args.epochs
         self.batch_size = args.batch_size
-        self.num_dis = 100
 
     def train(self, train_loader):
 
@@ -133,10 +133,8 @@ class DCGAN_MODEL(object):
                 real_labels = torch.ones(self.batch_size)
                 fake_labels = torch.zeros(self.batch_size)
 
-
                 images, z = Variable(images).to(self.device), Variable(z).to(self.device)
                 real_labels, fake_labels = Variable(real_labels).to(self.device), Variable(fake_labels).to(self.device)
-
 
                 # Train discriminator
                 # Compute BCE_Loss using real images
@@ -145,7 +143,6 @@ class DCGAN_MODEL(object):
                 real_score = outputs
 
                 # Compute BCE Loss using fake images
-                
                 z = Variable(torch.randn(self.batch_size, 100, 1, 1)).to(self.device)
                 fake_images = self.G(z)
                 outputs = self.D(fake_images)
@@ -158,19 +155,18 @@ class DCGAN_MODEL(object):
                 d_loss.backward()
                 self.d_optimizer.step()
 
-                if i%self.num_dis==0:
-                    # Train generator
-                    # Compute loss with fake images
-                    z = Variable(torch.randn(self.batch_size, 100, 1, 1)).to(self.device)
-                    fake_images = self.G(z)
-                    outputs = self.D(fake_images)
-                    g_loss = self.loss(outputs, real_labels)
+                # Train generator
+                # Compute loss with fake images
+                z = Variable(torch.randn(self.batch_size, 100, 1, 1)).to(self.device)
+                fake_images = self.G(z)
+                outputs = self.D(fake_images)
+                g_loss = self.loss(outputs, real_labels)
 
-                    # Optimize generator
-                    self.D.zero_grad()
-                    self.G.zero_grad()
-                    g_loss.backward()
-                    self.g_optimizer.step()
+                # Optimize generator
+                self.D.zero_grad()
+                self.G.zero_grad()
+                g_loss.backward()
+                self.g_optimizer.step()
 
             print(
                 "[Epoch %d/%d] [Batch %d/%d] [D loss: %f] [G loss: %f] [Time Elapsed: %f]"
@@ -201,9 +197,6 @@ class DCGAN_MODEL(object):
         d_file_name = os.path.join(models_forlder, "d_" + str(epoch)+".pth.tar")
         torch.save(g_state,g_file_name)
         torch.save(d_state,d_file_name)
-
-
-
 
         self.t_end = t.time()
         print('Time of training-{}'.format((self.t_end - self.t_begin)))

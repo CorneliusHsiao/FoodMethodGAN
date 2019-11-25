@@ -15,6 +15,8 @@ def get_parser():
     parser.add_argument('--load_G', type=str, default='False', help='Path for loading Generator network')
     parser.add_argument('--generator_iters', type=int, default=10000, help='The number of iterations for generator in WGAN model.')
     parser.add_argument('--channels',type=int, default=3)
+    parser.add_argument('--save_images', type=str, default="./image")
+    parser.add_argument('--save_models', type=str, default="./snapshot")
 
     # general
     parser.add_argument('--seed', default=1234, type=int)

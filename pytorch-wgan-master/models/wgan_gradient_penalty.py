@@ -216,6 +216,10 @@ class WGAN_GP(object):
                     % (epoch, opt.n_epochs, i, len(train_loader), d_loss.item(), g_loss.item(), time.time()-start_time)
                 )
 
+            print(
+                "[Epoch %d/%d] [Batch %d/%d] [D loss: %f] [G loss: %f] [Time Elapsed: %f]"
+                % (epoch, opt.n_epochs, i, len(train_loader), d_loss.item(), g_loss.item(), time.time()-start_time)
+            )
         if epoch % 10 == 0:
             self.save_samples(epoch, fake_images.data[:25])
             self.save_model(epoch,self.G.state_dict(), self.D.state_dict())
