@@ -65,9 +65,19 @@ def parse_args():
     parser.add_argument('--gpu', dest='gpu_id', type=str, default='-1')
     parser.add_argument('--data_dir', dest='data_dir', type=str, default='')
     parser.add_argument('--manualSeed', type=int, help='manual seed')
+    parser.add_argument('--b_condition', type=str, default=None)
+    parser.add_argument('--batch_size', type=int, default=None)
     args = parser.parse_args()
     return args
 
+def get_bool(s):
+  if s.lower() == "true":
+    return True
+  elif s.lower() =="false":
+    return False
+
+  else:
+    raise ValueError
 
 if __name__ == "__main__":
     args = parse_args()
@@ -78,6 +88,14 @@ if __name__ == "__main__":
         cfg.GPU_ID = args.gpu_id
     else:
         cfg.CUDA = False
+
+    if args.b_condition is not None:
+      cfg.GAN.B_CONDITION = get_bool(args.b_condition)
+
+
+    if args.batch_size is not None:
+      cfg.TRAIN.BATCH_SIZE = args.batch_size
+      print("using batch size:", cfg.TRAIN.BATCH_SIZE)
 
     if args.data_dir != '':
         cfg.DATA_DIR = args.data_dir
@@ -133,8 +151,10 @@ if __name__ == "__main__":
     # Define models and go to train/evaluate
     if not cfg.GAN.B_CONDITION:
         from trainer import GANTrainer as trainer
+        print("training without condition")
     else:
         from trainer import condGANTrainer as trainer
+        print("training with condition")
     algo = trainer(output_dir, dataloader, imsize)
 
     start_t = time.time()

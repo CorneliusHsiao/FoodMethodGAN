@@ -7,6 +7,7 @@ from torch.autograd import Variable
 import torch.nn.functional as F
 from torchvision import models
 import torch.utils.model_zoo as model_zoo
+from textEncoder import textEncoder
 
 
 # ############################## For Compute inception score ##############################
@@ -239,6 +240,7 @@ class G_NET(nn.Module):
 
     def define_module(self):
         if cfg.GAN.B_CONDITION:
+            self.text_encode = textEncoder()
             self.ca_net = CA_NET()
 
         if cfg.TREE.BRANCH_NUM > 0:
@@ -257,8 +259,9 @@ class G_NET(nn.Module):
             self.h_net4 = NEXT_STAGE_G(self.gf_dim // 8, num_residual=1)
             self.img_net4 = GET_IMAGE_G(self.gf_dim // 16)
 
-    def forward(self, z_code, text_embedding=None):
-        if cfg.GAN.B_CONDITION and text_embedding is not None:
+    def forward(self, z_code, text=None):
+        if cfg.GAN.B_CONDITION and text is not None:
+            text_embedding = self.text_encode(text[0],text[1],text[2],text[3])
             c_code, mu, logvar = self.ca_net(text_embedding)
         else:
             c_code, mu, logvar = z_code, None, None

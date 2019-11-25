@@ -86,7 +86,26 @@ class ImageLoader(data.Dataset):
 
         #load image
         img = default_loader(self.img_dir, img_path)
-        
+
+        wrong_imgs = []
+
+        if cfg.GAN.B_CONDITION:
+            # loading wrong images
+            wrong_index = np.random.randint(0,len(self.data))
+            while wrong_index==index:
+                wrong_index = np.random.randint(0,len(self.data))
+
+            wrong_imgs = self.data[wrong_index]["images"]
+            if self.partition == 'train':
+                # We do only use the first five images per recipe during training
+                wrong_imgIdx = np.random.choice(range(min(5, len(wrong_imgs))))
+            else:
+                wrong_imgIdx = 0
+
+            wrong_img_path = wrong_imgs[wrong_imgIdx]
+
+            wrong_img = default_loader(self.img_dir,wrong_img_path)
+
         #instructions
         instrs_encoding = np.zeros((self.maxInst))
         instrs = self.data[index]['instructions']
@@ -109,7 +128,9 @@ class ImageLoader(data.Dataset):
         ingrs_encoding = torch.LongTensor(ingrs_encoding)
 
         if self.transform is not None:
-        	img = self.transform(img)
+            img = self.transform(img)
+            if cfg.GAN.B_CONDITION:
+                wrong_img = self.transform(wrong_img)
 
         imgs = []
         for i in range(cfg.TREE.BRANCH_NUM):
@@ -119,9 +140,17 @@ class ImageLoader(data.Dataset):
                 re_img = img
             imgs.append(self.norm(re_img))
 
+        if cfg.GAN.B_CONDITION:
+            wrong_imgs = []
+            for i in range(cfg.TREE.BRANCH_NUM):
+                if i < (cfg.TREE.BRANCH_NUM - 1):
+                    re_img = transforms.Scale(self.imsize[i])(wrong_img)
+                else:
+                    re_img = wrong_img
+                wrong_imgs.append(self.norm(re_img))
         # output
 
-        return imgs, instrs_encoding, instrs_len, ingrs_encoding, ingrs_len
+        return imgs, wrong_imgs, instrs_encoding, instrs_len, ingrs_encoding, ingrs_len
 
 
     def __len__(self):
