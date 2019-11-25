@@ -120,6 +120,9 @@ class DCGAN_MODEL(object):
 
     def train(self, train_loader):
 
+        d_losses = AverageMeter()
+        g_losses = AverageMeter()
+
         for epoch in range(self.epochs):
             self.epoch_start_time = t.time()
             
@@ -154,6 +157,7 @@ class DCGAN_MODEL(object):
 
                 # Optimize discriminator
                 d_loss = d_loss_real + d_loss_fake
+                d_losses.update(d_loss.data)
                 self.D.zero_grad()
                 d_loss.backward()
                 self.d_optimizer.step()
@@ -170,11 +174,12 @@ class DCGAN_MODEL(object):
                     self.D.zero_grad()
                     self.G.zero_grad()
                     g_loss.backward()
+                    g_losses.update(g_loss.data)
                     self.g_optimizer.step()
 
             print(
                 "[Epoch %d/%d] [Batch %d/%d] [D loss: %f] [G loss: %f] [Time Elapsed: %f]"
-                % (epoch, self.epochs, i, len(train_loader), d_loss.item(), g_loss.item(), time.time()-start_time)
+                % (epoch, self.epochs, i, len(train_loader), d_losses.avg, g_losses.avg, time.time()-start_time)
             )
 
         if epoch % 10 == 0:
@@ -282,3 +287,20 @@ class DCGAN_MODEL(object):
         grid = utils.make_grid(images, nrow=number_int )
         utils.save_image(grid, 'interpolated_images/interpolated_{}.png'.format(str(number).zfill(3)))
         print("Saved interpolated images to interpolated_images/interpolated_{}.".format(str(number).zfill(3)))
+
+class AverageMeter(object):
+    """Computes and stores the average and current value"""
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self.val = 0
+        self.avg = 0
+        self.sum = 0
+        self.count = 0
+
+    def update(self, val, n=1):
+        self.val = val
+        self.sum += val * n
+        self.count += n
+        self.avg = self.sum / self.count
