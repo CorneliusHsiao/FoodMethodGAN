@@ -144,7 +144,6 @@ class DCGAN_MODEL(object):
                 # Train discriminator
                 # Compute BCE_Loss using real images
                 outputs = self.D(images)
-                print(outputs.size())
                 d_loss_real = self.loss(outputs, real_labels)
                 real_score = outputs
 
