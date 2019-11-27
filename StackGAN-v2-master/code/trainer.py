@@ -199,12 +199,13 @@ def save_img_results(imgs_tcpu, fake_imgs, num_imgs,
     vutils.save_image(
         real_img, '%s/real_samples.png' % (image_dir),
         normalize=True)
-    real_img_set = vutils.make_grid(real_img).numpy()
-    real_img_set = np.transpose(real_img_set, (1, 2, 0))
-    real_img_set = real_img_set * 255
-    real_img_set = real_img_set.astype(np.uint8)
-    sup_real_img = summary.image('real_img', real_img_set)
-    summary_writer.add_summary(sup_real_img, count)
+    # real_img_set = vutils.make_grid(real_img).numpy()
+    # real_img_set = np.transpose(real_img_set, (1, 2, 0))
+    # real_img_set = real_img_set * 255
+    # real_img_set = real_img_set.astype(np.uint8)
+    # print(real_img_set.shape)
+    # sup_real_img = summary.image('real_img', real_img_set)
+    # summary_writer.add_summary(sup_real_img, count)
 
     for i in range(num_imgs):
         fake_img = fake_imgs[i][0:num]
@@ -214,15 +215,15 @@ def save_img_results(imgs_tcpu, fake_imgs, num_imgs,
             fake_img.data, '%s/count_%09d_fake_samples%d.png' %
             (image_dir, count, i), normalize=True)
 
-        fake_img_set = vutils.make_grid(fake_img.data).cpu().numpy()
+        # fake_img_set = vutils.make_grid(fake_img.data).cpu().numpy()
 
-        fake_img_set = np.transpose(fake_img_set, (1, 2, 0))
-        fake_img_set = (fake_img_set + 1) * 255 / 2
-        fake_img_set = fake_img_set.astype(np.uint8)
+        # fake_img_set = np.transpose(fake_img_set, (1, 2, 0))
+        # fake_img_set = (fake_img_set + 1) * 255 / 2
+        # fake_img_set = fake_img_set.astype(np.uint8)
 
-        sup_fake_img = summary.image('fake_img%d' % i, fake_img_set)
-        summary_writer.add_summary(sup_fake_img, count)
-        summary_writer.flush()
+        # sup_fake_img = summary.image('fake_img%d' % i, fake_img_set)
+        # summary_writer.add_summary(sup_fake_img, count)
+        # summary_writer.flush()
 
 
 # ################## For uncondional tasks ######################### #

@@ -67,6 +67,7 @@ def parse_args():
     parser.add_argument('--manualSeed', type=int, help='manual seed')
     parser.add_argument('--b_condition', type=str, default=None)
     parser.add_argument('--batch_size', type=int, default=None)
+    parser.add_argument('--text_used', type=str, default="both", help="both or instruction")
     args = parser.parse_args()
     return args
 
@@ -96,6 +97,16 @@ if __name__ == "__main__":
     if args.batch_size is not None:
       cfg.TRAIN.BATCH_SIZE = args.batch_size
       print("using batch size:", cfg.TRAIN.BATCH_SIZE)
+
+
+    if args.text_used.lower() in "both":
+      cfg.GAN.TEXT_USED = "BOTH"
+      print("using both INSTRUCTION and INGREDIENTS")
+    elif args.text_used.lower() in "ingredients":
+      cfg.GAN.TEXT_USED = "INGREDIENTS"
+      print("using INSTRUCTION")
+    else:
+      raise ValueError
 
     if args.data_dir != '':
         cfg.DATA_DIR = args.data_dir
