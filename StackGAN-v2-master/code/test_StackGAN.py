@@ -8,6 +8,7 @@ from torch.nn import functional as F
 from scipy.linalg import sqrtm
 import torchvision.transforms as transforms
 from miscc.config import cfg, cfg_from_file
+from torch.autograd import Variable
 
 from model import G_NET
 
@@ -224,7 +225,7 @@ class Evaluate_img():
             for i,data in enumerate(dataloader):
                 # there are five things in data
                 # index 0 contains a 64X64 real image and a 128 *128 real image
-                real_imgs = data[0]
+                real_imgs = np.array(data[0])
                 # index 1 contains a 64x64 fake_image and a 128* 128 fake image 
                 # fake_image = data[1]
                 # index 2 contain a set of index of instructions
@@ -295,7 +296,7 @@ if __name__ == '__main__':
             img_path="../../data/img_data",
             transform = image_transform,
             data_path = "../../data",
-            partition="test")
+            partition="train")
         print("using recipe1M dataset")
     else:
         print(cfg.DATA_DIR, " dataset not found")
