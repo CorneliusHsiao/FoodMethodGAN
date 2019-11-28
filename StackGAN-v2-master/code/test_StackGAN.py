@@ -1,3 +1,4 @@
+from __future__ import print_function
 import torch
 import torch.nn as nn
 import numpy as np
@@ -5,9 +6,10 @@ from keras.applications.inception_v3 import InceptionV3
 from keras.applications.inception_v3 import preprocess_input
 from torch.nn import functional as F
 from scipy.linalg import sqrtm
-from __future__ import print_function
 import torchvision.transforms as transforms
 from miscc.config import cfg, cfg_from_file
+
+from model import G_NET
 
 import argparse
 import os
@@ -33,14 +35,34 @@ def parse_args():
     args = parser.parse_args()
     return args
 
+def weights_init(m):
+    classname = m.__class__.__name__
+    if classname.find('Conv') != -1:
+        nn.init.orthogonal(m.weight.data, 1.0)
+    elif classname.find('BatchNorm') != -1:
+        m.weight.data.normal_(1.0, 0.02)
+        m.bias.data.fill_(0)
+    elif classname.find('Linear') != -1:
+        nn.init.orthogonal(m.weight.data, 1.0)
+        if m.bias is not None:
+            m.bias.data.fill_(0.0)
+
 def load_checkpoint(modelpath):
-    checkpoint = torch.load(modelpath)
-    model = checkpoint['model']
-    model.load_state_dict(checkpoint['state_dict'])
-    for parameter in model.parameters():
-        parameter.requires_grad = False
-    model.eval()
-    return model
+    s_gpus = cfg.GPU_ID.split(',')
+    gpus = [int(ix) for ix in s_gpus]
+    torch.cuda.set_device(gpus[0])
+    state_dict = torch.load(modelpath, map_location=lambda storage, loc: storage)
+    #print(checkpoint.keys())
+    #model = checkpoint['model']
+    #model.load_state_dict(checkpoint['state_dict'])
+    #for parameter in model.parameters():
+    #    parameter.requires_grad = False
+    netG = G_NET()
+    netG.apply(weights_init)
+    netG = torch.nn.DataParallel(netG, device_ids=gpus)
+    netG.load_state_dict(state_dict)
+    netG.eval()
+    return netG
 
 def calculate_fid(real_images, fake_images):
     """
@@ -282,7 +304,7 @@ if __name__ == '__main__':
     num_gpu = len(cfg.GPU_ID.split(','))
     dataloader = torch.utils.data.DataLoader(
         dataset, batch_size=2, # cfg.TRAIN.BATCH_SIZE * num_gpu,
-        drop_last=True, shuffle=bshuffle, num_workers=int(cfg.WORKERS))
+        drop_last=True, shuffle=False, num_workers=int(cfg.WORKERS))
 
     # Config 5: model dir
     if args.model_dir is not None:
