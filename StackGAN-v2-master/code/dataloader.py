@@ -42,7 +42,7 @@ class ImageLoader(data.Dataset):
         with open(os.path.join(data_path,self.partition+".json")) as f:
             self.data = json.load(f)
             if self.partition=='train':
-                self.data = self.data[:1000]
+                self.data = self.data[:10000]
             else:
                 self.data = self.data[:1000]
 
