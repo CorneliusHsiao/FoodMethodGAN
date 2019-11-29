@@ -240,14 +240,18 @@ class G_NET(nn.Module):
 
     def define_module(self):
         if cfg.GAN.B_CONDITION:
+
+
+
             if cfg.GAN.TEXT_USED =='BOTH':
-                self.text_encode = textEncoder()
+                self.text_encode = textEncoder(using_att = cfg.GAN.ATT)
             elif cfg.GAN.TEXT_USED == "INGREDIENTS":
-                self.text_encode = textEncoder(using_instrs=False)
+                self.text_encode = textEncoder(using_instrs=False, using_att = cfg.GAN.ATT)
             else:
                 raise ValueError
 
             self.ca_net = CA_NET()
+
 
         if cfg.TREE.BRANCH_NUM > 0:
             self.h_net1 = INIT_STAGE_G(self.gf_dim * 16)

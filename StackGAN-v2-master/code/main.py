@@ -68,6 +68,7 @@ def parse_args():
     parser.add_argument('--b_condition', type=str, default=None)
     parser.add_argument('--batch_size', type=int, default=None)
     parser.add_argument('--text_used', type=str, default="both", help="both or instruction")
+    parser.add_argument('--att', type=str, default=None, help="if to use attention layer")
     args = parser.parse_args()
     return args
 
@@ -107,6 +108,10 @@ if __name__ == "__main__":
       print("using INSTRUCTION")
     else:
       raise ValueError
+
+    if args.att is not None:
+      cfg.GAN.ATT = get_bool(args.att)
+      print("using attention layer",cfg.GAN.ATT)
 
     if args.data_dir != '':
         cfg.DATA_DIR = args.data_dir
