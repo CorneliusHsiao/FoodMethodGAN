@@ -7,6 +7,7 @@ import torch.utils.data
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import torchvision.models as models
+from torch.nn import functional as F
 # import torchwordemb
 
 class Opts():
@@ -46,7 +47,7 @@ class AttentionLayer(nn.Module):
         # a trick used to find the mask for the softmax
         mask = mask[:,:,0]
         h = torch.tanh(self.fc(x)) # h = [BS, num_vec, 2*hid_dim]
-        tmp = h.mm(self.u) # tmp = [BS, num_vec], unnormalized importance
+        tmp = h.matmul(self.u) # tmp = [BS, num_vec], unnormalized importance
         masked_tmp = tmp.masked_fill((~ mask).byte(), -1e32)
         alpha = F.softmax(masked_tmp, dim=1) # alpha = [BS, num_vec], normalized importance
         alpha = alpha.unsqueeze(-1) # alpha = [BS, num_vec, 1]

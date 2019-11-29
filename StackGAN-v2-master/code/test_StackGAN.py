@@ -20,6 +20,9 @@ import pprint
 import datetime
 import dateutil.tz
 import time
+import math
+
+import cv2
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a GAN network')
@@ -107,6 +110,7 @@ def calculate_inception_score(original_images, n_split=10, eps=1E-16):
     original_images: tensor =now=> numpy array
     shape: batch * 3 * h * w =now=> batch (whole test) * 299 (h) * 299 (w) * 3 (channel)
     """ 
+
     model = InceptionV3()
     #images = F.interpolate(original_images, size=(299, 299), mode='bilinear', align_corners=True)
     #images = images.permute(0,2,3,1).numpy()
@@ -115,9 +119,10 @@ def calculate_inception_score(original_images, n_split=10, eps=1E-16):
     yhat = model.predict(images)            # batch_size*299*299*3
     # enumerate splits of images/predictions
     scores = list()
-    n_part = floor(images.shape[0] / n_split)
+    n_part = math.floor(images.shape[0] / n_split)
     for i in range(n_split):
-        ix_start, ix_end = i * n_part, i * n_part + n_part
+        ix_start, ix_end = int(i * n_part), int(i * n_part + n_part)
+
         p_yx = yhat[ix_start:ix_end]
         p_y = np.expand_dims(p_yx.mean(axis=0), 0)
         kl_d = p_yx * (np.log(p_yx + eps) - np.log(p_y + eps))
@@ -218,14 +223,22 @@ class Evaluate_ingr_method():
                 fake_imgs, _,_ = model(noise, txt_embedding)
 
 class Evaluate_img():
-    def test(model, dataloader):
+    def test(self, model, dataloader):
+
         with torch.no_grad():
             real_imgs_batch = []
             fake_imgs_batch = []
-            for i,data in enumerate(dataloader):
+            for i, data in enumerate(dataloader):
                 # there are five things in data
                 # index 0 contains a 64X64 real image and a 128 *128 real image
-                real_imgs = np.array(data[0])
+                real_imgs_np = []
+                for i in data[0]:
+                	print(i.size())
+                for i in data[0][2]:
+                	real_imgs_np.append(i.numpy())
+
+                real_imgs_np = np.array(real_imgs_np)
+                real_imgs_np = real_imgs_np.transpose(0,2,3,1)
                 # index 1 contains a 64x64 fake_image and a 128* 128 fake image 
                 # fake_image = data[1]
                 # index 2 contain a set of index of instructions
@@ -236,32 +249,42 @@ class Evaluate_img():
                 # ingredients = data[4]
                 #index 5 contian a number represents the number of ingredients
                 # ingr_len = data[5]
-
+                print(real_imgs_np.shape)
                 # if is img only model
                 # shape of noise
                 nz = cfg.GAN.Z_DIM # noise shape
-                noise = Variable(torch.FloatTensor(2, nz))
+                noise = Variable(torch.FloatTensor(50, nz))
                 noise.data.normal_(0, 1)
                 fake_imgs, _, _ = model(noise)
+                fake_imgs_np = []
+                for i in fake_imgs[1]:
+                	fake_imgs_np.append(i.cpu().numpy())
 
-                for i in range(real_imgs.shape[0]):
-                    real_imgs_batch.append(real_imgs[0, i].resize((299, 299, 3)))
-                    fake_imgs_batch.append(fake_imgs[0, i].resize((299, 299, 3)))
+                fake_imgs_np = np.array(fake_imgs_np).transpose(0,2,3,1)
+                print("real np",real_imgs_np.shape)
+                print("fake np",fake_imgs_np.shape)
+                real_imgs_batch = []
+                fake_imgs_batch =[]
+                for i in range(real_imgs_np.shape[0]):
+                    real_imgs_batch.append(cv2.resize(real_imgs_np[i],(299, 299),interpolation=cv2.INTER_LINEAR))
+                    fake_imgs_batch.append(cv2.resize(fake_imgs_np[i],(299, 299),interpolation=cv2.INTER_LINEAR))
 
             # convert to correct shape (whole test batch * 299 * 299 * 3)
-            real_imgs_conv = np.array(real_imgs_batch)
-            fake_imgs_conv = np.array(fake_imgs_batch)
+                real_imgs_conv = np.array(real_imgs_batch)
+                fake_imgs_conv = np.array(fake_imgs_batch)
             # compute inception score and FID
-            test_real_is_avg, test_real_is_std = calculate_inception_score(real_imgs_conv, n_split=1, eps=1E-16)
-            test_fake_is_avg, test_fake_is_std = calculate_inception_score(fake_imgs_conv, n_split=1, eps=1E-16)
-            test_fid = calculate_fid(real_images_conv, fake_images_conv)
+                print("real Conv",real_imgs_conv.shape)
+                print("fake conv",fake_imgs_conv.shape)
+                test_real_is_avg, test_real_is_std = calculate_inception_score(real_imgs_conv, n_split=1, eps=1E-16)
+                test_fake_is_avg, test_fake_is_std = calculate_inception_score(fake_imgs_conv, n_split=1, eps=1E-16)
+            #test_fid = calculate_fid(real_images_conv, fake_images_conv)
 
-            print('*' * 30)
-            print('Image input model test results:')
-            print('\tAvg inception score of real images: {}'.format(test_real_is_avg))
-            print('\tAvg inception score of fake images: {}'.format(test_fake_is_avg))
-            print('\tFID of images: {}'.format(test_fid))
-            print('*' * 30)
+                print('*' * 30)
+                print('Image input model test results:')
+                print('\tAvg inception score of real images: {}'.format(test_real_is_avg))
+                print('\tAvg inception score of fake images: {}'.format(test_fake_is_avg))
+                print('\tFID of images: {}'.format(test_fid))
+                print('*' * 30)
 
 if __name__ == '__main__':
     args = parse_args()
@@ -296,7 +319,7 @@ if __name__ == '__main__':
             img_path="../../data/img_data",
             transform = image_transform,
             data_path = "../../data",
-            partition="train")
+            partition="val")
         print("using recipe1M dataset")
     else:
         print(cfg.DATA_DIR, " dataset not found")
@@ -304,7 +327,7 @@ if __name__ == '__main__':
     assert dataset
     num_gpu = len(cfg.GPU_ID.split(','))
     dataloader = torch.utils.data.DataLoader(
-        dataset, batch_size=2, # cfg.TRAIN.BATCH_SIZE * num_gpu,
+        dataset, batch_size=50, # cfg.TRAIN.BATCH_SIZE * num_gpu,
         drop_last=True, shuffle=False, num_workers=int(cfg.WORKERS))
 
     # Config 5: model dir
@@ -314,10 +337,13 @@ if __name__ == '__main__':
         raise ValueError('Must specify model to be tested.')
 
     # Main test
+
+
     start_t = time.time()
     model = load_checkpoint(modelpath)
     if cfg.GAN.B_CONDITION == 0:
-        Evaluate_img.test(model, dataloader)
+    	eval_img = Evaluate_img()
+        eval_img.test(model, dataloader)
     elif cfg.GAN.B_CONDITION == 1:
         Evaluate_ingr.test(model, dataloader)
     elif cfg.GAN.B_CONDITION == 2:
