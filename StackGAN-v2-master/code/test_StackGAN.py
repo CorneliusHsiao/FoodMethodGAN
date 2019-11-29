@@ -232,9 +232,7 @@ class Evaluate_img():
                 # there are five things in data
                 # index 0 contains a 64X64 real image and a 128 *128 real image
                 real_imgs_np = []
-                for i in data[0]:
-                	print(i.size())
-                for i in data[0][2]:
+                for i in data[0][1]:
                 	real_imgs_np.append(i.numpy())
 
                 real_imgs_np = np.array(real_imgs_np)
@@ -249,7 +247,6 @@ class Evaluate_img():
                 # ingredients = data[4]
                 #index 5 contian a number represents the number of ingredients
                 # ingr_len = data[5]
-                print(real_imgs_np.shape)
                 # if is img only model
                 # shape of noise
                 nz = cfg.GAN.Z_DIM # noise shape
