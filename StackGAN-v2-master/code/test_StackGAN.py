@@ -74,8 +74,8 @@ def calculate_fid(real_images, fake_images):
     shape: batch * 3 * h * w
     """ 
     model = InceptionV3(include_top=False, pooling='avg', input_shape=(299,299,3))
-    mu1, sigma1 = calculate_statistics(real_iamges)
-    mu2, sigma2 = calculate_statistics(fake_images)
+    mu1, sigma1 = calculate_statistics(real_images, model)
+    mu2, sigma2 = calculate_statistics(fake_images, model)
     diff = mu1 - mu2
     covmean = sqrtm(sigma1.dot(sigma2))
 
@@ -97,13 +97,13 @@ def calculate_fid(real_images, fake_images):
 
     return  diff.dot(diff) + np.trace(sigma1 + sigma2 + 2 * covmean)
 
-    def calculate_statistics(original_images):
-        #images = F.interpolate(original_images, size=(299, 299), mode='bilinear', align_corners=True)
-        #images = images.permute(0,2,3,1).numpy()
-        images = preprocess_input(original_images)
-        act = model.predict(images)
-        mu, sigma = act.mean(axis=0), np.cov(act, rowvar=False)
-        return mu, sigma
+def calculate_statistics(original_images, model):
+    #images = F.interpolate(original_images, size=(299, 299), mode='bilinear', align_corners=True)
+    #images = images.permute(0,2,3,1).numpy()
+    images = preprocess_input(original_images)
+    act = model.predict(images)
+    mu, sigma = act.mean(axis=0), np.cov(act, rowvar=False)
+    return mu, sigma
 
 def calculate_inception_score(original_images, n_split=10, eps=1E-16):
     """
@@ -177,17 +177,22 @@ class Evaluate_ingr():
             for i,data in enumerate(dataloader):
                 # there are five things in data
                 # index 0 contains a 64X64 real image and a 128 *128 real image
-                real_imgs = data[0]
+                real_imgs_np = []
+                for i in data[0][1]:
+                    real_imgs_np.append(i.numpy())
+
+                real_imgs_np = np.array(real_imgs_np)
+                real_imgs_np = real_imgs_np.transpose(0,2,3,1)
                 # index 1 contains a 64x64 fake_image and a 128* 128 fake image 
-                fake_image = data[1]
+                # fake_image = data[1]
                 # index 2 contain a set of index of instructions
-                instructions = data[2]
+                # instructions = data[2]
                 # index 3 contains a number represents the number of instructions
-                instr_len = data[3]
+                # instr_len = data[3]
                 #index 4 contains a set of index of ingredients
-                ingredients = data[4]
+                # ingredients = data[4]
                 #index 5 contian a number represents the number of ingredients
-                ingr_len = data[5]
+                # ingr_len = data[5]
 
                 # if it is img with text model
                 nz = cfg.GAN.Z_DIM
@@ -195,25 +200,62 @@ class Evaluate_ingr():
                 _, _, _, txt_embedding = prepare_data_with_text(data)
                 noise.data.normal_(0, 1)
                 fake_imgs, _,_ = model(noise, txt_embedding)
+                fake_imgs_np = []
+                for i in fake_imgs[1]:
+                    fake_imgs_np.append(i.cpu().numpy())
 
+                fake_imgs_np = np.array(fake_imgs_np).transpose(0,2,3,1)
+                print("real np",real_imgs_np.shape)
+                print("fake np",fake_imgs_np.shape)
+                real_imgs_batch = []
+                fake_imgs_batch = []
+                for i in range(real_imgs_np.shape[0]):
+                    real_imgs_batch.append(cv2.resize(real_imgs_np[i],(299, 299),interpolation=cv2.INTER_LINEAR))
+                    fake_imgs_batch.append(cv2.resize(fake_imgs_np[i],(299, 299),interpolation=cv2.INTER_LINEAR))
+
+                # convert to correct shape (whole test batch * 299 * 299 * 3)
+                real_imgs_conv = np.array(real_imgs_batch)
+                fake_imgs_conv = np.array(fake_imgs_batch)
+                # compute inception score and FID
+                print("real conv",real_imgs_conv.shape)
+                print("fake conv",fake_imgs_conv.shape)
+                real_imgs_conv += 1
+                real_imgs_conv *= 128
+                fake_imgs_conv += 1
+                fake_imgs_conv *= 128
+                test_real_is_avg, test_real_is_std = calculate_inception_score(real_imgs_conv, n_split=1, eps=1E-16)
+                test_fake_is_avg, test_fake_is_std = calculate_inception_score(fake_imgs_conv, n_split=1, eps=1E-16)
+                test_fid = calculate_fid(real_imgs_conv, fake_imgs_conv)
+
+                print('*' * 30)
+                print('Image input model test results:')
+                print('\tAvg inception score of real images: {}'.format(test_real_is_avg))
+                print('\tAvg inception score of fake images: {}'.format(test_fake_is_avg))
+                print('\tFID of images: {}'.format(test_fid))
+                print('*' * 30)
 
 class Evaluate_ingr_method():
     def test(model, dataloader):
         with torch.no_grad():
-            for i,data in enumerate(dataloader):
+            for i, data in enumerate(dataloader):
                 # there are five things in data
                 # index 0 contains a 64X64 real image and a 128 *128 real image
-                real_imgs = data[0]
+                real_imgs_np = []
+                for i in data[0][1]:
+                    real_imgs_np.append(i.numpy())
+
+                real_imgs_np = np.array(real_imgs_np)
+                real_imgs_np = real_imgs_np.transpose(0,2,3,1)
                 # index 1 contains a 64x64 fake_image and a 128* 128 fake image 
-                fake_image = data[1]
+                # fake_image = data[1]
                 # index 2 contain a set of index of instructions
-                instructions = data[2]
+                # instructions = data[2]
                 # index 3 contains a number represents the number of instructions
-                instr_len = data[3]
+                # instr_len = data[3]
                 #index 4 contains a set of index of ingredients
-                ingredients = data[4]
+                # ingredients = data[4]
                 #index 5 contian a number represents the number of ingredients
-                ingr_len = data[5]
+                # ingr_len = data[5]
 
                 # if it is img with text model
                 nz = cfg.GAN.Z_DIM
@@ -221,13 +263,43 @@ class Evaluate_ingr_method():
                 _, _, _, txt_embedding = prepare_data_with_text(data)
                 noise.data.normal_(0, 1)
                 fake_imgs, _,_ = model(noise, txt_embedding)
+                fake_imgs_np = []
+                for i in fake_imgs[1]:
+                    fake_imgs_np.append(i.cpu().numpy())
+
+                fake_imgs_np = np.array(fake_imgs_np).transpose(0,2,3,1)
+                print("real np",real_imgs_np.shape)
+                print("fake np",fake_imgs_np.shape)
+                real_imgs_batch = []
+                fake_imgs_batch = []
+                for i in range(real_imgs_np.shape[0]):
+                    real_imgs_batch.append(cv2.resize(real_imgs_np[i],(299, 299),interpolation=cv2.INTER_LINEAR))
+                    fake_imgs_batch.append(cv2.resize(fake_imgs_np[i],(299, 299),interpolation=cv2.INTER_LINEAR))
+
+                # convert to correct shape (whole test batch * 299 * 299 * 3)
+                real_imgs_conv = np.array(real_imgs_batch)
+                fake_imgs_conv = np.array(fake_imgs_batch)
+                # compute inception score and FID
+                print("real conv",real_imgs_conv.shape)
+                print("fake conv",fake_imgs_conv.shape)
+                real_imgs_conv += 1
+                real_imgs_conv *= 128
+                fake_imgs_conv += 1
+                fake_imgs_conv *= 128
+                test_real_is_avg, test_real_is_std = calculate_inception_score(real_imgs_conv, n_split=1, eps=1E-16)
+                test_fake_is_avg, test_fake_is_std = calculate_inception_score(fake_imgs_conv, n_split=1, eps=1E-16)
+                test_fid = calculate_fid(real_imgs_conv, fake_imgs_conv)
+
+                print('*' * 30)
+                print('Image input model test results:')
+                print('\tAvg inception score of real images: {}'.format(test_real_is_avg))
+                print('\tAvg inception score of fake images: {}'.format(test_fake_is_avg))
+                print('\tFID of images: {}'.format(test_fid))
+                print('*' * 30)
 
 class Evaluate_img():
     def test(self, model, dataloader):
-
         with torch.no_grad():
-            real_imgs_batch = []
-            fake_imgs_batch = []
             for i, data in enumerate(dataloader):
                 # there are five things in data
                 # index 0 contains a 64X64 real image and a 128 *128 real image
@@ -250,7 +322,7 @@ class Evaluate_img():
                 # if is img only model
                 # shape of noise
                 nz = cfg.GAN.Z_DIM # noise shape
-                noise = Variable(torch.FloatTensor(50, nz))
+                noise = Variable(torch.FloatTensor(500, nz))
                 noise.data.normal_(0, 1)
                 fake_imgs, _, _ = model(noise)
                 fake_imgs_np = []
@@ -261,20 +333,24 @@ class Evaluate_img():
                 print("real np",real_imgs_np.shape)
                 print("fake np",fake_imgs_np.shape)
                 real_imgs_batch = []
-                fake_imgs_batch =[]
+                fake_imgs_batch = []
                 for i in range(real_imgs_np.shape[0]):
                     real_imgs_batch.append(cv2.resize(real_imgs_np[i],(299, 299),interpolation=cv2.INTER_LINEAR))
                     fake_imgs_batch.append(cv2.resize(fake_imgs_np[i],(299, 299),interpolation=cv2.INTER_LINEAR))
 
-            # convert to correct shape (whole test batch * 299 * 299 * 3)
+                # convert to correct shape (whole test batch * 299 * 299 * 3)
                 real_imgs_conv = np.array(real_imgs_batch)
                 fake_imgs_conv = np.array(fake_imgs_batch)
-            # compute inception score and FID
-                print("real Conv",real_imgs_conv.shape)
+                # compute inception score and FID
+                print("real conv",real_imgs_conv.shape)
                 print("fake conv",fake_imgs_conv.shape)
+                real_imgs_conv += 1
+                real_imgs_conv *= 128
+                fake_imgs_conv += 1
+                fake_imgs_conv *= 128
                 test_real_is_avg, test_real_is_std = calculate_inception_score(real_imgs_conv, n_split=1, eps=1E-16)
                 test_fake_is_avg, test_fake_is_std = calculate_inception_score(fake_imgs_conv, n_split=1, eps=1E-16)
-            #test_fid = calculate_fid(real_images_conv, fake_images_conv)
+                test_fid = calculate_fid(real_imgs_conv, fake_imgs_conv)
 
                 print('*' * 30)
                 print('Image input model test results:')
@@ -324,7 +400,7 @@ if __name__ == '__main__':
     assert dataset
     num_gpu = len(cfg.GPU_ID.split(','))
     dataloader = torch.utils.data.DataLoader(
-        dataset, batch_size=50, # cfg.TRAIN.BATCH_SIZE * num_gpu,
+        dataset, batch_size=500, # cfg.TRAIN.BATCH_SIZE * num_gpu,
         drop_last=True, shuffle=False, num_workers=int(cfg.WORKERS))
 
     # Config 5: model dir
@@ -342,9 +418,11 @@ if __name__ == '__main__':
     	eval_img = Evaluate_img()
         eval_img.test(model, dataloader)
     elif cfg.GAN.B_CONDITION == 1:
-        Evaluate_ingr.test(model, dataloader)
+        eval_img = Evaluate_ingr()
+        eval_img.test(model, dataloader)
     elif cfg.GAN.B_CONDITION == 2:
-        Evaluate_ingr_method.test(model, dataloader)
+        eval_img = Evaluate_ingr_method()
+        eval_img.test(model, dataloader)
     end_t = time.time()
     print('Total time for testing:', end_t - start_t)
     
