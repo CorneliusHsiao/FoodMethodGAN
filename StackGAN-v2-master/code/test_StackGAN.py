@@ -415,7 +415,7 @@ if __name__ == '__main__':
     start_t = time.time()
     model = load_checkpoint(modelpath)
     if cfg.GAN.B_CONDITION == 0:
-    	eval_img = Evaluate_img()
+        eval_img = Evaluate_img()
         eval_img.test(model, dataloader)
     elif cfg.GAN.B_CONDITION == 1:
         eval_img = Evaluate_ingr()
