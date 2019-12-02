@@ -57,8 +57,9 @@ __C.GAN.GF_DIM = 64
 __C.GAN.Z_DIM = 100
 __C.GAN.NETWORK_TYPE = 'default'
 __C.GAN.R_NUM = 2
-__C.GAN.B_CONDITION = False
-__C.GAN.TEXT_USED = None
+__C.GAN.B_CONDITION = True
+__C.GAN.TEXT_USED = 'BOTH'
+__C.GAN.ATT=False
 
 __C.TEXT = edict()
 __C.TEXT.DIMENSION = 1024

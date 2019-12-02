@@ -125,10 +125,12 @@ class CA_NET(nn.Module):
             eps = torch.cuda.FloatTensor(std.size()).normal_()
         else:
             eps = torch.FloatTensor(std.size()).normal_()
+
         eps = Variable(eps)
         return eps.mul(std).add_(mu)
 
     def forward(self, text_embedding):
+
         mu, logvar = self.encode(text_embedding)
         c_code = self.reparametrize(mu, logvar)
         return c_code, mu, logvar
@@ -275,6 +277,8 @@ class G_NET(nn.Module):
             c_code, mu, logvar = self.ca_net(text_embedding)
         else:
             c_code, mu, logvar = z_code, None, None
+
+
         fake_imgs = []
         if cfg.TREE.BRANCH_NUM > 0:
             h_code1 = self.h_net1(z_code, c_code)

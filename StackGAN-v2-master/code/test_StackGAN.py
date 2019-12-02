@@ -240,6 +240,7 @@ class Evaluate_ingr_method():
             for i, data in enumerate(dataloader):
                 # there are five things in data
                 # index 0 contains a 64X64 real image and a 128 *128 real image
+                print(data)
                 real_imgs_np = []
                 for i in data[0][1]:
                     real_imgs_np.append(i.numpy())

@@ -68,12 +68,13 @@ class instrRNN(nn.Module):
             self.attention_layer = AttentionLayer(2*opts.srnnDim)
 
     def forward(self, x, sq_lengths):
-        
+
         # we get the w2v for each element of the ingredient sequence
         x = self.embs(x) 
         # sort sequence according to the length
+      
         sorted_len, sorted_idx = sq_lengths.sort(0, descending=True)
-
+        
         index_sorted_idx = sorted_idx\
                 .view(-1,1,1).expand_as(x)
         sorted_inputs = x.gather(0, index_sorted_idx.long())
