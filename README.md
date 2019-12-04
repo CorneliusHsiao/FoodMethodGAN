@@ -65,14 +65,14 @@ We feed association model with paired and unpaired 128 &#215; 128 image and word
    <tr>
       <td></td>
       <td>our model</td>
-      <td><b>4.400</td>
-      <td><b>0.261</td>
-      <td><b>0.549</td>
-      <td><b>0.679</td>
-      <td><b>4.200</td>
-      <td><b>0.270</td>
-      <td><b>0.556</td>
-      <td><b>0.682</td>
+      <td><b>4.400</b></td>
+      <td><b>0.261</b></td>
+      <td><b>0.549</b></td>
+      <td><b>0.679</b></td>
+      <td><b>4.200</b></td>
+      <td><b>0.270</b></td>
+      <td><b>0.556</b></td>
+      <td><b>0.682</b></td>
    </tr>
    <tr>
       <td>5K</td>
@@ -89,14 +89,14 @@ We feed association model with paired and unpaired 128 &#215; 128 image and word
    <tr>
       <td></td>
       <td>our model</td>
-      <td><b>17.900</td>
-      <td><b>0.116</td>
-      <td><b>0.299</td>
-      <td><b>0.406</td>
-      <td><b>16.700</td>
-      <td><b>0.129</td>
-      <td><b>0.315</td>
-      <td><b>0.421</td>
+      <td><b>17.900</b></td>
+      <td><b>0.116</b></td>
+      <td><b>0.299</b></td>
+      <td><b>0.406</b></td>
+      <td><b>16.700</b></td>
+      <td><b>0.129</b></td>
+      <td><b>0.315</b></td>
+      <td><b>0.421</b></td>
    </tr>
    <tr>
       <td>10K</td>
@@ -113,14 +113,14 @@ We feed association model with paired and unpaired 128 &#215; 128 image and word
    <tr>
       <td></td>
       <td>our model</td>
-      <td><b>34.900</td>
-      <td><b>0.077</td>
-      <td><b>0.212</td>
-      <td><b>0.301</td>
-      <td><b>32.700</td>
-      <td><b>0.088</td>
-      <td><b>0.229</td>
-      <td><b>0.319</td>
+      <td><b>34.900</b></td>
+      <td><b>0.077</b></td>
+      <td><b>0.212</b></td>
+      <td><b>0.301</b></td>
+      <td><b>32.700</b></td>
+      <td><b>0.088</b></td>
+      <td><b>0.229</b></td>
+      <td><b>0.319</b></td>
    </tr>
 </table>
 
