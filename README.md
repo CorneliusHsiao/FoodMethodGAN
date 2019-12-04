@@ -5,7 +5,7 @@
 **Team members**: Hanyuan Xiao, Kaijie Cai, Buke Ao, Heng Zhang
 
 <p align="center">
-  <img />Realistic Generated Food Images
+  <img src="img_1.PNG" alt="Realistic Generated Food Images"/>
 </p>
 
 ## Motivation
