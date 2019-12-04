@@ -19,6 +19,11 @@ For this project, we trained a deep learning network to learn and generate food 
 ## Method & Approach
 
 ## Experiment
+### Dataset
+We conduct our experiments using data from recipe1M [4]. The recipe1M dataset consists of more than 1 million food images with corresponding ingredients and instructions. We manually chose 12 different types of cooking method that we think are meaningful and distinguishable, and generated cooking method for each image by searching for keywords in the instruction text. We also reduced the number of different ingredients from around 18,000 to around 2,000 by removing ingredients with low frequency ( < 500 occurrence in the dataset)  and combining ingredients that are the same or very close.  Because of the limit of time and computing resources we used only 10,000 data from the dataset.
+
+### Input
+We feed association model with paired and unpaired 128x128 image and words. For the stackgan model, we use both 64x64 and 128x128 images because there are two discriminators differential two resolution images from generators.
 
 ## Evaluation
 <table>
@@ -124,7 +129,7 @@ For this project, we trained a deep learning network to learn and generate food 
 ## Future Improvements
 
 ## Contributions
-We acknowledge the assistance and advice from professor Joseph Lim and TAs of course CS-566 (Deep Learning and its Applications). With their guidance, we developed the project and made the following contributions.
+We acknowledge the assistance and advice from professor [Joseph Lim](https://viterbi-web.usc.edu/~limjj/) and TAs of course CS-566 (Deep Learning and its Applications). With their guidance, we developed the project and made the following contributions.
 * A conditional GAN model for food image generation task with ingredients and cooking methods as input
 * A refined version of dataset Recipe1M which further contains cooking methods extracted from instructions
 * Quantitative data that proves cooking method as a useful and valuable input to food image generation tasks
