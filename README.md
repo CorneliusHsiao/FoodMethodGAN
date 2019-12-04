@@ -21,107 +21,104 @@ For this project, we trained a deep learning network to learn and generate food 
 ## Experiment
 
 ## Evaluation
-
-<p align="center">
-  <table>
-     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>im2rcp</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>rcp2im</td>
-        <td></td><td></td>
-     </tr>
-     <tr>
-        <td></td>
-        <td></td>
-        <td>MedR&#8595;</td>
-        <td>R@1&#8593;</td>
-        <td>R@5&#8593;</td>
-        <td>R@10&#8593;</td>
-        <td>MedR&#8595;</td>
-        <td>R@1&#8593;</td>
-        <td>R@5&#8593;</td>
-        <td>R@10&#8593;</td>
-     </tr>
-     <tr>
-        <td>1K</td>
-        <td>model in [1]</td>
-        <td>5.500</td>
-        <td>0.234</td>
-        <td>0.503</td>
-        <td>0.618</td>
-        <td>5.750</td>
-        <td>0.230</td>
-        <td>0.491</td>
-        <td>0.615</td>
-     </tr>
-     <tr>
-        <td></td>
-        <td>our model</td>
-        <td><b>4.400</td>
-        <td><b>0.261</td>
-        <td><b>0.549</td>
-        <td><b>0.679</td>
-        <td><b>4.200</td>
-        <td><b>0.270</td>
-        <td><b>0.556</td>
-        <td><b>0.682</td>
-     </tr>
-     <tr>
-        <td>5K</td>
-        <td>model in [1]</td>
-        <td>24.000</td>
-        <td>0.099</td>
-        <td>0.265</td>
-        <td>0.364</td>
-        <td>25.100</td>
-        <td>0.097</td>
-        <td>0.259</td>
-        <td>0.357</td>
-     </tr>
-     <tr>
-        <td></td>
-        <td>our model</td>
-        <td><b>17.900</td>
-        <td><b>0.116</td>
-        <td><b>0.299</td>
-        <td><b>0.406</td>
-        <td><b>16.700</td>
-        <td><b>0.129</td>
-        <td><b>0.315</td>
-        <td><b>0.421</td>
-     </tr>
-     <tr>
-        <td>10K</td>
-        <td>model in [1]</td>
-        <td>47.000</td>
-        <td>0.065</td>
-        <td>0.185</td>
-        <td>0.267</td>
-        <td>48.300</td>
-        <td>0.061</td>
-        <td>0.178</td>
-        <td>0.261</td>
-     </tr>
-     <tr>
-        <td></td>
-        <td>our model</td>
-        <td><b>34.900</td>
-        <td><b>0.077</td>
-        <td><b>0.212</td>
-        <td><b>0.301</td>
-        <td><b>32.700</td>
-        <td><b>0.088</td>
-        <td><b>0.229</td>
-        <td><b>0.319</td>
-     </tr>
-     <tr>
-  </table>
-</p>
+<table>
+   <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>im2rcp</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>rcp2im</td>
+      <td></td><td></td>
+   </tr>
+   <tr>
+      <td></td>
+      <td></td>
+      <td>MedR&#8595;</td>
+      <td>R@1&#8593;</td>
+      <td>R@5&#8593;</td>
+      <td>R@10&#8593;</td>
+      <td>MedR&#8595;</td>
+      <td>R@1&#8593;</td>
+      <td>R@5&#8593;</td>
+      <td>R@10&#8593;</td>
+   </tr>
+   <tr>
+      <td>1K</td>
+      <td>model in [1]</td>
+      <td>5.500</td>
+      <td>0.234</td>
+      <td>0.503</td>
+      <td>0.618</td>
+      <td>5.750</td>
+      <td>0.230</td>
+      <td>0.491</td>
+      <td>0.615</td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>our model</td>
+      <td><b>4.400</td>
+      <td><b>0.261</td>
+      <td><b>0.549</td>
+      <td><b>0.679</td>
+      <td><b>4.200</td>
+      <td><b>0.270</td>
+      <td><b>0.556</td>
+      <td><b>0.682</td>
+   </tr>
+   <tr>
+      <td>5K</td>
+      <td>model in [1]</td>
+      <td>24.000</td>
+      <td>0.099</td>
+      <td>0.265</td>
+      <td>0.364</td>
+      <td>25.100</td>
+      <td>0.097</td>
+      <td>0.259</td>
+      <td>0.357</td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>our model</td>
+      <td><b>17.900</td>
+      <td><b>0.116</td>
+      <td><b>0.299</td>
+      <td><b>0.406</td>
+      <td><b>16.700</td>
+      <td><b>0.129</td>
+      <td><b>0.315</td>
+      <td><b>0.421</td>
+   </tr>
+   <tr>
+      <td>10K</td>
+      <td>model in [1]</td>
+      <td>47.000</td>
+      <td>0.065</td>
+      <td>0.185</td>
+      <td>0.267</td>
+      <td>48.300</td>
+      <td>0.061</td>
+      <td>0.178</td>
+      <td>0.261</td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>our model</td>
+      <td><b>34.900</td>
+      <td><b>0.077</td>
+      <td><b>0.212</td>
+      <td><b>0.301</td>
+      <td><b>32.700</td>
+      <td><b>0.088</td>
+      <td><b>0.229</td>
+      <td><b>0.319</td>
+   </tr>
+   <tr>
+</table>
 
 
 ## Future Improvements
