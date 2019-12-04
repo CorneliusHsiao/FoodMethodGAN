@@ -1,5 +1,5 @@
+# Food Generation From Ingredients and Cooking Method
 ## Team
-
 **Team name**: 0 error, 0 warning
 
 **Team members**: Hanyuan Xiao, Kaijie Cai, Buke Ao, Heng Zhang
