@@ -26,7 +26,7 @@ We conduct our experiments using data from recipe1M [4]. The recipe1M dataset co
 We feed association model with paired and unpaired 128 &#215; 128 image and words. For the stackgan model, we use both 64 &#215; 64 and 128 &#215; 128 images because there are two discriminators differential two resolution images from generators.
 
 ## Evaluation
-<p align="center"><table>
+<table>
    <tr>
       <td></td>
       <td></td>
@@ -122,7 +122,7 @@ We feed association model with paired and unpaired 128 &#215; 128 image and word
       <td><b>0.229</td>
       <td><b>0.319</td>
    </tr>
-</table></p>
+</table>
 
 
 ## Future Improvements
