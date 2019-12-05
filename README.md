@@ -59,103 +59,16 @@ We conduct our experiments using data from recipe1M [4]. The recipe1M dataset co
 We feed association model with paired and unpaired 128 &#215; 128 image and words. For the stackgan model, we use both 64 &#215; 64 and 128 &#215; 128 images because there are two discriminators differential two resolution images from generators.
 
 ## Evaluation
-<table>
-   <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td>im2rcp</td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td>rcp2im</td>
-      <td></td><td></td>
-   </tr>
-   <tr>
-      <td></td>
-      <td></td>
-      <td>MedR&#8595;</td>
-      <td>R@1&#8593;</td>
-      <td>R@5&#8593;</td>
-      <td>R@10&#8593;</td>
-      <td>MedR&#8595;</td>
-      <td>R@1&#8593;</td>
-      <td>R@5&#8593;</td>
-      <td>R@10&#8593;</td>
-   </tr>
-   <tr>
-      <td>1K</td>
-      <td>model in [1]</td>
-      <td>5.500</td>
-      <td>0.234</td>
-      <td>0.503</td>
-      <td>0.618</td>
-      <td>5.750</td>
-      <td>0.230</td>
-      <td>0.491</td>
-      <td>0.615</td>
-   </tr>
-   <tr>
-      <td></td>
-      <td>our model</td>
-      <td><b>4.400</b></td>
-      <td><b>0.261</b></td>
-      <td><b>0.549</b></td>
-      <td><b>0.679</b></td>
-      <td><b>4.200</b></td>
-      <td><b>0.270</b></td>
-      <td><b>0.556</b></td>
-      <td><b>0.682</b></td>
-   </tr>
-   <tr>
-      <td>5K</td>
-      <td>model in [1]</td>
-      <td>24.000</td>
-      <td>0.099</td>
-      <td>0.265</td>
-      <td>0.364</td>
-      <td>25.100</td>
-      <td>0.097</td>
-      <td>0.259</td>
-      <td>0.357</td>
-   </tr>
-   <tr>
-      <td></td>
-      <td>our model</td>
-      <td><b>17.900</b></td>
-      <td><b>0.116</b></td>
-      <td><b>0.299</b></td>
-      <td><b>0.406</b></td>
-      <td><b>16.700</b></td>
-      <td><b>0.129</b></td>
-      <td><b>0.315</b></td>
-      <td><b>0.421</b></td>
-   </tr>
-   <tr>
-      <td>10K</td>
-      <td>model in [1]</td>
-      <td>47.000</td>
-      <td>0.065</td>
-      <td>0.185</td>
-      <td>0.267</td>
-      <td>48.300</td>
-      <td>0.061</td>
-      <td>0.178</td>
-      <td>0.261</td>
-   </tr>
-   <tr>
-      <td></td>
-      <td>our model</td>
-      <td><b>34.900</b></td>
-      <td><b>0.077</b></td>
-      <td><b>0.212</b></td>
-      <td><b>0.301</b></td>
-      <td><b>32.700</b></td>
-      <td><b>0.088</b></td>
-      <td><b>0.229</b></td>
-      <td><b>0.319</b></td>
-   </tr>
-</table>
+|||||||||||
+|--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |
+||||im2rcp||||rcp2im|||
+|||MedR↓|R@1↑|R@5↑|R@10↑|MedR↓|R@1↑|R@5↑|R@10↑|
+|1K|model in [1]|5.500|0.234|0.503|0.618|5.750|0.230|0.491|0.615|
+||our model|**4.400**|**0.261**|**0.549**|**0.679**|**4.200**|**0.270**|**0.556**|**0.682**|
+|5K|model in [1]|24.000|0.099|0.265|0.364|25.100|0.097|0.259|0.357|
+||our model|**17.900**|**0.116**|**0.299**|**0.406**|**16.700**|**0.129**|**0.315**|**0.421**|
+|10K|model in [1]|47.000|0.065|0.185|0.267|48.300|0.061|0.178|0.261|
+||our model|**34.900**|**0.077**|**0.212**|**0.301**|**32.700**|**0.088**|**0.229**|**0.319**|
 
 
 ## Future Improvements
