@@ -42,7 +42,7 @@ The loss function of association model is:
   <img src="misc/eqn_1.PNG">
 </p>
 
-where ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^+,\textbf{q}^+)) is positive pair between text embeddings and extracted image features. ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^+,\textbf{q}^-)), ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^-,\textbf{q}^+)) are negative paris. ![equation](https://latex.codecogs.com/svg.latex?\inline&space;\epsilon) is the bias to train the model on pairs that are not correctly associated.
+where ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^+,\textbf{q}^+)) is positive pair between text embeddings and extracted image features. ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^+,\textbf{q}^-)), ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^-,\textbf{q}^+)) are negative paris. ![equation](https://latex.codecogs.com/svg.latex?\inline&space;\epsilon) is the margin to train the model on pairs that are not correctly associated, which we set $0.3$ by cross-validation.
 
 This network takes ingredients and cooking methods as input from one side, and uses images as input from another side as shown in Figure 2. The ingredients and cooking methods are encoded by LSTM and concatenated together to get the representative text embedding. The feature extraction from images is achieved by ResNet [[4]](#references) and then tuned based on our dataset and task. Finally, a cosine similarity is used to compute Euclidean distance between image features and text embedding. Ideally, for positive pairs of image and corresponding text embedding, the similarity is as large as 1; for negative pairs, the similarity is a smaller than a marginal value based on task and dataset.
 
@@ -98,7 +98,10 @@ In Figure 7, cooking method are fixed as bake as for muffin, but chocolate is ad
 </p>
 
 ### Quantitative
-We used MedR and R@K to evaluate our cross-modal association model the same as in [[1]](#references). In Table 1, we show the quantities from different sides of model under different conditions.
+To evaluate the association model, we adopt median retrieval rank (MedR) and recall at top K (R@K) the same as in [[1]](#references). In a subset of recipe-image pairs randomly selected from test set, every recipe is viewed as a query to retrieve its corresponding image by ranking their cosine similarity in common space, namely recipe2im retrieval.  MedR calculates the median rank position of correct image, while R@K measures the percentage of all queries when true image ranks top-K i. So a lower MedR and a higher R@K implies better performance. To evaluate the stability of retrieval, we set subset size as 1K, 5K, and 10K respectively. We repeat experiments 10 times for each subset size and report the mean results. Im2recipe retrieval is evaluated likewise. 
+
+In Table 1, we compare the scores of our model and other models. As can be seen, our model performs best in all scores, which shows clearly that canonical, clear ingredients and addition of cooking method as input are important to association model.
+
 
 <p align="center">
   <img src="misc/table_1.PNG" alt="Quantitative Evaluation for Cross-modal Association Model"/>
