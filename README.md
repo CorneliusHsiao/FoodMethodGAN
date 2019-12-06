@@ -38,7 +38,9 @@ To address this problem, we use a recipe association model which is able to find
 
 The loss function of association model is:
 
-![equation](https://latex.codecogs.com/svg.latex?\inline&space;V(F_p,F_q)=\mathop{\mathbb{E}}_{\hat{p}(r^+,v^+),\hat{p}(v^-)}min([cos[\textbf{p}^+,\textbf{q}^+]-cos[\textbf{p}^+,\textbf{q}^-]-\epsilon],0)\newline\hphantom{asdfasdfsadf}+\mathop{\mathbb{E}}_{\hat{p}(r^+,v^+),\hat{p}(r^-)}min([cos[\textbf{p}^+,\textbf{q}^+]-cos[\textbf{p}^-,\textbf{q}^+]-\epsilon],0)),
+<p align="center">
+  <img src="misc/eqn_1.PNG">
+</p>
 
 where ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^+,\textbf{q}^+)) is positive pair between text embeddings and extracted image features. ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^+,\textbf{q}^-)), ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^-,\textbf{q}^+)) are negative paris. ![equation](https://latex.codecogs.com/svg.latex?\inline&space;\epsilon) is the bias to train the model on pairs that are not correctly associated.
 
@@ -53,7 +55,9 @@ After we extracted meaningful and respresentative text embedding from ingredient
 
 The loss function in [[1]](#references) for image generation used in conditional GAN is:
 
-![equation](https://latex.codecogs.com/svg.latex?\inline&space;L_G=\sum_{i=0}^2(L_{G_i}^{cond}+\lambda_{uncond}L_{G_i}^{uncond}-\lambda_{cycle}L_{C_i})+\lambda_{ca}L_{ca})
+<p align="center">
+  <img src="misc/eqn_2.PNG">
+</p>
 
 In the equation, we exploited both conditioned and unconditioned loss for discriminator. The loss of cycle-consistency constraint is  incorporated as the <img src="misc/L_c_i.PNG"> term. The last part is the regularization factor, which aims at ensuring the distribution of conditions given extracted image features to approximate the standard Gaussian distribution as closed as possible.
 
