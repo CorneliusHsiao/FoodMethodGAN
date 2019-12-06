@@ -61,7 +61,7 @@ The loss function in [[1]](#references) for image generation used in conditional
   <img src="misc/eqn_2.PNG">
 </p>
 
-In the equation, we exploited both conditioned and unconditioned loss for discriminator. The loss of cycle-consistency constraint is  incorporated as the <img src="misc/L_c_i.PNG"> term. The last part is the regularization factor, which aims at ensuring the distribution of conditions given extracted image features to approximate the standard Gaussian distribution as closed as possible. Loss weight hyperparmameters are determined by cross-validation.
+In the equation, we exploited both conditioned and unconditioned loss for discriminator. The loss of cycle-consistency constraint is  incorporated as the <img src="misc/L_c_i.PNG"> term. The last part is the regularization factor, which aims at ensuring the distribution of conditions given extracted image features to approximate the standard Gaussian distribution as closed as possible. Loss weight hyperparameters are determined by cross-validation.
 
 ## Experiment
 ### Dataset
