@@ -107,6 +107,9 @@ We used inception score (IS) and Fréchet Inception Distance (FID) to evaluate r
   <img src="table_2.PNG" alt="Quantitative Evaluation for GAN"/>
   <em>Table 2. Quantitative Evaluation for GAN</em>
 </p>
+
+
+
 |                         | Inception Score (IS)&#8593; | Fréchet Inception Distance (FID)&#8595; |
 |-------------------------|-----------------------------|-----------------------------------------|
 | Image Input Model       | 3.43041                     | 34.31625                                |
