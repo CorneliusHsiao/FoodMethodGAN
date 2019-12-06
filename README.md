@@ -5,8 +5,8 @@
 **Team members**: Hanyuan Xiao, Kaijie Cai, Buke Ao, Heng Zhang
 
 <p align="center">
-  <img src="misc/img_1.PNG" alt="Realistic Generated Food Images"/>
-  <br><em>Figure 1. Realistic Generated Food Images</em>
+  <img src="misc/img_1.PNG" alt="Realistic generated food images"/>
+  <br><em>Figure 1. Realistic generated food images</em>
 </p>
 
 ## Motivation
@@ -32,8 +32,8 @@ One way to generate images from texts is implemented by encoding the texts into 
 To address this problem, we use a recipe association model which is able to find the common representations (i.e. text embeddings) between images and text input, and then a GAN to generate images from the embeddings.
 #### Cross-modal Association Model [[3]](#references) ####
 <p align="center">
-  <img src="misc/img_2.jpg" alt="Association Model From Ingredients + Methods and Images"/>
-  <br><em>Figure 2. Association Model From Ingredients + Methods and Images</em>
+  <img src="misc/img_2.jpg" alt="Association model from ingredient + method and images"/>
+  <br><em>Figure 2. Association model from ingredient + method and images</em>
 </p>
 
 The loss function of association model is:
@@ -46,8 +46,8 @@ This network takes ingredients and cooking methods as input from one side, and u
 
 #### Conditional StackGAN [[5]](#references) ####
 <p align="center">
-  <img src="misc/img_3.jpg" alt="StackGAN for Image Generation"/>
-  <br><em>Figure 3. StackGAN for Image Generation</em>
+  <img src="misc/img_3.jpg" alt="StackGAN for image generation"/>
+  <br><em>Figure 3. StackGAN for image generation</em>
 </p>
 After we extracted meaningful and respresentative text embedding from ingredients and cooking methods by trained network in the association model. The text embedding for each training case is then used as the conditional code in StackGAN. In order to ascertain the food image has the expected ingredients and methods that it depends on, we added cycle-consistency constraint [1] to guarantee the similarity between generated fake images and text embedding strong.
 
@@ -55,7 +55,7 @@ The loss function in [[1]](#references) for image generation used in conditional
 
 ![equation](https://latex.codecogs.com/svg.latex?\inline&space;L_G=\sum_{i=0}^2(L_{G_i}^{cond}+\lambda_{uncond}L_{G_i}^{uncond}-\lambda_{cycle}L_{C_i})+\lambda_{ca}L_{ca})
 
-In the equation, we exploited both conditioned and unconditioned loss for discriminator. The loss of cycle-consistency constraint is  incorporated as the <img src="L_c_i.PNG"> term. The last part is the regularization factor, which aims at ensuring the distribution of conditions given extracted image features to approximate the standard Gaussian distribution as closed as possible.
+In the equation, we exploited both conditioned and unconditioned loss for discriminator. The loss of cycle-consistency constraint is  incorporated as the <img src="misc/L_c_i.PNG"> term. The last part is the regularization factor, which aims at ensuring the distribution of conditions given extracted image features to approximate the standard Gaussian distribution as closed as possible.
 
 ## Experiment
 ### Dataset
@@ -121,6 +121,17 @@ From the experiments, we find that there are some improvements can be made in th
 <p align="center">
   <img src="misc/img_8.gif" alt="A batch of generated images"/>
   <br><em>Figure 8. A batch of generated images</em>
+</p>
+
+FYI, we upload the loss curve to compare different inputs. We welcome any insightful suggestions on improving the performance. See Figure 9 for all loss curves in 150 epochs in our training. See Figure 10 for loss curve of ingredient+method model for 520 epochs that we trained in total.
+<p align="center">
+  <img src="misc/img_9.gif" alt="Loss curves of models with different inputs in 150 epochs"/>
+  <br><em>Figure 9. Loss curves of models with different inputs</em>
+</p>
+
+<p align="center">
+  <img src="misc/img_10.gif" alt="Loss curve of model with ingredient+method as input in 520 epochs"/>
+  <br><em>Figure 10. Loss curve of model with ingredient+method as input in 520 epochs</em>
 </p>
 
 ## Contributions
