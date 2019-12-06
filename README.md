@@ -33,7 +33,7 @@ To address this problem, we use a recipe association model which is able to find
 #### Cross-modal Association Model ####
 <p align="center">
   <img src="img_2.jpg" alt="Association Model From Ingredients + Methods and Images"/>
-  <em>Figure 2. Association Model From Ingredients + Methods and Images</em>
+  <br><em>Figure 2. Association Model From Ingredients + Methods and Images</em></br>
 </p>
 
 The loss function of association model is:
@@ -47,7 +47,7 @@ This network takes ingredients and cooking methods as input from one side, and u
 #### Conditional StackGAN ####
 <p align="center">
   <img src="img_3.jpg" alt="StackGAN for Image Generation"/>
-  <em>Figure 3. StackGAN for Image Generation</em>
+  <br><em>Figure 3. StackGAN for Image Generation</em></br>
 </p>
 After we extracted meaningful and respresentative text embedding from ingredients and cooking methods by trained network in the association model. The text embedding for each training case is then used as the conditional code in StackGAN. In order to ascertain the food image has the expected ingredients and methods that it depends on, we added cycle-consistency constraint [] to guarantee the similarity between generated fake images and text embedding strong.
 
@@ -98,20 +98,25 @@ We used MedR and R@K to evaluate our cross-modal association model the same as i
 
 <p align="center">
   <img src="table_1.PNG" alt="Quantitative Evaluation for Cross-modal Association Model"/>
-  <em>Table 1. Quantitative Evaluation for Cross-modal Association Model</em>
+  <br><em>Table 1. Quantitative Evaluation for Cross-modal Association Model</em></br>
 </p>
 
 We used inception score (IS) and Fréchet Inception Distance (FID) to evaluate results of GAN. The higher IS and lower FID are, the better quality and diversity are for our generated images. In Table 2, the comparison is based on same model structure, parameters, training and test cases and approximately the same IS for real image sets. The only difference is the input type. The image-input model has only noise as input for generator. The ingredient-input model has noise and ingredient text embedding as input for generator. The ingredient+method model has noise, ingredient text embedding and cooking method text embedding as input.
 
 <p align="center">
   <img src="table_2.PNG" alt="Quantitative Evaluation for GAN"/>
-  <em>Table 2. Quantitative Evaluation for GAN</em>
+  <br><em>Table 2. Quantitative Evaluation for GAN</em></br>
 </p>
 
 Based on Table 2, we successfully proved that cooking method, as an extra input, is a useful and valuable input for food image generation task.
 
 ## Future Improvements
-From the experiments, we find that there are some improvements can be made in the future. Firstly, reducing the number of ingredients further. For example, we may combine different kinds of cheeses as they have similar appearance and contribution to the generated images. Such change will reduce the redundancy in the dataset and make it easier to learn. Secondly, balancing the number of images with different color to prevent the model from the inclination to generate reddish and yellowish images. Finally, we may further investigate the way to better control the contribution of conditional inputs as we found that it sometimes generated irrelevant image. Attention mechanism and regularization loss can be the options.
+From the experiments, we find that there are some improvements can be made in the future. 
+* Reduce the number of ingredients further. For example, we may combine different kinds of cheeses as they have similar appearance and contribution to the generated images. Such change will reduce the redundancy in the dataset and make it easier to learn. 
+* Balance the number of images with different color to prevent the model from the inclination to generate reddish and yellowish images.
+* Extend training from 10,000 data to whole dataset. This is limited during development since time and computing resources are not allowed at this time.
+* Improve model architecture and parameters.
+* Investigate the way to better control the contribution of conditional inputs as we found that it sometimes generated irrelevant images. Attention mechanism and regularization loss can be the options.
 
 ## Contributions
 We acknowledge the assistance and advice from professor [Joseph Lim](https://viterbi-web.usc.edu/~limjj/) and TAs of course CS-566 (Deep Learning and its Applications). With their guidance, we developed the project and made the following contributions.
