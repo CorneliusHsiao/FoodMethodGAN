@@ -38,7 +38,9 @@ To address this problem, we use a recipe association model which is able to find
 
 The loss function of association model is:
 
-![equation](https://latex.codecogs.com/svg.latex?\inline&space;V(F_p,F_q)=\mathop{\mathbb{E}}_{\hat{p}(r^+,v^+),\hat{p}(v^-)}min([cos[\textbf{p}^+,\textbf{q}^+]-cos[\textbf{p}^+,\textbf{q}^-]-\epsilon],0)\newline\hphantom{asdfasdfsadf}+\mathop{\mathbb{E}}_{\hat{p}(r^+,v^+),\hat{p}(r^-)}min([cos[\textbf{p}^+,\textbf{q}^+]-cos[\textbf{p}^-,\textbf{q}^+]-\epsilon],0)),
+<p align="center">
+  <img src="misc/eqn_1.PNG">
+</p>
 
 where ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^+,\textbf{q}^+)) is positive pair between text embeddings and extracted image features. ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^+,\textbf{q}^-)), ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^-,\textbf{q}^+)) are negative paris. ![equation](https://latex.codecogs.com/svg.latex?\inline&space;\epsilon) is the bias to train the model on pairs that are not correctly associated.
 
@@ -53,7 +55,9 @@ After we extracted meaningful and respresentative text embedding from ingredient
 
 The loss function in [[1]](#references) for image generation used in conditional GAN is:
 
-![equation](https://latex.codecogs.com/svg.latex?\inline&space;L_G=\sum_{i=0}^2(L_{G_i}^{cond}+\lambda_{uncond}L_{G_i}^{uncond}-\lambda_{cycle}L_{C_i})+\lambda_{ca}L_{ca})
+<p align="center">
+  <img src="misc/eqn_2.PNG">
+</p>
 
 In the equation, we exploited both conditioned and unconditioned loss for discriminator. The loss of cycle-consistency constraint is  incorporated as the <img src="misc/L_c_i.PNG"> term. The last part is the regularization factor, which aims at ensuring the distribution of conditions given extracted image features to approximate the standard Gaussian distribution as closed as possible.
 
@@ -71,25 +75,25 @@ Besides Figure 1 where we show several realistic generated images from our model
 
 In Figure 4, ingredients are fixed as pork chops, green pepper and butter, but cooking method is changed from stir+fry to boil.
 <p align="center">
-  <img src="misc/img_4.PNG" alt="fixed ingredients, change cooking method (1)"/>
+  <img src="misc/img_4.PNG" alt="fixed ingredients, change cooking method (1)" height="150"/>
   <br><em>Figure 4. Fixed ingredients (pork chops, green pepper and butter) and change cooking method</em>
 </p>
 
 In Figure 5, ingredients are fixed as cheese, egg and pizza sauce, but cooking method is changed from boil+heat to bake+stir.
 <p align="center">
-  <img src="misc/img_5.PNG" alt="fixed ingredients, change cooking method (2)"/>
+  <img src="misc/img_5.PNG" alt="fixed ingredients, change cooking method (2)" height="150"/>
   <br><em>Figure 5. Fixed ingredients (cheese, egg and pizza sauce) and change cooking method</em>
 </p>
 
 In Figure 6, cooking method are fixed as bake as for muffin, but blueberry is added as extra ingredient. Blueberry is added to the top and inside muffin and we can see such dip in muffin with blueberries.
 <p align="center">
-  <img src="misc/img_6.PNG" alt="fixed cooking method, change ingredients (1)"/>
+  <img src="misc/img_6.PNG" alt="fixed cooking method, change ingredients (1)" height="300"/>
   <br><em>Figure 6. Fixed cooking method and add blueberry</em>
 </p>
 
 In Figure 7, cooking method are fixed as bake as for muffin, but chocolate is added as extra ingredient. Chocolate is mixed with flour to prepare base for muffin and we can see muffin with chocolate in a darker color which represents chocolate.
 <p align="center">
-  <img src="misc/img_7.PNG" alt="fixed cooking method, change ingredients (2)"/>
+  <img src="misc/img_7.PNG" alt="fixed cooking method, change ingredients (2)" height="300"/>
   <br><em>Figure 7. Fixed cooking method and add chocolate</em>
 </p>
 
