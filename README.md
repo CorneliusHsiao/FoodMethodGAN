@@ -16,7 +16,7 @@ Besides sparks and interest that can be brought to the public in this project, o
 
 ## Problem Statement
 <p align="center">
-  <img src="misc/img_11.PNG" alt="Problem Statement"/>
+  <img src="misc/img_11.PNG" alt="Problem Statement" height="200"/>
 </p>
 
 ## Related Works & Method
