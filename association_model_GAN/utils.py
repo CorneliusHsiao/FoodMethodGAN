@@ -13,20 +13,54 @@ from datetime import datetime
 import json
 from PIL import Image
 from networks import TextEncoder, ImageEncoder
-from generative_model.networks_StackGAN import G_NET
+#from generative_model.networks_StackGAN import G_NET
 from types import SimpleNamespace
 from torch import nn
+from torch.utils import data
 import math
 from torchvision.utils import save_image, make_grid
-
 import argparse
-def str2bool(v):
-    if v.lower() in ('yes', 'true', 't', 'y', '1'):
-        return True
-    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
-        return False
-    else:
-        raise argparse.ArgumentTypeError('Boolean value expected.')
+from args import args
+
+
+class Dataset(data.Dataset):
+    def __init__(self, part, data_dir, img_dir, ingrs_dict, method_dict, transform=None):
+        assert part in ('train', 'val', 'test'), \
+            'part must be one of [train, val, test]'
+        self.recipes = load_recipes(os.path.join(data_dir,'recipesV1.json'), part)
+        self.ingrs_dict = ingrs_dict
+        self.method_dict = method_dict
+        self.data_dir = data_dir
+        self.img_dir = img_dir
+        self.transform = transform
+    
+    def __getitem__(self, index):
+        rcp = self.recipes[index]
+        txt = torch.zeros(len(self.ingrs_dict) + len(self.method_dict), dtype=torch.float)
+        for ingr in rcp['ingredients']:
+            txt[self.ingrs_dict[ingr]] = 1
+        for method in rcp['instructions']:
+            txt[self.method_dict[method]] = 1
+        img = choose_one_image(rcp, self.img_dir, self.transform)
+        return txt, img
+    
+    def __len__(self):
+        return len(self.recipes)
+
+
+mean = [0.485, 0.456, 0.406]
+std = [0.229, 0.224, 0.225]
+normalize = transforms.Normalize(
+    mean=mean,
+    std=std)
+transform = transforms.Compose([
+    transforms.Resize(224),
+    transforms.RandomCrop(224),
+    transforms.ToTensor(),
+    normalize
+])
+param_counter = lambda params: sum(p.numel() for p in params if p.requires_grad)
+
 
 def make_saveDir(title, args=None):
     now = datetime.now()
@@ -41,32 +75,22 @@ def make_saveDir(title, args=None):
     return save_dir
 
 
-def dspath(ext, ROOT, **kwargs):
-    return os.path.join(ROOT,ext)
+def compute_loss(txt, img, device):
+    BS = txt.shape[0]
+    denom = img.norm(p=2, dim=1, keepdim=True) @ txt.norm(p=2, dim=1, keepdim=True).t()
+    numer = img @ txt.t()
+    sim = numer / (denom+1e-8)
+    cor_sim = (torch.diag(sim) * torch.ones(BS, BS).to(device)).t()
+    loss_retrieve_txt = torch.max(
+        torch.tensor(0.0).to(device), 
+        args.margin + sim - cor_sim)  
+    loss_retrieve_img = torch.max(
+        torch.tensor(0.0).to(device), 
+        args.margin + sim.t() - cor_sim)    
+    loss = loss_retrieve_img + loss_retrieve_txt
+    loss = loss.sum() / loss.nonzero().shape[0]
+    return loss
 
-class Layer(object):
-    L1 = 'layer1'
-    L2 = 'layer2'
-    L3 = 'layer3'
-    INGRS = 'det_ingrs'
-
-    @staticmethod
-    def load(name, ROOT, **kwargs):
-        with open(dspath(name + '.json',ROOT, **kwargs)) as f_layer:
-            return json.load(f_layer)
-
-    @staticmethod
-    def merge(layers, ROOT,copy_base=False, **kwargs):
-        layers = [l if isinstance(l, list) else Layer.load(l, ROOT, **kwargs) for l in layers]
-        base = copy.deepcopy(layers[0]) if copy_base else layers[0]
-        entries_by_id = {entry['id']: entry for entry in base}
-        for layer in layers[1:]:
-            for entry in layer:
-                base_entry = entries_by_id.get(entry['id'])
-                if not base_entry:
-                    continue
-                base_entry.update(entry)
-        return base
 
 def rank(rcps, imgs, retrieved_type='recipe', retrieved_range=1000):
     N = retrieved_range
@@ -115,171 +139,37 @@ def rank(rcps, imgs, retrieved_type='recipe', retrieved_range=1000):
         glob_recall[i] = glob_recall[i]/10
     return np.mean(glob_rank), np.std(glob_rank), glob_recall
 
-mean = [0.485, 0.456, 0.406]
-std = [0.229, 0.224, 0.225]
-normalize = transforms.Normalize(
-    mean=mean,
-    std=std)
-transform = transforms.Compose([
-    transforms.Resize(224),
-    transforms.RandomCrop(224),
-    transforms.ToTensor(),
-    normalize
-])
 
-def choose_one_image(rcp, img_dir, transform=None):
-    part = rcp['partition']
-    local_paths = rcp['images']
-    local_path = np.random.choice(local_paths)
-    img_path = os.path.join(img_dir, part, local_path)
-    img = Image.open(img_path).convert('RGB')
-    if transform:
-        img = transform(img)
-    return img
-
-def remove_numbers(s):
-    '''remove numbers in a sentence.
-    - 1.1:  \d+\.\d+
-    - 1 1/2 or 1-1/2 or 1 -1/2 or 1- 1/2 or 1 - 1/2: (\d+ *-* *)?\d+/\d+
-    - 1: \d+'
-    
-    Arguments:
-        s {str} -- the string to operate on
-    
-    Returns:
-        str -- the modified string without numbers
-    '''
-    return re.sub(r'\d+\.\d+|(\d+ *-* *)?\d+/\d+|\d+', 'some', s)
-
-def tok(text, ts=False):
-    if not ts:
-        ts = [',','.',';','(',')','?','!','&','%',':','*','"']
-    for t in ts:
-        text = text.replace(t,' ' + t + ' ')
-    return text
-
-def find_words(s):
-    lst = tok(remove_numbers(s)).split()
-    return lst
-
-def load_recipes(file_path, part=None):
-    with open(file_path, 'r') as f:
-        info = json.load(f)
-    if part:
-        info = [x for x in info if x['partition']==part]
-    return info
-
-def load_dict(file_path):
-    with open(file_path, 'r') as f_vocab:
-        w2i = {w.rstrip(): i+3 for i, w in enumerate(f_vocab)}
-        w2i['</end>'] = 1
-        w2i['</other>'] = 2
-    return w2i
-
-def get_instructions_wordvec(recipe, w2i, max_len=20):
-    '''
-    get the instructions wordvec for the recipe, the 
-    number of items might be different for different 
-    recipe
-    '''
-    instructions = recipe['instructions']
-    # each recipe has at most max_len sentences
-    # each sentence has at most max_len words
-    vec = np.zeros([max_len, max_len], dtype=np.int)
-    num_sents = min(max_len, len(instructions))
-    for row in range(num_sents):
-        inst = instructions[row]
-        words = find_words(inst)
-        num_words = min(max_len, len(words)+1)
-        for col in range(num_words-1):
-            word = words[col]
-            if word not in w2i:
-                word = '</other>'
-            vec[row, col] = w2i[word]
-        vec[row, num_words-1] = w2i['</end>']
-    return vec
-
-def make_ingr_name(ingr_desc):
-    s = remove_numbers(ingr_desc)
-    return s.replace(' ','_')
+def dspath(ext, ROOT, **kwargs):
+    return os.path.join(ROOT,ext)
 
 
-def make_ingr_name_v1(ingr_desc, replace_dict):
-    name = re.sub(' +', ' ', tok(ingr_desc)).replace(' ', '_')
-    if name in replace_dict:
-        name = replace_dict[name]
-    return name
+class Layer(object):
+    L1 = 'layer1'
+    L2 = 'layer2'
+    L3 = 'layer3'
+    INGRS = 'det_ingrs'
+
+    @staticmethod
+    def load(name, ROOT, **kwargs):
+        with open(dspath(name + '.json',ROOT, **kwargs)) as f_layer:
+            return json.load(f_layer)
+
+    @staticmethod
+    def merge(layers, ROOT,copy_base=False, **kwargs):
+        layers = [l if isinstance(l, list) else Layer.load(l, ROOT, **kwargs) for l in layers]
+        base = copy.deepcopy(layers[0]) if copy_base else layers[0]
+        entries_by_id = {entry['id']: entry for entry in base}
+        print(len(base))
+        for layer in layers[1:]:
+            for entry in layer:
+                base_entry = entries_by_id.get(entry['id'])
+                if not base_entry:
+                    continue
+                base_entry.update(entry)
+        return base
 
 
-def get_ingredients_wordvec(recipe, w2i, permute_ingrs=False, max_len=20):
-    '''
-    get the ingredients wordvec for the recipe, the 
-    number of items might be different for different 
-    recipe
-    '''
-    ingredients = recipe['ingredients']
-    if permute_ingrs:
-        ingredients = np.random.permutation(ingredients).tolist()
-    vec = np.zeros([max_len], dtype=np.int)
-    num_words = min(max_len, len(ingredients)+1)
-    for i in range(num_words-1):
-        word = make_ingr_name(ingredients[i])
-        if word not in w2i:
-            word = '</other>'
-        vec[i] = w2i[word]
-    vec[num_words-1] = w2i['</end>']
-    return vec
-
-def get_title_wordvec(recipe, w2i, max_len=20):
-    '''
-    get the title wordvec for the recipe, the 
-    number of items might be different for different 
-    recipe
-    '''
-    title = recipe['title']
-    words = find_words(title)
-    vec = np.zeros([max_len], dtype=np.int)
-    num_words = min(max_len, len(words)+1)
-    for i in range(num_words-1):
-        word = words[i]
-        if word not in w2i:
-            word = '</other>'
-        vec[i] = w2i[word]
-    vec[num_words-1] = w2i['</end>']
-    return vec
-
-
-def get_image_paths(recipes):
-    imgs = []
-    for recipe in recipes:
-        imgs.extend(recipe['images'])
-    return imgs
-
-param_counter = lambda params: sum(p.numel() for p in params if p.requires_grad)
-
-def _move_list_of_tensor(lst, device):
-    return [x.to(device) for x in lst]
-
-def move_recipe(recipe, device):
-    recipe[0] = _move_list_of_tensor(recipe[0], device) # recipe
-    recipe[1] = recipe[1].to(device) # image
-    return recipe
-
-def compute_loss(txt, img, device):
-    BS = txt.shape[0]
-    denom = img.norm(p=2, dim=1, keepdim=True) @ txt.norm(p=2, dim=1, keepdim=True).t()
-    numer = img @ txt.t()
-    sim = numer / (denom+1e-8)
-    cor_sim = (torch.diag(sim) * torch.ones(BS, BS).to(device)).t()
-    loss_retrieve_txt = torch.max(
-        torch.tensor(0.0).to(device), 
-        args.margin + sim - cor_sim)
-    loss_retrieve_img = torch.max(
-        torch.tensor(0.0).to(device), 
-        args.margin + sim.t() - cor_sim)
-    loss = loss_retrieve_img + loss_retrieve_txt
-    loss = loss.sum() / loss.nonzero().shape[0]
-    return loss
 
 def _find_args(filepath):
     prefix = filepath.rsplit('.', 1)[0]
@@ -290,17 +180,15 @@ def _find_args(filepath):
     args = SimpleNamespace(**args)
     return args
 
-def load_retrieval_model(filepath, device):
+def load_retrieval_model(filepath, in_dim, device):
     args = _find_args(filepath)
     TxtEnc = TextEncoder(
-        data_dir=args.data_dir, text_info=args.text_info, hid_dim=args.hid_dim, 
-        emb_dim=args.emb_dim, z_dim=args.z_dim, with_attention=args.with_attention, 
-        ingr_enc_type=args.ingr_enc_type)
+        data_dir=args.data_dir, in_dim=in_dim, hid_dim=args.hid_dim, z_dim=args.z_dim)
     ImgEnc = ImageEncoder(z_dim=args.z_dim)
-    ImgEnc = nn.DataParallel(ImgEnc)
+    ImgEnc = torch.nn.DataParallel(ImgEnc)
     TxtEnc.eval()
     ImgEnc.eval()
-    print('load from:', filepath)
+    print('Load from:', filepath)
     ckpt = torch.load(filepath)
     TxtEnc.load_state_dict(ckpt['weights_recipe'])
     ImgEnc.load_state_dict(ckpt['weights_image'])
@@ -363,6 +251,22 @@ def compute_txt_feature(rcps, txtM, vocab_inst, vocab_ingr, device):
     feats = torch.cat(feats, dim=0)
     return (title_tensor, ingredients_tensor, instructions_tensor), feats
 
+def choose_one_image(rcp, img_dir, transform=None):
+    part = rcp['partition']
+    local_paths = rcp['images']
+    local_path = np.random.choice(local_paths)
+    img_path = os.path.join(img_dir, part, local_path)
+    img = Image.open(img_path).convert('RGB')
+    if transform:
+        img = transform(img)
+    return img
+
+def load_recipes(file_path, part=None):
+    with open(file_path, 'r') as f:
+        info = json.load(f)
+    if part:
+        info = [x for x in info if x['partition']==part]
+    return info
 
 if __name__ == '__main__':
     import argparse

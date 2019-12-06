@@ -1,7 +1,12 @@
 import os
+import sys
 import json
 from copy import deepcopy
 import pdb
+from tqdm import tqdm
+from datetime import datetime
+from tensorboardX import SummaryWriter
+
 import numpy as np
 import torch
 from torch import nn
@@ -9,17 +14,16 @@ from torch.nn import functional as F
 from torchvision import transforms
 import torchvision.utils as vutils
 from torch import optim
-from tqdm import tqdm
-from tensorboardX import SummaryWriter
-from args_StackGAN import args
-from dataset_StackGAN import Dataset
-from datetime import datetime
-from networks_StackGAN import INCEPTION_V3, G_NET, D_NET64, D_NET128, D_NET256
-from utils_StackGAN import compute_inception_score, negative_log_posterior_probability
-import sys
-sys.path.append('../')
-from utils import param_counter, make_saveDir, load_retrieval_model, move_recipe, rank, mean, std
+
+from args_GAN import args
+from networks_GAN import INCEPTION_V3, G_NET, D_NET64, D_NET128, D_NET256
+from utils_GAN import Dataset, weights_init, compute_txt_feat, compute_cycle_loss, prepare_data, compute_kl, compute_img_feat
+from utils_GAN import compute_inception_score, negative_log_posterior_probability
+from utils import param_counter, make_saveDir, load_retrieval_model, rank, mean, std
 import pprint
+
+
+######################### preprocess ########################
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(args.__dict__)
 torch.manual_seed(args.seed)
@@ -28,39 +32,27 @@ np.random.seed(args.seed)
 device = torch.device('cuda' \
     if torch.cuda.is_available() and args.cuda
     else 'cpu')
-print('device:', device)
+print('Device:', device)
 if device.__str__() == 'cpu':
     args.batch_size = 2
 
+with open(os.path.join(args.data_dir, 'ingrs2numV2.json'), 'r') as f:
+    ingrs_dict = json.load(f)
+method_dict = {'baking': 0, 'frying':1, 'roasting':2, 'grilling':3,
+                'simmering':4, 'broiling':5, 'poaching':6, 'steaming':7,
+                'searing':8, 'stewing':9, 'braising':10, 'blanching':11}
+for _ in method_dict.keys():
+    method_dict[_] += len(ingrs_dict)
+in_dim = len(ingrs_dict) + len(method_dict)
 
-def copy_G_params(model):
-    flatten = deepcopy(list(p.data for p in model.parameters()))
-    return flatten
 
-def weights_init(m):
-    classname = m.__class__.__name__
-    if classname.find('Conv') != -1:
-        nn.init.orthogonal_(m.weight.data, 1.0)
-    elif classname.find('BatchNorm') != -1:
-        m.weight.data.normal_(1.0, 0.02)
-        m.bias.data.fill_(0)
-    elif classname.find('Linear') != -1:
-        nn.init.orthogonal_(m.weight.data, 1.0)
-        if m.bias is not None:
-            m.bias.data.fill_(0.0)
-
-# define models
-abspath = os.path.abspath(__file__)
-dname = os.path.dirname(abspath)
-os.chdir('../')
-TxtEnc, ImgEnc = load_retrieval_model(args.retrieval_model, device)
-TxtEnc.train()
-ImgEnc.train()
-os.chdir(dname)
+######################### model and optimizer ########################
+TxtEnc, ImgEnc = load_retrieval_model(args.retrieval_model, in_dim, device)
 
 netG = G_NET(levels=args.levels)
 print('# params in G', param_counter(netG.parameters()))
 netG.apply(weights_init)
+netG.to(device)
 netG = torch.nn.DataParallel(netG)
 
 netsD = []
@@ -70,15 +62,13 @@ if args.levels > 1:
     netsD.append(D_NET128(bi_condition=args.bi_condition))
 if args.levels > 2:
     netsD.append(D_NET256(bi_condition=args.bi_condition))
-
 for i in range(len(netsD)):
     print('# params in D_{} = {}'.format(i, param_counter(netsD[i].parameters())))
     netsD[i].apply(weights_init)
+    netsD[i].train()
+    netsD[i].to(device)
     netsD[i] = torch.nn.DataParallel(netsD[i])
 
-inception_model = INCEPTION_V3()
-
-# define optimizers
 optimizersD = []
 num_Ds = len(netsD)
 for i in range(num_Ds):
@@ -87,42 +77,67 @@ for i in range(num_Ds):
                         betas=(args.beta0, args.beta1))
     optimizersD.append(opt)
 
-optimizer = torch.optim.Adam([
-                {'params': TxtEnc.parameters()},
-                {'params': ImgEnc.parameters()},
-                {'params': netG.parameters()},
-            ], lr=args.lr_g, betas=(args.beta0, args.beta1))
-
-def compute_txt_feat(txt, TxtEnc):
-    feat = TxtEnc(txt)
-    return feat
-
-def compute_img_feat(img, ImgEnc):
-    img = img/2 + 0.5
-    img = F.interpolate(img, [224, 224], mode='bilinear', align_corners=True)
-    for i in range(img.shape[1]):
-        img[:,i] = (img[:,i]-mean[i])/std[i]
-    feat = ImgEnc(img)
-    return feat
-
-def compute_cycle_loss(feat1, feat2, paired=True):
-    if paired:
-        loss = nn.CosineEmbeddingLoss(0.3)(feat1, feat2, torch.ones(feat1.shape[0]).to(device))
-    else:
-        loss = nn.CosineEmbeddingLoss(0.3)(feat1, feat2, -torch.ones(feat1.shape[0]).to(device))
-    return loss
+optimizer = torch.optim.Adam([{'params': netG.parameters()}], lr=args.lr_g, betas=(args.beta0, args.beta1))
 
 
-netG.to(device)
-for i in range(len(netsD)):
-    netsD[i].to(device)
-inception_model = inception_model.to(device)
-inception_model.eval()
+######################### dataset ########################
+imsize = args.base_size * (2 ** (args.levels-1))
+
+mean = [0.485, 0.456, 0.406]
+std = [0.229, 0.224, 0.225]
+normalize = transforms.Normalize(
+    mean=mean,
+    std=std)
+transform = transforms.Compose([
+    transforms.Resize(imsize),
+    transforms.RandomCrop(imsize)
+])
+norm = transforms.Compose([
+    transforms.ToTensor(),
+    normalize
+])
+
+
+train_set = Dataset(
+    args.data_dir, args.img_dir, food_type=args.food_type, levels=args.levels, part='train', 
+    base_size=args.base_size, ingrs_dict=ingrs_dict, method_dict=method_dict, transform=transform, norm=norm)
+if args.debug:
+    print('=> In debug mode')
+    train_set = torch.utils.data.Subset(train_set, range(100))
+    args.save_interval = 1
+train_loader = torch.utils.data.DataLoader(
+    train_set, batch_size=args.batch_size,
+    drop_last=True, shuffle=True, num_workers=args.workers)
+print('=> train =', len(train_set), len(train_loader))
+
+
+val_set = Dataset(
+    args.data_dir, args.img_dir, food_type=args.food_type, levels=args.levels, part='val', 
+    base_size=args.base_size, ingrs_dict=ingrs_dict, method_dict=method_dict, transform=transform, norm=norm)
+if args.debug:
+    val_set = torch.utils.data.Subset(val_set, range(100))
+val_loader = torch.utils.data.DataLoader(
+    val_set, batch_size=64,
+    drop_last=True, shuffle=False, num_workers=args.workers)
+print('=> val =', len(val_set), len(val_loader))
+
+fixed_batch = next(iter(val_loader))
+fixed_real_imgs, _, fixed_txt = prepare_data(fixed_batch, device)
+
+noise = torch.FloatTensor(args.batch_size, args.z_dim)
+fixed_noise_part1 = torch.FloatTensor(1, args.z_dim).normal_(0, 1)
+fixed_noise_part1 = fixed_noise_part1.repeat(32, 1)
+fixed_noise_part2 = torch.FloatTensor(32, args.z_dim).normal_(0, 1)
+fixed_noise = torch.cat([fixed_noise_part1, fixed_noise_part2], dim=0)
+
+######################### train ########################
+save_dir = make_saveDir('runs/{}_samples{}'.format(args.food_type, len(train_set)), args)
+writer = SummaryWriter(log_dir=save_dir)
 
 e_start = 0
 e_end = args.epochs
 niter = 0
-# load from ckpt
+criterion = nn.BCELoss()
 if args.resume != '':
     print('=> load from checkpoint:', args.resume)
     ckpt = torch.load(args.resume)
@@ -137,74 +152,7 @@ if args.resume != '':
     e_end = e_start + args.epochs
     niter = ckpt['niter'] + 1
 
-# load dataset
-imsize = args.base_size * (2 ** (args.levels-1))
-image_transform = transforms.Compose([
-    transforms.Resize(int(imsize * 76 / 64)),
-    transforms.RandomCrop(imsize),
-    transforms.RandomHorizontalFlip()])
 
-train_set = Dataset(
-    args.data_dir, args.img_dir, food_type=args.food_type, 
-    levels=args.levels, part='train', 
-    base_size=args.base_size, transform=image_transform, permute_ingrs=args.permute_ingrs)
-
-if args.debug:
-    print('=> in debug mode')
-    train_set = torch.utils.data.Subset(train_set, range(100))
-    args.save_interval = 1
-
-train_loader = torch.utils.data.DataLoader(
-    train_set, batch_size=args.batch_size,
-    drop_last=True, shuffle=True, num_workers=int(args.workers))
-print('=> train =', len(train_set), len(train_loader))
-
-
-def prepare_data(data):
-    imgs, w_imgs, txt, _ = data
-
-    real_vimgs, wrong_vimgs = [], []
-    for i in range(args.levels):
-        real_vimgs.append(imgs[i].to(device))
-        wrong_vimgs.append(w_imgs[i].to(device))
-    vtxt = [x.to(device) for x in txt]
-    return real_vimgs, wrong_vimgs, vtxt
-
-food_type = args.food_type if args.food_type else 'all'
-save_dir = make_saveDir('runs/{}_samples{}'.format(food_type, len(train_set)), args)
-writer = SummaryWriter(log_dir=save_dir)
-
-criterion = nn.BCELoss()
-
-def compute_kl(mu, logvar):
-    # -0.5 * sum(1 + log(sigma^2) - mu^2 - sigma^2)
-    KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp(), dim=1)
-    return KLD.mean()
-
-
-noise = torch.FloatTensor(args.batch_size, args.z_dim)
-fixed_noise_part1 = torch.FloatTensor(1, args.z_dim).normal_(0, 1)
-fixed_noise_part1 = fixed_noise_part1.repeat(32, 1)
-fixed_noise_part2 = torch.FloatTensor(32, args.z_dim).normal_(0, 1)
-fixed_noise = torch.cat([fixed_noise_part1, fixed_noise_part2], dim=0)
-val_transform = transforms.Compose([
-        transforms.Resize(256),
-        transforms.CenterCrop(imsize)])
-val_set = Dataset(
-    args.data_dir, args.img_dir, food_type=args.food_type, 
-    levels=args.levels, part='val', 
-    base_size=args.base_size, transform=val_transform)
-val_loader = torch.utils.data.DataLoader(
-    val_set, batch_size=64,
-    drop_last=True, shuffle=False, num_workers=int(args.workers))
-print('=> val =', len(val_set), len(val_loader))
-fixed_batch = next(iter(val_loader))
-fixed_real_imgs, _, fixed_txt = prepare_data(fixed_batch)
-
-# avg_param_G = copy_G_params(netG)
-# def load_params(model, new_param):
-#     for p, new_p in zip(model.parameters(), new_param):
-#         p.data.copy_(new_p)
 
 def save_model(epoch):
     # load_params(netG, avg_param_G)
@@ -226,7 +174,6 @@ def save_model(epoch):
 
 def save_img_results(real_imgs, fake_imgs, epoch):
     num = 64
-
     real_img = real_imgs[-1][0:num]
     fake_img = fake_imgs[-1][0:num]
     real_fake = torch.stack([real_img, fake_img]).permute(1,0,2,3,4).contiguous()
@@ -237,23 +184,7 @@ def save_img_results(real_imgs, fake_imgs, epoch):
             normalize=True, scale_each=True)
     real_fake = vutils.make_grid(real_fake, normalize=True, scale_each=True)
     writer.add_image('real_fake', real_fake, epoch)
-    
-    # real_img = real_imgs[-1][0:num]
-    # vutils.save_image(
-    #     real_img, 
-    #     '{}/e{}_real_samples.png'.format(save_dir, epoch), 
-    #     normalize=True)
-    # real_img_set = vutils.make_grid(real_img, normalize=True)
-    # writer.add_image('real_img', real_img_set, epoch)
 
-    # for i in range(args.levels):
-    #     fake_img = fake_imgs[i][0:num]
-    #     vutils.save_image(
-    #         fake_img, 
-    #         '{}/e{}_fake_samples{}.png'.format(save_dir, epoch, i), 
-    #         normalize=True, scale_each=True)
-    #     fake_img_set = vutils.make_grid(fake_img, normalize=True, scale_each=True)
-    #     writer.add_image('fake_img%d' % i, fake_img_set, epoch)
 
 for epoch in range(e_start, e_end):
     print('-'*40)
@@ -261,92 +192,42 @@ for epoch in range(e_start, e_end):
 
     # run val_set
     print('eval')
-    txt_feats_real = []
-    img_feats_real = []
-    img_feats_fake = []
-    labels_fake_np = []
     TxtEnc.eval()
     ImgEnc.eval()
     netG.eval()
     batch=0
     for data in tqdm(val_loader):
-        real_imgs, _, txt = prepare_data(data)
+        real_imgs, _, txt = prepare_data(data, device)
         with torch.no_grad():
             txt_embedding = compute_txt_feat(txt, TxtEnc)
             fake_imgs, mu, logvar = netG(fixed_noise, txt_embedding)
-        
-        txt_feats_real.append(txt_embedding.detach().cpu())
-        img_fake = fake_imgs[-1]
-        img_embedding_fake = compute_img_feat(img_fake, ImgEnc)
-        img_feats_fake.append(img_embedding_fake.detach().cpu())
-        img_real = real_imgs[-1]
-        img_embedding_real = compute_img_feat(img_real, ImgEnc)
-        img_feats_real.append(img_embedding_real.detach().cpu())
 
-        label_fake = inception_model(img_fake.detach())
-        labels_fake_np.append(label_fake.cpu().numpy())
         if batch == 0 and (epoch % args.save_interval == 0 or epoch == e_end-1):
             print('saving model after epoch {}'.format(epoch))
             save_model(epoch)
-            
-            # backup_para = copy_G_params(netG)
-            # load_params(netG, avg_param_G)
             writer.add_histogram('mu', mu, epoch)
             writer.add_histogram('std', (0.5*logvar).exp(), epoch)
             save_img_results(real_imgs, fake_imgs, epoch)
             # load_params(netG, backup_para)
-        
         batch += 1
 
-    txt_feats_real = torch.cat(txt_feats_real, dim=0)
-    img_feats_real = torch.cat(img_feats_real, dim=0)
-    img_feats_fake = torch.cat(img_feats_fake, dim=0)
-    retrieved_range = min(900, len(val_loader)*args.batch_size)
-    medR, medR_std, recalls = rank(txt_feats_real.numpy(), img_feats_real.numpy(), retrieved_type='recipe', retrieved_range=retrieved_range)
-    writer.add_scalar('real MedR', medR, epoch)
-    print('=> [MedR] real: {:.4f}({:.4f})'.format(medR, medR_std))
-    medR, medR_std, recalls = rank(txt_feats_real.numpy(), img_feats_fake.numpy(), retrieved_type='recipe', retrieved_range=retrieved_range)
-    writer.add_scalar('fake MedR', medR, epoch)
-    print('=> [MedR] fake: {:.4f}({:.4f})'.format(medR, medR_std))
 
-    labels_fake_np = np.concatenate(labels_fake_np, 0)
-    mean_is, std_is = compute_inception_score(labels_fake_np, args.splits)
-    writer.add_scalar('inception score', mean_is, epoch)
 
     print('train')
-    TxtEnc.train()
-    ImgEnc.train()
     netG.train()
     epoch_loss_G = 0.0
     epoch_loss_D = 0.0
     epoch_loss_kl = 0.0
     for data in tqdm(train_loader):
 
-        if args.labels == 'original':
-            real_labels = torch.FloatTensor(args.batch_size).fill_(
-                1)  # (torch.FloatTensor(args.batch_size).uniform_() < 0.9).float() #
-            fake_labels = torch.FloatTensor(args.batch_size).fill_(
-                0)  # (torch.FloatTensor(args.batch_size).uniform_() > 0.9).float() #
-        elif args.labels == 'R-smooth':
-            real_labels = torch.FloatTensor(args.batch_size).fill_(1) - (
-                        torch.FloatTensor(args.batch_size).uniform_() * 0.1)
-            fake_labels = (torch.FloatTensor(args.batch_size).uniform_() * 0.1)
-        elif args.labels == 'R-flip':
-            real_labels = (torch.FloatTensor(args.batch_size).uniform_() < 0.9).float()  #
-            fake_labels = (torch.FloatTensor(args.batch_size).uniform_() > 0.9).float()  #
-        elif args.labels == 'R-flip-smooth':
-            real_labels = torch.abs((torch.FloatTensor(args.batch_size).uniform_() > 0.9).float() - (
-                    torch.FloatTensor(args.batch_size).fill_(1) - (
-                        torch.FloatTensor(args.batch_size).uniform_() * 0.1)))
-            fake_labels = torch.abs((torch.FloatTensor(args.batch_size).uniform_() > 0.9).float() - (
-                    torch.FloatTensor(args.batch_size).uniform_() * 0.1))
+        real_labels = torch.FloatTensor(args.batch_size).fill_(1)  # (torch.FloatTensor(args.batch_size).uniform_() < 0.9).float() #
+        fake_labels = torch.FloatTensor(args.batch_size).fill_(0)  # (torch.FloatTensor(args.batch_size).uniform_() > 0.9).float() #
 
-        if args.cuda:
-            real_labels = real_labels.to(device)
-            fake_labels = fake_labels.to(device)
-            noise, fixed_noise = noise.to(device), fixed_noise.to(device)
+        real_labels = real_labels.to(device)
+        fake_labels = fake_labels.to(device)
+        noise, fixed_noise = noise.to(device), fixed_noise.to(device)
 
-        real_imgs, wrong_imgs, txt = prepare_data(data)
+        real_imgs, wrong_imgs, txt = prepare_data(data, device)
         txt_embedding = compute_txt_feat(txt, TxtEnc)
         #######################################################
         # (1) Generate fake images
@@ -425,14 +306,14 @@ for epoch in range(e_start, e_end):
             errG_uncond = criterion(outputs[1], real_labels) # uncond_fake --> 1
 
             feat_fake = compute_img_feat(fake_imgs[level], ImgEnc)
-            errG_cycle_txt = compute_cycle_loss(feat_fake, txt_embedding)
+            errG_cycle_txt = compute_cycle_loss(feat_fake, txt_embedding, device)
             
             feat_real = compute_img_feat(real_imgs[level], ImgEnc)
-            errG_cycle_img = compute_cycle_loss(feat_fake, feat_real)
+            errG_cycle_img = compute_cycle_loss(feat_fake, feat_real, device)
 
-            rightRcp_vs_rightImg = compute_cycle_loss(txt_embedding, feat_real)
+            rightRcp_vs_rightImg = compute_cycle_loss(txt_embedding, feat_real, device)
             feat_real_wrong = compute_img_feat(wrong_imgs[level], ImgEnc)
-            rightRcp_vs_wrongImg = compute_cycle_loss(txt_embedding, feat_real_wrong, paired=False)
+            rightRcp_vs_wrongImg = compute_cycle_loss(txt_embedding, feat_real_wrong, device, paired=False)
             tri_loss = rightRcp_vs_rightImg + rightRcp_vs_wrongImg
             
             errG = errG_cond \
@@ -443,7 +324,7 @@ for epoch in range(e_start, e_end):
 
             # record
             errG_total += errG
-            if level == 2:
+            if level == args.levels:
                 writer.add_scalar('G_tri_loss{}'.format(level), tri_loss, niter)
                 writer.add_scalar('G_loss_cond{}'.format(level), errG_cond, niter)
                 writer.add_scalar('G_loss_uncond{}'.format(level), errG_uncond, niter)
