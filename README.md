@@ -55,7 +55,7 @@ The loss function [] for image generation used in conditional GAN is:
 
 ![equation](https://latex.codecogs.com/svg.latex?\inline&space;L_G=\sum_{i=0}^2(L_{G_i}^{cond}+\lambda_{uncond}L_{G_i}^{uncond}-\lambda_{cycle}L_{C_i})+\lambda_{ca}L_{ca})
 
-In the equation, we exploited both conditioned and unconditioned loss for discriminator. The loss of cycle-consistency constraint is  incorporated as the $L_C_i$ term. The last part is the regularization factor, which aims at ensuring the distribution of conditions given extracted image features to approximate the standard Gaussian distribution as closed as possible.
+In the equation, we exploited both conditioned and unconditioned loss for discriminator. The loss of cycle-consistency constraint is  incorporated as the <img src="L_c_i.PNG"> term. The last part is the regularization factor, which aims at ensuring the distribution of conditions given extracted image features to approximate the standard Gaussian distribution as closed as possible.
 
 ## Experiment
 ### Dataset
@@ -65,16 +65,50 @@ We conduct our experiments using data from Recipe1M [4]. Recipe1M dataset consis
 We fed association model with paired and unpaired 128 &#215; 128 image and text input. For the StackGAN model, we used both 64 &#215; 64 and 128 &#215; 128 images because there are two discriminators for two resolution images from generators, respectively.
 
 ## Evaluation
-|     |              | im2rcp      |            |            |             | rcp2im      |            |            |             |
-|-----|--------------|-------------|------------|------------|-------------|-------------|------------|------------|-------------|
-|     |              | MedR&#8595; | R@1&#8593; | R@5&#8593; | R@10&#8593; | MedR&#8595; | R@1&#8593; | R@5&#8593; | R@10&#8593; |
-| 1K  | Model in [1] | 5.500       | 0.234      | 0.503      | 0.618       | 5.750       | 0.230      | 0.491      | 0.615       |
-|     | Ours         | **4.400**   | **0.261**  | **0.549**  | **0.679**   | **4.200**   | **0.270**  | **0.556**  | **0.682**   |
-| 5K  | Model in [1] | 24.000      | 0.099      | 0.265      | 0.364       | 25.100      | 0.097      | 0.259      | 0.357       |
-|     | Ours         | **17.900**  | **0.116**  | **0.299**  | **0.406**   | **16.700**  | **0.129**  | **0.315**  | **0.421**   |
-| 10K | Model in [1] | 47.000      | 0.065      | 0.185      | 0.267       | 48.300      | 0.061      | 0.178      | 0.261       |
-|     | Ours         | **34.900**  | **0.077**  | **0.212**  | **0.301**   | **32.700**  | **0.088**  | **0.229**  | **0.319**   |
+We evaluated our task and approach via qualitative and quantitative results. In qualitative part, we demonstrate that our results are valid and meaningful under different conditions. In quantitaive part, we show two tables to compare the performance of our model with prior work.
+### Qualitative
+Besides Figure 1 where we show several realistic generated images from our model, here we compare the influence of two inputs -- ingredient and cooking method -- on image generation.
 
+In Figure 4, ingredients are fixed as pork chops, green pepper and butter, but cooking method is changed from stir+fry to boil.
+<p align="center">
+  <img src="img_4.PNG" alt="fixed ingredients, change cooking method (1)"/>
+  <br><em>Figure 4. Fixed ingredients (pork chops, green pepper and butter) and change cooking method</em></br>
+</p>
+
+In Figure 5, ingredients are fixed as cheese, egg and pizza sauce, but cooking method is changed from boil+heat to bake+stir.
+<p align="center">
+  <img src="img_5.PNG" alt="fixed ingredients, change cooking method (2)"/>
+  <br><em>Figure 5. Fixed ingredients (cheese, egg and pizza sauce) and change cooking method</em></br>
+</p>
+
+In Figure 6, cooking method are fixed as bake as for muffin, but blueberry is added as extra ingredient. Blueberry is added to the top and inside muffin and we can see such dip in muffin with blueberries.
+<p align="center">
+  <img src="img_6.PNG" alt="fixed cooking method, change ingredients (1)"/>
+  <br><em>Figure 6. Fixed cooking method and add blueberry</em></br>
+</p>
+
+In Figure 7, cooking method are fixed as bake as for muffin, but chocolate is added as extra ingredient. Chocolate is mixed with flour to prepare base for muffin and we can see muffin with chocolate in a darker color which represents chocolate.
+<p align="center">
+  <img src="img_7.PNG" alt="fixed cooking method, change ingredients (2)"/>
+  <br><em>Figure 7. Fixed cooking method and add chocolate</em></br>
+</p>
+
+### Quantitative
+We used MedR and R@K to evaluate our cross-modal association model the same as in [1]. In Table 1, we show the quantities from different sides of model under different conditions.
+
+<p align="center">
+  <img src="table_1.PNG" alt="Quantitative Evaluation for Cross-modal Association Model"/>
+  <em>Table 1. Quantitative Evaluation for Cross-modal Association Model</em>
+</p>
+
+We used inception score (IS) and Fréchet Inception Distance (FID) to evaluate results of GAN. The higher IS and lower FID are, the better quality and diversity are for our generated images. In Table 2, the comparison is based on same model structure, parameters, training and test cases and approximately the same IS for real image sets. The only difference is the input type. The image-input model has only noise as input for generator. The ingredient-input model has noise and ingredient text embedding as input for generator. The ingredient+method model has noise, ingredient text embedding and cooking method text embedding as input.
+
+<p align="center">
+  <img src="table_2.PNG" alt="Quantitative Evaluation for GAN"/>
+  <em>Table 2. Quantitative Evaluation for GAN</em>
+</p>
+
+Based on Table 2, we successfully proved that cooking method, as an extra input, is a useful and valuable input for food image generation task.
 
 ## Future Improvements
 From the experiments, we find that there are some improvements can be made in the future. Firstly, reducing the number of ingredients further. For example, we may combine different kinds of cheeses as they have similar appearance and contribution to the generated images. Such change will reduce the redundancy in the dataset and make it easier to learn. Secondly, balancing the number of images with different color to prevent the model from the inclination to generate reddish and yellowish images. Finally, we may further investigate the way to better control the contribution of conditional inputs as we found that it sometimes generated irrelevant image. Attention mechanism and regularization loss can be the options.
