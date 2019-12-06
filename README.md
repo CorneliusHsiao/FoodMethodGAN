@@ -75,25 +75,25 @@ Besides Figure 1 where we show several realistic generated images from our model
 
 In Figure 4, ingredients are fixed as pork chops, green pepper and butter, but cooking method is changed from stir+fry to boil.
 <p align="center">
-  <img src="misc/img_4.PNG" alt="fixed ingredients, change cooking method (1)"/>
+  <img src="misc/img_4.PNG" alt="fixed ingredients, change cooking method (1)" height="150"/>
   <br><em>Figure 4. Fixed ingredients (pork chops, green pepper and butter) and change cooking method</em>
 </p>
 
 In Figure 5, ingredients are fixed as cheese, egg and pizza sauce, but cooking method is changed from boil+heat to bake+stir.
 <p align="center">
-  <img src="misc/img_5.PNG" alt="fixed ingredients, change cooking method (2)"/>
+  <img src="misc/img_5.PNG" alt="fixed ingredients, change cooking method (2)" height="150"/>
   <br><em>Figure 5. Fixed ingredients (cheese, egg and pizza sauce) and change cooking method</em>
 </p>
 
 In Figure 6, cooking method are fixed as bake as for muffin, but blueberry is added as extra ingredient. Blueberry is added to the top and inside muffin and we can see such dip in muffin with blueberries.
 <p align="center">
-  <img src="misc/img_6.PNG" alt="fixed cooking method, change ingredients (1)"/>
+  <img src="misc/img_6.PNG" alt="fixed cooking method, change ingredients (1)" height="300"/>
   <br><em>Figure 6. Fixed cooking method and add blueberry</em>
 </p>
 
 In Figure 7, cooking method are fixed as bake as for muffin, but chocolate is added as extra ingredient. Chocolate is mixed with flour to prepare base for muffin and we can see muffin with chocolate in a darker color which represents chocolate.
 <p align="center">
-  <img src="misc/img_7.PNG" alt="fixed cooking method, change ingredients (2)"/>
+  <img src="misc/img_7.PNG" alt="fixed cooking method, change ingredients (2)" height="300"/>
   <br><em>Figure 7. Fixed cooking method and add chocolate</em>
 </p>
 
