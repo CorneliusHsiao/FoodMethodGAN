@@ -1,6 +1,4 @@
-*.png
-*.jpg
-*.jpeg
 *.json
 *.tar
 *.pyc
+.DS_Store

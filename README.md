@@ -5,7 +5,7 @@
 **Team members**: Hanyuan Xiao, Kaijie Cai, Buke Ao, Heng Zhang
 
 <p align="center">
-  <img src="img_1.PNG" alt="Realistic Generated Food Images"/>
+  <img src="misc/img_1.PNG" alt="Realistic Generated Food Images"/>
   <br><em>Figure 1. Realistic Generated Food Images</em>
 </p>
 
@@ -32,7 +32,7 @@ One way to generate images from texts is implemented by encoding the texts into 
 To address this problem, we use a recipe association model which is able to find the common representations (i.e. text embeddings) between images and text input, and then a GAN to generate images from the embeddings.
 #### Cross-modal Association Model [[3]](#references) ####
 <p align="center">
-  <img src="img_2.jpg" alt="Association Model From Ingredients + Methods and Images"/>
+  <img src="misc/img_2.jpg" alt="Association Model From Ingredients + Methods and Images"/>
   <br><em>Figure 2. Association Model From Ingredients + Methods and Images</em>
 </p>
 
@@ -46,7 +46,7 @@ This network takes ingredients and cooking methods as input from one side, and u
 
 #### Conditional StackGAN [[5]](#references) ####
 <p align="center">
-  <img src="img_3.jpg" alt="StackGAN for Image Generation"/>
+  <img src="misc/img_3.jpg" alt="StackGAN for Image Generation"/>
   <br><em>Figure 3. StackGAN for Image Generation</em>
 </p>
 After we extracted meaningful and respresentative text embedding from ingredients and cooking methods by trained network in the association model. The text embedding for each training case is then used as the conditional code in StackGAN. In order to ascertain the food image has the expected ingredients and methods that it depends on, we added cycle-consistency constraint [1] to guarantee the similarity between generated fake images and text embedding strong.
@@ -71,25 +71,25 @@ Besides Figure 1 where we show several realistic generated images from our model
 
 In Figure 4, ingredients are fixed as pork chops, green pepper and butter, but cooking method is changed from stir+fry to boil.
 <p align="center">
-  <img src="img_4.PNG" alt="fixed ingredients, change cooking method (1)"/>
+  <img src="misc/img_4.PNG" alt="fixed ingredients, change cooking method (1)"/>
   <br><em>Figure 4. Fixed ingredients (pork chops, green pepper and butter) and change cooking method</em>
 </p>
 
 In Figure 5, ingredients are fixed as cheese, egg and pizza sauce, but cooking method is changed from boil+heat to bake+stir.
 <p align="center">
-  <img src="img_5.PNG" alt="fixed ingredients, change cooking method (2)"/>
+  <img src="misc/img_5.PNG" alt="fixed ingredients, change cooking method (2)"/>
   <br><em>Figure 5. Fixed ingredients (cheese, egg and pizza sauce) and change cooking method</em>
 </p>
 
 In Figure 6, cooking method are fixed as bake as for muffin, but blueberry is added as extra ingredient. Blueberry is added to the top and inside muffin and we can see such dip in muffin with blueberries.
 <p align="center">
-  <img src="img_6.PNG" alt="fixed cooking method, change ingredients (1)"/>
+  <img src="misc/img_6.PNG" alt="fixed cooking method, change ingredients (1)"/>
   <br><em>Figure 6. Fixed cooking method and add blueberry</em>
 </p>
 
 In Figure 7, cooking method are fixed as bake as for muffin, but chocolate is added as extra ingredient. Chocolate is mixed with flour to prepare base for muffin and we can see muffin with chocolate in a darker color which represents chocolate.
 <p align="center">
-  <img src="img_7.PNG" alt="fixed cooking method, change ingredients (2)"/>
+  <img src="misc/img_7.PNG" alt="fixed cooking method, change ingredients (2)"/>
   <br><em>Figure 7. Fixed cooking method and add chocolate</em>
 </p>
 
@@ -97,14 +97,14 @@ In Figure 7, cooking method are fixed as bake as for muffin, but chocolate is ad
 We used MedR and R@K to evaluate our cross-modal association model the same as in [[1]](#references). In Table 1, we show the quantities from different sides of model under different conditions.
 
 <p align="center">
-  <img src="table_1.PNG" alt="Quantitative Evaluation for Cross-modal Association Model"/>
+  <img src="misc/table_1.PNG" alt="Quantitative Evaluation for Cross-modal Association Model"/>
   <br><em>Table 1. Quantitative Evaluation for Cross-modal Association Model</em></br>
 </p>
 
 We used inception score (IS) and Fréchet Inception Distance (FID) to evaluate results of GAN. The higher IS and lower FID are, the better quality and diversity are for our generated images. In Table 2, the comparison is based on same model structure, parameters, training and test cases and approximately the same IS for real image sets. The only difference is the input type. The image-input model has only noise as input for generator. The ingredient-input model has noise and ingredient text embedding as input for generator. The ingredient+method model has noise, ingredient text embedding and cooking method text embedding as input.
 
 <p align="center">
-  <img src="table_2.PNG" alt="Quantitative Evaluation for GAN"/>
+  <img src="misc/table_2.PNG" alt="Quantitative Evaluation for GAN"/>
   <br><em>Table 2. Quantitative Evaluation for GAN</em>
 </p>
 
@@ -119,7 +119,7 @@ From the experiments, we find that there are some improvements can be made in th
 * Investigate the way to better control the contribution of conditional inputs as we found that it sometimes generated irrelevant images. Attention mechanism and regularization loss can be the options.
 
 <p align="center">
-  <img src="img_8.gif" alt="A batch of generated images"/>
+  <img src="misc/img_8.gif" alt="A batch of generated images"/>
   <br><em>Figure 8. A batch of generated images</em>
 </p>
 
