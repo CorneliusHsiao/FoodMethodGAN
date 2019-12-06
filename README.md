@@ -62,7 +62,7 @@ In the equation, we exploited both conditioned and unconditioned loss for discri
 We conduct our experiments using data from Recipe1M [[6]](#references). Recipe1M dataset consists of more than 1 million food images with corresponding ingredients and instructions. We manually extracted and chose 12 different types of cooking methods that are believed to be meaningful and distinguishable statistically, and then generated cooking methods for each training data by searching for keywords in the instruction text. We also reduced the number of different ingredients from around 18,000 to around 2,000 by removing ingredients with low frequency ( < 500 occurrence in the dataset) and then combined ingredients that belong to the same kind contextually (e.g. different kinds of oil which have the same features in images) or trivially (e.g. 1% milk and 2% milk). Because of the limit of time and computing resources we used only 10,000 data from the dataset to train.
 
 ### Input
-We fed association model with paired and unpaired 128 &#215; 128 image and text input. For the StackGAN model, we used both 64 &#215; 64 and 128 &#215; 128 images because there are two discriminators for two resolution images from generators, respectively.
+We fed association model with paired and unpaired 128 &#215; 128 image and text input. For the StackGAN model, we fed text embedding as conditions and random noise to generator. For discriminator, we fed real image corresponding to text embedding and generated fake images.
 
 ## Evaluation
 We evaluated our task and approach via qualitative and quantitative results. In qualitative part, we demonstrate that our results are valid and meaningful under different conditions. In quantitaive part, we show two tables to compare the performance of our model with prior work.
@@ -119,7 +119,7 @@ From the experiments, we find that there are some improvements can be made in th
 * Investigate the way to better control the contribution of conditional inputs as we found that it sometimes generated irrelevant images. Attention mechanism and regularization loss can be the options.
 
 ## Contributions
-We acknowledge the assistance and advice from professor [Joseph Lim](https://viterbi-web.usc.edu/~limjj/) and TAs of course CS-566 (Deep Learning and its Applications). With their guidance, we developed the project and made the following contributions.
+We acknowledge the assistance and advice from professor [Joseph Lim](https://viterbi-web.usc.edu/~limjj/) and wonderful [TAs](https://www.clvrai.com/people/) of course CS-566 (Deep Learning and its Applications). With their guidance, we developed the project and made the following contributions.
 * A conditional GAN model for food image generation task with ingredients and cooking methods as input
 * A refined version of dataset Recipe1M which further contains cooking methods extracted from instructions
 * Quantitative data that proves cooking method as a useful and valuable input to food image generation tasks
