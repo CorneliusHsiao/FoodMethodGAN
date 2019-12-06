@@ -100,14 +100,7 @@ In Figure 7, cooking method are fixed as bake as for muffin, but chocolate is ad
 </p>
 
 ### Quantitative
-<<<<<<< HEAD
-To evaluate the association model, we adopt median retrieval rank (MedR) and recall at top K (R@K) the same as in [[1]](#references). In a subset of recipe-image pairs randomly selected from test set, every recipe is viewed as a query to retrieve its corresponding image by ranking their cosine similarity in common space, namely recipe2im retrieval.  MedR calculates the median rank position of correct image, while R@K measures the percentage of all queries when true image ranks top-K i. So a lower MedR and a higher R@K implies better performance. To evaluate the stability of retrieval, we set subset size as 1K, 5K, and 10K respectively. We repeat experiments 10 times for each subset size and report the mean results. Im2recipe retrieval is evaluated likewise. 
-
-In Table 1, we compare the scores of our model and other models. As can be seen, our model performs best in all scores, which shows clearly that canonical, clear ingredients and addition of cooking method as input are important to association model.
-
-=======
 To evaluate the association model, we adopt median retrieval rank (MedR) and recall at top K (R@K) as in [[1]](#references). In a subset of recipe-image pairs randomly selected from test set, every recipe is viewed as a query to retrieve its corresponding image by ranking their cosine similarity in common space, namely recipe2im retrieval. MedR calculates the median rank position of correct image, while R@K measures the percentage of all queries when true image ranks top-K i. Therefore, a lower MedR and a higher R@K implies better performance. To evaluate the stability of retrieval, we set subset size as 1K, 5K, and 10K respectively. We repeat experiments 10 times for each subset size and report the mean results. Im2recipe retrieval is evaluated likewise. In Table 1, we show the discussed quantities. Our model outperforms in all scores, which proves that canonical, clear ingredients and addition of cooking method as input are important to the task.
->>>>>>> 6df0ea9e6c6b52664f15b8e372b359737111099d
 
 <p align="center">
   <img src="misc/table_1.PNG" alt="Quantitative Evaluation for Cross-modal Association Model"/>
