@@ -15,7 +15,9 @@ Food image generation as one of image generation tasks is useful in visualizatio
 Besides sparks and interest that can be brought to the public in this project, outputs of our model can also be used to evaluate and quantify vital criteria of food with attention drawn by Computational food analysis (CFA) [[1]](#references) such as meal preference forecasting, and computational meal preparation. Therefore, the model defines its importance and usage in real life and is crucial to human life. Existing approaches such as The Art of Food do not take cooking method as input. However, the importance has been overshadowed since the same ingredients can be made into different dishes. For instance, chicken and noodles can be made in ramen or fried noodles by boiling and stir-fry, respectively. Therefore, this project aims at developing a reliable method to generate food image that fits in any specific class.
 
 ## Problem Statement
-#### For this project, we trained a deep learning network to learn and generate food images with ingredients and cooking methods as input. Typically, we leveraged Generative Adversarial Network (GAN) for our task. ####
+<p align="center">
+  <img src="misc/img_11.PNG" alt="Problem Statement"/>
+</p>
 
 ## Related Works & Method
 ### Related Works
