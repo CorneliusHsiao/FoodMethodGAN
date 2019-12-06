@@ -6,7 +6,7 @@
 
 <p align="center">
   <img src="img_1.PNG" alt="Realistic Generated Food Images"/>
-  <br><em>Figure 1. Realistic Generated Food Images</em></br>
+  <br><em>Figure 1. Realistic Generated Food Images</em>
 </p>
 
 ## Motivation
@@ -33,7 +33,7 @@ To address this problem, we use a recipe association model which is able to find
 #### Cross-modal Association Model [[3]](#references) ####
 <p align="center">
   <img src="img_2.jpg" alt="Association Model From Ingredients + Methods and Images"/>
-  <br><em>Figure 2. Association Model From Ingredients + Methods and Images</em></br>
+  <br><em>Figure 2. Association Model From Ingredients + Methods and Images</em>
 </p>
 
 The loss function of association model is:
@@ -47,7 +47,7 @@ This network takes ingredients and cooking methods as input from one side, and u
 #### Conditional StackGAN [[5]](#references) ####
 <p align="center">
   <img src="img_3.jpg" alt="StackGAN for Image Generation"/>
-  <br><em>Figure 3. StackGAN for Image Generation</em></br>
+  <br><em>Figure 3. StackGAN for Image Generation</em>
 </p>
 After we extracted meaningful and respresentative text embedding from ingredients and cooking methods by trained network in the association model. The text embedding for each training case is then used as the conditional code in StackGAN. In order to ascertain the food image has the expected ingredients and methods that it depends on, we added cycle-consistency constraint [1] to guarantee the similarity between generated fake images and text embedding strong.
 
@@ -72,25 +72,25 @@ Besides Figure 1 where we show several realistic generated images from our model
 In Figure 4, ingredients are fixed as pork chops, green pepper and butter, but cooking method is changed from stir+fry to boil.
 <p align="center">
   <img src="img_4.PNG" alt="fixed ingredients, change cooking method (1)"/>
-  <br><em>Figure 4. Fixed ingredients (pork chops, green pepper and butter) and change cooking method</em></br>
+  <br><em>Figure 4. Fixed ingredients (pork chops, green pepper and butter) and change cooking method</em>
 </p>
 
 In Figure 5, ingredients are fixed as cheese, egg and pizza sauce, but cooking method is changed from boil+heat to bake+stir.
 <p align="center">
   <img src="img_5.PNG" alt="fixed ingredients, change cooking method (2)"/>
-  <br><em>Figure 5. Fixed ingredients (cheese, egg and pizza sauce) and change cooking method</em></br>
+  <br><em>Figure 5. Fixed ingredients (cheese, egg and pizza sauce) and change cooking method</em>
 </p>
 
 In Figure 6, cooking method are fixed as bake as for muffin, but blueberry is added as extra ingredient. Blueberry is added to the top and inside muffin and we can see such dip in muffin with blueberries.
 <p align="center">
   <img src="img_6.PNG" alt="fixed cooking method, change ingredients (1)"/>
-  <br><em>Figure 6. Fixed cooking method and add blueberry</em></br>
+  <br><em>Figure 6. Fixed cooking method and add blueberry</em>
 </p>
 
 In Figure 7, cooking method are fixed as bake as for muffin, but chocolate is added as extra ingredient. Chocolate is mixed with flour to prepare base for muffin and we can see muffin with chocolate in a darker color which represents chocolate.
 <p align="center">
   <img src="img_7.PNG" alt="fixed cooking method, change ingredients (2)"/>
-  <br><em>Figure 7. Fixed cooking method and add chocolate</em></br>
+  <br><em>Figure 7. Fixed cooking method and add chocolate</em>
 </p>
 
 ### Quantitative
@@ -105,7 +105,7 @@ We used inception score (IS) and Fréchet Inception Distance (FID) to evaluate r
 
 <p align="center">
   <img src="table_2.PNG" alt="Quantitative Evaluation for GAN"/>
-  <br><em>Table 2. Quantitative Evaluation for GAN</em></br>
+  <br><em>Table 2. Quantitative Evaluation for GAN</em>
 </p>
 
 Based on Table 2, we successfully proved that cooking method, as an extra input, is a useful and valuable input for food image generation task.
