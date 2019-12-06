@@ -125,8 +125,12 @@ We acknowledge the assistance and advice from professor [Joseph Lim](https://vit
 * Quantitative data that proves cooking method as a useful and valuable input to food image generation tasks
 
 ## References
-[1] Fangda Han, Ricardo Guerrero, \& Vladimir Pavlovic. (2019). The Art of Food: Meal Image Synthesis from Ingredients.
-[2] Reed, Scott, et al. "Generative adversarial text to image synthesis." arXiv preprint arXiv:1605.05396 (2016).
-[3] Marin, J., Biswas, A., Ofli, F., Hynes, N., Salvador, A., Aytar, Y., Weber, I., \& Torralba, A. (2019). Recipe1M+: A Dataset for Learning Cross-Modal Embeddings for Cooking Recipes and Food Images \textit{IEEE Trans. Pattern Anal. Mach. Intell..}
-[4] Scott Reed, Zeynep Akata, Xinchen Yan, Lajanugen Logeswaran, Bernt Schiele, \& Honglak Lee. (2016). Generative Adversarial Text to Image Synthesis.
-[5] Han Zhang, Tao Xu, Hongsheng Li, Shaoting Zhang, Xiaogang Wang, Xiaolei Huang, \& Dimitris Metaxas. (2016). StackGAN: Text to Photo-realistic Image Synthesis with Stacked Generative Adversarial Networks.
+[[1]](https://arxiv.org/abs/1905.13149) Fangda Han, Ricardo Guerrero, & Vladimir Pavlovic. (2019). The Art of Food: Meal Image Synthesis from Ingredients.
+
+[[2]](https://arxiv.org/abs/1605.05396) Reed, Scott, et al. "Generative adversarial text to image synthesis." arXiv preprint arXiv:1605.05396 (2016).
+
+[[3]](http://pic2recipe.csail.mit.edu/) Marin, J., Biswas, A., Ofli, F., Hynes, N., Salvador, A., Aytar, Y., Weber, I., & Torralba, A. (2019). Recipe1M+: A Dataset for Learning Cross-Modal Embeddings for Cooking Recipes and Food Images IEEE Trans. Pattern Anal. Mach. Intell..
+
+[[4]](https://arxiv.org/abs/1605.05396) Scott Reed, Zeynep Akata, Xinchen Yan, Lajanugen Logeswaran, Bernt Schiele, & Honglak Lee. (2016). Generative Adversarial Text to Image Synthesis.
+
+[[5]](https://arxiv.org/abs/1612.03242) Han Zhang, Tao Xu, Hongsheng Li, Shaoting Zhang, Xiaogang Wang, Xiaolei Huang, & Dimitris Metaxas. (2016). StackGAN: Text to Photo-realistic Image Synthesis with Stacked Generative Adversarial Networks.
