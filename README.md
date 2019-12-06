@@ -6,6 +6,7 @@
 
 <p align="center">
   <img src="img_1.PNG" alt="Realistic Generated Food Images"/>
+  <br><em>Figure 1. Realistic Generated Food Images</em></br>
 </p>
 
 ## Motivation
@@ -18,48 +19,53 @@ For this project, we trained a deep learning network to learn and generate food 
 
 ## Related Works & Method
 ### Related Works
-Objects in Images have many attributes that could represent their visual information. On the other hand, the attributes could be described by texts either. Hence, if the connection between images and texts is learned, then we could generate images by texts. Furthermore, the problem could be solved by two steps, first is to learn the text feature representations that related to the key visual details and the second is to generate images from the text feature representations where the visual attributes are the same to word descriptions.
+Objects in images have many attributes that represent their visual information. On the other hand, the attributes could be described by texts either. Hence, if the connection between images and texts is learned, then we are able to generate images with text as input. Furthermore, the problem could be solved by two steps. 
 
-The connection between the image pixel and the text description is highly multimodal, there are many possible mapping relationships between them. This multimodal learning is hard and finding the shared representation across different modalities is essential, besides, the generalization to unseen data is also a basic problem.
+* The first is to learn the text feature representations that are related to the key visual details.
+* The second is to generate images from the text feature representations where the visual attributes are the same to word descriptions.
 
-One way to generate images from texts is implemented by coding the texts into class labels, which may lose information and inaccurate because the class labels are not good representations of original texts. Instead of directly using class labels, [1] proposes an end-to-end architecture to generate images from text encodings by RNN and GAN, but the associations between texts and images are not well established. In this report, we use two stages of an association model and a generative model to address this problem.
+The connection between the image pixel and the text description is highly multimodal, there are many possible mapping relationships between them. This multimodal learning is hard but finding the shared representation across different modalities is essential, besides, the generalization to unseen data is also a basic problem.
+
+One way to generate images from texts is implemented by encoding the texts into class labels, which may cause loss of information and inaccuracy because the class labels are not good representations of original texts and there can be a large number of classes due to diverse combination of texts that the model cannot handle. Instead of directly using class labels, [1] proposed an end-to-end architecture to generate images from text encodings by RNN and GAN, but the associations between texts and images as well as loss functions are not well established. In this project, we use two stages -- an association model and a generative model -- to address this problem.
 
 ### Method
-To address this problem, we use a recipe association model which could find the common representations (embeddings) between images and text ingredients, and then use a GAN to generate images from the embeddings.
+To address this problem, we use a recipe association model which is able to find the common representations (i.e. text embeddings) between images and text input, and then a GAN to generate images from the embeddings.
+#### Cross-modal Association Model ####
 <p align="center">
-  <img src="img_2.jpg" alt="Association Model Between Ingredients + Methods and Images"/>
-  <em>Figure 2. Association Model Between Ingredients + Methods and Images</em>
+  <img src="img_2.jpg" alt="Association Model From Ingredients + Methods and Images"/>
+  <em>Figure 2. Association Model From Ingredients + Methods and Images</em>
 </p>
 
 The loss function of association model is:
 
 ![equation](https://latex.codecogs.com/svg.latex?\inline&space;V(F_p,F_q)=\mathop{\mathbb{E}}_{\hat{p}(r^+,v^+),\hat{p}(v^-)}min([cos[\textbf{p}^+,\textbf{q}^+]-cos[\textbf{p}^+,\textbf{q}^-]-\epsilon],0)\newline\hphantom{asdfasdfsadf}+\mathop{\mathbb{E}}_{\hat{p}(r^+,v^+),\hat{p}(r^-)}min([cos[\textbf{p}^+,\textbf{q}^+]-cos[\textbf{p}^-,\textbf{q}^+]-\epsilon],0)),
 
-where ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^+,\textbf{q}^+)) is positive pair between ingredient embeddings and image embeddings. ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^+,\textbf{q}^-)), ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^-,\textbf{q}^+)) are negative paris. ![equation](https://latex.codecogs.com/svg.latex?\inline&space;\epsilon) is the bias to train the model on pairs not correctly associated.
+where ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^+,\textbf{q}^+)) is positive pair between text embeddings and extracted image features. ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^+,\textbf{q}^-)), ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^-,\textbf{q}^+)) are negative paris. ![equation](https://latex.codecogs.com/svg.latex?\inline&space;\epsilon) is the bias to train the model on pairs that are not correctly associated.
 
-This model takes ingredients and cooking methods as text inputs, and uses images as inputs of another side in Figure 2. The ingredients and cooking methods are encoded by LSTM and concatenated together to get the representation embedding of texts. The embeddings of images are generated by ResNet and then fine-tuned by our dataset. Finally a cosine similarity is used as the loss function. The LSTM has XXX hidden units and XXX layers. We trained the model XXX epoches to get a final loss of XXX. 
+This network takes ingredients and cooking methods as input from one side, and uses images as input from another side as shown in Figure 2. The ingredients and cooking methods are encoded by LSTM and concatenated together to get the representative text embedding. The feature extraction from images is achieved by [ResNet](https://arxiv.org/abs/1512.03385) and then tuned based on our dataset and task. Finally, a cosine similarity is used to compute Euclidean distance between image features and text embedding. Ideally, for positive pairs of image and corresponding text embedding, the similarity is as large as 1; for negative pairs, the similarity is a smaller than a marginal value based on task and dataset.
 
+#### Conditional StackGAN ####
 <p align="center">
-  <img src="img_3.jpg" alt="Image Generation by StackGAN"/>
-  <em>Figure 3. Image Generation by StackGAN</em>
+  <img src="img_3.jpg" alt="StackGAN for Image Generation"/>
+  <em>Figure 3. StackGAN for Image Generation</em>
 </p>
-We first get the text embeddings from the ingredients by the trained LSTM networks in the association model. The text embeddings are then used as the condition codes in our stackGAN. In order to ascertain the food image has the expected ingredients that it depends on, we add a cycle-consisitency term to make the similarity between the fake images and text embeddings of ingredients strong.
+After we extracted meaningful and respresentative text embedding from ingredients and cooking methods by trained network in the association model. The text embedding for each training case is then used as the conditional code in StackGAN. In order to ascertain the food image has the expected ingredients and methods that it depends on, we added cycle-consistency constraint [] to guarantee the similarity between generated fake images and text embedding strong.
 
-The overall loss function of image generation by GAN is:
+The loss function [] for image generation used in conditional GAN is:
 
 ![equation](https://latex.codecogs.com/svg.latex?\inline&space;L_G=\sum_{i=0}^2(L_{G_i}^{cond}+\lambda_{uncond}L_{G_i}^{uncond}-\lambda_{cycle}L_{C_i})+\lambda_{ca}L_{ca})
 
-In the equation, the losses of generator from both conditioned and unconditioned are considered. The loss of cycle-consistency constraint is also incorporated and the last part is the regularization factor, so as to make the distribution of conditions given image embeddings approximates the standard Gaussian distribution as closely as possible.
+In the equation, we exploited both conditioned and unconditioned loss for discriminator. The loss of cycle-consistency constraint is  incorporated as the $L_C_i$ term. The last part is the regularization factor, which aims at ensuring the distribution of conditions given extracted image features to approximate the standard Gaussian distribution as closed as possible.
 
 ## Experiment
 ### Dataset
-We conduct our experiments using data from recipe1M [4]. The recipe1M dataset consists of more than 1 million food images with corresponding ingredients and instructions. We manually chose 12 different types of cooking method that we think are meaningful and distinguishable, and generated cooking method for each image by searching for keywords in the instruction text. We also reduced the number of different ingredients from around 18,000 to around 2,000 by removing ingredients with low frequency ( < 500 occurrence in the dataset)  and combining ingredients that are the same or very close.  Because of the limit of time and computing resources we used only 10,000 data from the dataset.
+We conduct our experiments using data from Recipe1M [4]. Recipe1M dataset consists of more than 1 million food images with corresponding ingredients and instructions. We manually extracted and chose 12 different types of cooking methods that are believed to be meaningful and distinguishable statistically, and then generated cooking methods for each training data by searching for keywords in the instruction text. We also reduced the number of different ingredients from around 18,000 to around 2,000 by removing ingredients with low frequency ( < 500 occurrence in the dataset) and then combined ingredients that belong to the same kind contextually (e.g. different kinds of oil which have the same features in images) or trivially (e.g. 1% milk and 2% milk). Because of the limit of time and computing resources we used only 10,000 data from the dataset to train.
 
 ### Input
-We feed association model with paired and unpaired 128 &#215; 128 image and words. For the stackgan model, we use both 64 &#215; 64 and 128 &#215; 128 images because there are two discriminators differential two resolution images from generators.
+We fed association model with paired and unpaired 128 &#215; 128 image and text input. For the StackGAN model, we used both 64 &#215; 64 and 128 &#215; 128 images because there are two discriminators for two resolution images from generators, respectively.
 
 ## Evaluation
-|     |              |             | im2rcp     |            |             |             | rcp2im     |            |             |
+|     |              | im2rcp      |            |            |             | rcp2im      |            |            |             |
 |-----|--------------|-------------|------------|------------|-------------|-------------|------------|------------|-------------|
 |     |              | MedR&#8595; | R@1&#8593; | R@5&#8593; | R@10&#8593; | MedR&#8595; | R@1&#8593; | R@5&#8593; | R@10&#8593; |
 | 1K  | Model in [1] | 5.500       | 0.234      | 0.503      | 0.618       | 5.750       | 0.230      | 0.491      | 0.615       |
