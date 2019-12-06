@@ -125,12 +125,12 @@ From the experiments, we find that there are some improvements can be made in th
 
 FYI, we upload the loss curve to compare different inputs. We welcome any insightful suggestions on improving the performance. See Figure 9 for all loss curves in 150 epochs in our training. See Figure 10 for loss curve of ingredient+method model for 520 epochs that we trained in total.
 <p align="center">
-  <img src="misc/img_9.gif" alt="Loss curves of models with different inputs in 150 epochs"/>
+  <img src="misc/img_9.PNG" alt="Loss curves of models with different inputs in 150 epochs"/>
   <br><em>Figure 9. Loss curves of models with different inputs</em>
 </p>
 
 <p align="center">
-  <img src="misc/img_10.gif" alt="Loss curve of model with ingredient+method as input in 520 epochs"/>
+  <img src="misc/img_10.png" alt="Loss curve of model with ingredient+method as input in 520 epochs"/>
   <br><em>Figure 10. Loss curve of model with ingredient+method as input in 520 epochs</em>
 </p>
 
