@@ -15,7 +15,7 @@ Food image generation as one of image generation tasks is useful in visualizatio
 Besides sparks and interest that can be brought to the public in this project, outputs of our model can also be used to evaluate and quantify vital criteria of food with attention drawn by Computational food analysis (CFA) [[1]](#references) such as meal preference forecasting, and computational meal preparation. Therefore, the model defines its importance and usage in real life and is crucial to human life. Existing approaches such as The Art of Food do not take cooking method as input. However, the importance has been overshadowed since the same ingredients can be made into different dishes. For instance, chicken and noodles can be made in ramen or fried noodles by boiling and stir-fry, respectively. Therefore, this project aims at developing a reliable method to generate food image that fits in any specific class.
 
 ## Problem Statement
-For this project, we trained a deep learning network to learn and generate food images with ingredients and cooking methods as input. Typically, we leveraged Generative Adversarial Network (GAN) for our task.
+#### For this project, we trained a deep learning network to learn and generate food images with ingredients and cooking methods as input. Typically, we leveraged Generative Adversarial Network (GAN) for our task. ####
 
 ## Related Works & Method
 ### Related Works
@@ -66,7 +66,7 @@ In the equation, we exploited both conditioned and unconditioned loss for discri
 We conduct our experiments using data from Recipe1M [[6]](#references). Recipe1M dataset consists of more than 1 million food images with corresponding ingredients and instructions. We manually extracted and chose 12 different types of cooking methods that are believed to be meaningful and distinguishable statistically, and then generated cooking methods for each training data by searching for keywords in the instruction text. We also reduced the number of different ingredients from around 18,000 to around 2,000 by removing ingredients with low frequency ( < 500 occurrence in the dataset) and then combined ingredients that belong to the same kind contextually (e.g. different kinds of oil which have the same features in images) or trivially (e.g. 1% milk and 2% milk). Because of the limit of time and computing resources we used only 10,000 data from the dataset to train.
 
 ### Input
-We fed association model with paired and unpaired 128 &#215; 128 image and text input. For the StackGAN model, we fed text embedding as conditions and random noise to generator. For discriminator, we fed real image corresponding to text embedding and generated fake images.
+We feed association model with paired and unpaired 128 &#215; 128 image and text input. For the StackGAN model, we feed text embedding as conditions and random noise to generator. For discriminator, we feed both 64 &#215; 64 and 128 &#215; 128 images from our dataset and from generator. The real images can be paired with their crossponding text or random text.
 
 ## Evaluation
 We evaluated our task and approach via qualitative and quantitative results. In qualitative part, we demonstrate that our results are valid and meaningful under different conditions. In quantitaive part, we show two tables to compare the performance of our model with prior work.
@@ -98,14 +98,14 @@ In Figure 7, cooking method are fixed as bake as for muffin, but chocolate is ad
 </p>
 
 ### Quantitative
-We used MedR and R@K to evaluate our cross-modal association model the same as in [[1]](#references). In Table 1, we show the quantities from different sides of model under different conditions.
+To evaluate the association model, we adopt median retrieval rank (MedR) and recall at top K (R@K) as in [[1]](#references). In a subset of recipe-image pairs randomly selected from test set, every recipe is viewed as a query to retrieve its corresponding image by ranking their cosine similarity in common space, namely recipe2im retrieval. MedR calculates the median rank position of correct image, while R@K measures the percentage of all queries when true image ranks top-K i. Therefore, a lower MedR and a higher R@K implies better performance. To evaluate the stability of retrieval, we set subset size as 1K, 5K, and 10K respectively. We repeat experiments 10 times for each subset size and report the mean results. Im2recipe retrieval is evaluated likewise. In Table 1, we show the discussed quantities. Our model outperforms in all scores, which proves that canonical, clear ingredients and addition of cooking method as input are important to the task.
 
 <p align="center">
   <img src="misc/table_1.PNG" alt="Quantitative Evaluation for Cross-modal Association Model"/>
   <br><em>Table 1. Quantitative Evaluation for Cross-modal Association Model</em></br>
 </p>
 
-We used inception score (IS) and Fréchet Inception Distance (FID) to evaluate results of GAN. The higher IS and lower FID are, the better quality and diversity are for our generated images. In Table 2, the comparison is based on same model structure, parameters, training and test cases and approximately the same IS for real image sets. The only difference is the input type. The image-input model has only noise as input for generator. The ingredient-input model has noise and ingredient text embedding as input for generator. The ingredient+method model has noise, ingredient text embedding and cooking method text embedding as input.
+We used inception score (IS) and Fréchet Inception Distance (FID) to evaluate results of GAN, where IS is computed for batch of images while FID is computed to compare difference between real image set and fake image set. The higher IS and lower FID are, the better quality and diversity are for our generated images. In Table 2, the comparison is based on same model structure, parameters, training and test cases and approximately the same IS for real image sets. The only difference is the input type. The image-input model has only noise as input for generator. The ingredient-input model has noise and ingredient text embedding as input for generator. The ingredient+method model has noise, ingredient text embedding and cooking method text embedding as input.
 
 <p align="center">
   <img src="misc/table_2.PNG" alt="Quantitative Evaluation for GAN"/>
