@@ -113,10 +113,15 @@ Based on Table 2, we successfully proved that cooking method, as an extra input,
 ## Future Improvements
 From the experiments, we find that there are some improvements can be made in the future. 
 * Reduce the number of ingredients further. For example, we may combine different kinds of cheeses as they have similar appearance and contribution to the generated images. Such change will reduce the redundancy in the dataset and make it easier to learn. 
-* Balance the number of images with different color to prevent the model from the inclination to generate reddish and yellowish images.
+* Balance the number of images with different color to prevent the model from the inclination to generate reddish and yellowish images or train with appropriate amount of epochs rather than more the better. See Figure 8 for a batch of generated images with epochs. For example, the third image on the first row. Green color is almost lost near the end of training. This is because, after some point, the model is inclined to minimize the overall loss by outputing an image that fits most data (in our case, is yellow or red food images) in training dataset.
 * Extend training from 10,000 data to whole dataset. This is limited during development since time and computing resources are not allowed at this time.
 * Improve model architecture and parameters.
 * Investigate the way to better control the contribution of conditional inputs as we found that it sometimes generated irrelevant images. Attention mechanism and regularization loss can be the options.
+
+<p align="center">
+  <img src="img_8.gif" alt="A batch of generated images"/>
+  <br><em>Figure 8. A batch of generated images</em>
+</p>
 
 ## Contributions
 We acknowledge the assistance and advice from professor [Joseph Lim](https://viterbi-web.usc.edu/~limjj/) and wonderful [TAs](https://www.clvrai.com/people/) of course CS-566 (Deep Learning and its Applications). With their guidance, we developed the project and made the following contributions.
