@@ -108,14 +108,6 @@ We used inception score (IS) and Fréchet Inception Distance (FID) to evaluate r
   <em>Table 2. Quantitative Evaluation for GAN</em>
 </p>
 
-
-
-|                         | Inception Score (IS)&#8593; | Fréchet Inception Distance (FID)&#8595; |
-|-------------------------|-----------------------------|-----------------------------------------|
-| Image Input Model       | 3.43041                     | 34.31625                                |
-| Ingredient Input Model  | 3.51826                     | 32.65582                                |
-| Ingredient+Method Model | **3.53567**                 | **25.90622**                            |
-
 Based on Table 2, we successfully proved that cooking method, as an extra input, is a useful and valuable input for food image generation task.
 
 ## Future Improvements
