@@ -34,7 +34,7 @@ One way to generate images from texts is implemented by encoding the texts into 
 To address this problem, we use a recipe association model which is able to find the common representations (i.e. text embeddings) between images and text input, and then a GAN to generate images from the embeddings.
 #### Cross-modal Association Model [[3]](#references) ####
 <p align="center">
-  <img src="misc/img_2.jpg" alt="Association model from ingredient + method and images" width="400"/>
+  <img src="misc/img_2.jpg" alt="Association model from ingredient + method and images" width="800"/>
   <br><em>Figure 2. Association model from ingredient + method and images</em>
 </p>
 
@@ -50,7 +50,7 @@ This network takes ingredients and cooking methods as input from one side, and u
 
 #### Conditional StackGAN [[5]](#references) ####
 <p align="center">
-  <img src="misc/img_3.jpg" alt="StackGAN for image generation" width="400"/>
+  <img src="misc/img_3.jpg" alt="StackGAN for image generation" width="800"/>
   <br><em>Figure 3. StackGAN for image generation</em>
 </p>
 After we extracted meaningful and respresentative text embedding from ingredients and cooking methods by trained network in the association model. The text embedding for each training case is then used as the conditional code in StackGAN. In order to ascertain the food image has the expected ingredients and methods that it depends on, we added cycle-consistency constraint [1] to guarantee the similarity between generated fake images and text embedding strong.
@@ -120,14 +120,14 @@ In Figure 9, we show generated images of pork with different cooking methods.
 To evaluate the association model, we adopt median retrieval rank (MedR) and recall at top K (R@K) as in [[1]](#references). In a subset of recipe-image pairs randomly selected from test set, every recipe is viewed as a query to retrieve its corresponding image by ranking their cosine similarity in common space, namely recipe2im retrieval. MedR calculates the median rank position of correct image, while R@K measures the percentage of all queries when true image ranks top-K. Therefore, a lower MedR and a higher R@K implies better performance. To evaluate the stability of retrieval, we set subset size as 1K, 5K, and 10K respectively. We repeat experiments 10 times for each subset size and report the mean results. Im2recipe retrieval is evaluated likewise. In Table 1, we show the discussed quantities. Our model outperforms in all scores, which proves that canonical, clear ingredients and addition of cooking method as input are important to the task.
 
 <p align="center">
-  <img src="misc/table_1.PNG" alt="Quantitative Evaluation for Cross-modal Association Model" width="400"/>
+  <img src="misc/table_1.PNG" alt="Quantitative Evaluation for Cross-modal Association Model" width="700"/>
   <br><em>Table 1. Quantitative Evaluation for Cross-modal Association Model</em></br>
 </p>
 
 We used inception score (IS) and Fréchet Inception Distance (FID) to evaluate results of GAN, where IS is computed for batch of images while FID is computed to compare difference between real image set and fake image set. The higher IS and lower FID are, the better quality and diversity are for our generated images. In Table 2, the comparison is based on same model structure, parameters, training and test cases and approximately the same IS for real image sets. The only difference is the input type. The image-input model has only noise as input for generator. The ingredient-input model has noise and ingredient text embedding as input for generator. The ingredient+method model has noise, ingredient text embedding and cooking method text embedding as input.
 
 <p align="center">
-  <img src="misc/table_2.PNG" alt="Quantitative Evaluation for GAN" width="400"/>
+  <img src="misc/table_2.PNG" alt="Quantitative Evaluation for GAN" width="600"/>
   <br><em>Table 2. Quantitative Evaluation for GAN</em>
 </p>
 
@@ -148,7 +148,7 @@ From the experiments, we find that there are some improvements can be made in th
 
 FYI, we upload the loss curve to compare different inputs. We welcome any insightful suggestions on improving the performance. See Figure 11 for all loss curves in 150 epochs in our training. See Figure 12 for loss curve of ingredient+method model for 520 epochs that we trained in total.
 <p align="center">
-  <img src="misc/img_9.PNG" alt="Loss curves of models with different inputs in 150 epochs" width="400"/>
+  <img src="misc/img_9.PNG" alt="Loss curves of models with different inputs in 150 epochs" width="800"/>
   <br><em>Figure 11. Loss curves of models with different inputs</em>
 </p>
 
