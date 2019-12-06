@@ -44,7 +44,7 @@ The loss function of association model is:
   <img src="misc/eqn_1.PNG">
 </p>
 
-where ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^+,\textbf{q}^+)) is positive pair between text embeddings and extracted image features. ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^+,\textbf{q}^-)), ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^-,\textbf{q}^+)) are negative paris. ![equation](https://latex.codecogs.com/svg.latex?\inline&space;\epsilon) is the margin to train the model on pairs that are not correctly associated, which we set $0.3$ by cross-validation.
+where ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^+,\textbf{q}^+)) is positive pair between text embeddings and extracted image features. ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^+,\textbf{q}^-)), ![equation](https://latex.codecogs.com/svg.latex?\inline&space;(\textbf{p}^-,\textbf{q}^+)) are negative paris. ![equation](https://latex.codecogs.com/svg.latex?\inline&space;\epsilon) is the bias to train the model on pairs that are not correctly associated.
 
 This network takes ingredients and cooking methods as input from one side, and uses images as input from another side as shown in Figure 2. The ingredients and cooking methods are encoded by LSTM and concatenated together to get the representative text embedding. The feature extraction from images is achieved by ResNet [[4]](#references) and then tuned based on our dataset and task. Finally, a cosine similarity is used to compute Euclidean distance between image features and text embedding. Ideally, for positive pairs of image and corresponding text embedding, the similarity is as large as 1; for negative pairs, the similarity is a smaller than a marginal value based on task and dataset.
 
@@ -75,29 +75,46 @@ We evaluated our task and approach via qualitative and quantitative results. In 
 ### Qualitative
 Besides Figure 1 where we show several realistic generated images from our model, here we compare the influence of two inputs -- ingredient and cooking method -- on image generation.
 
-In Figure 4, ingredients are fixed as pork chops, green pepper and butter, but cooking method is changed from stir+fry to boil.
 <p align="center">
   <img src="misc/img_4.PNG" alt="fixed ingredients, change cooking method (1)" height="150"/>
   <br><em>Figure 4. Fixed ingredients (pork chops, green pepper and butter) and change cooking method</em>
 </p>
+In Figure 4, ingredients are fixed as pork chops, green pepper and butter, but cooking method is changed from stir+fry to boil.
 
-In Figure 5, ingredients are fixed as cheese, egg and pizza sauce, but cooking method is changed from boil+heat to bake+stir.
 <p align="center">
   <img src="misc/img_5.PNG" alt="fixed ingredients, change cooking method (2)" height="150"/>
   <br><em>Figure 5. Fixed ingredients (cheese, egg and pizza sauce) and change cooking method</em>
 </p>
+In Figure 5, ingredients are fixed as cheese, egg and pizza sauce, but cooking method is changed from boil+heat to bake+stir.
 
-In Figure 6, cooking method are fixed as bake as for muffin, but blueberry is added as extra ingredient. Blueberry is added to the top and inside muffin and we can see such dip in muffin with blueberries.
 <p align="center">
   <img src="misc/img_6.PNG" alt="fixed cooking method, change ingredients (1)" height="300"/>
   <br><em>Figure 6. Fixed cooking method and add blueberry</em>
 </p>
+In Figure 6, cooking method are fixed as bake as for muffin, but blueberry is added as extra ingredient. Blueberry is added to the top and inside muffin and we can see such dip in muffin with blueberries.
 
-In Figure 7, cooking method are fixed as bake as for muffin, but chocolate is added as extra ingredient. Chocolate is mixed with flour to prepare base for muffin and we can see muffin with chocolate in a darker color which represents chocolate.
 <p align="center">
   <img src="misc/img_7.PNG" alt="fixed cooking method, change ingredients (2)" height="300"/>
   <br><em>Figure 7. Fixed cooking method and add chocolate</em>
 </p>
+In Figure 7, cooking method are fixed as bake as for muffin, but chocolate is added as extra ingredient. Chocolate is mixed with flour to prepare base for muffin and we can see muffin with chocolate in a darker color which represents chocolate.
+
+<p align="center">
+  <img src="misc/img_13.png" height="120"/>
+  <img src="misc/img_18.png" height="120"/>
+  <br><em>Figure 8. Generated images of pork with different noise</em>
+</p>
+In Figure 8, we show generated images of pork with different noise input.
+
+<p align="center">
+  <img src="misc/img_12.png" height="120"/>
+  <img src="misc/img_14.png" height="120"/>
+  <img src="misc/img_15.png" height="120"/>
+  <img src="misc/img_16.png" height="120"/>
+  <img src="misc/img_17.png" height="120"/>
+  <br><em>Figure 9. Generated images of pork with different cooking methods</em>
+</p>
+In Figure 9, we show generated images of pork with different cooking methods.
 
 ### Quantitative
 To evaluate the association model, we adopt median retrieval rank (MedR) and recall at top K (R@K) as in [[1]](#references). In a subset of recipe-image pairs randomly selected from test set, every recipe is viewed as a query to retrieve its corresponding image by ranking their cosine similarity in common space, namely recipe2im retrieval. MedR calculates the median rank position of correct image, while R@K measures the percentage of all queries when true image ranks top-K i. Therefore, a lower MedR and a higher R@K implies better performance. To evaluate the stability of retrieval, we set subset size as 1K, 5K, and 10K respectively. We repeat experiments 10 times for each subset size and report the mean results. Im2recipe retrieval is evaluated likewise. In Table 1, we show the discussed quantities. Our model outperforms in all scores, which proves that canonical, clear ingredients and addition of cooking method as input are important to the task.
@@ -119,25 +136,25 @@ Based on Table 2, we successfully proved that cooking method, as an extra input,
 ## Future Improvements
 From the experiments, we find that there are some improvements can be made in the future. 
 * Reduce the number of ingredients further. For example, we may combine different kinds of cheeses as they have similar appearance and contribution to the generated images. Such change will reduce the redundancy in the dataset and make it easier to learn. 
-* Balance the number of images with different color to prevent the model from the inclination to generate reddish and yellowish images or train with appropriate amount of epochs rather than more the better. See Figure 8 for a batch of generated images with epochs. For example, the third image on the first row. Green color is almost lost near the end of training. This is because, after some point, the model is inclined to minimize the overall loss by outputing an image that fits most data (in our case, is yellow or red food images) in training dataset.
+* Balance the number of images with different color to prevent the model from the inclination to generate reddish and yellowish images or train with appropriate amount of epochs rather than more the better. See Figure 10 for a batch of generated images with epochs. For example, the third image on the first row. Green color is almost lost near the end of training. This is because, after some point, the model is inclined to minimize the overall loss by outputing an image that fits most data (in our case, is yellow or red food images) in training dataset.
 * Extend training from 10,000 data to whole dataset. This is limited during development since time and computing resources are not allowed at this time.
 * Improve model architecture and parameters.
 * Investigate the way to better control the contribution of conditional inputs as we found that it sometimes generated irrelevant images. Attention mechanism and regularization loss can be the options.
 
 <p align="center">
   <img src="misc/img_8.gif" alt="A batch of generated images"/>
-  <br><em>Figure 8. A batch of generated images</em>
+  <br><em>Figure 10. A batch of generated images</em>
 </p>
 
-FYI, we upload the loss curve to compare different inputs. We welcome any insightful suggestions on improving the performance. See Figure 9 for all loss curves in 150 epochs in our training. See Figure 10 for loss curve of ingredient+method model for 520 epochs that we trained in total.
+FYI, we upload the loss curve to compare different inputs. We welcome any insightful suggestions on improving the performance. See Figure 11 for all loss curves in 150 epochs in our training. See Figure 12 for loss curve of ingredient+method model for 520 epochs that we trained in total.
 <p align="center">
   <img src="misc/img_9.PNG" alt="Loss curves of models with different inputs in 150 epochs"/>
-  <br><em>Figure 9. Loss curves of models with different inputs</em>
+  <br><em>Figure 11. Loss curves of models with different inputs</em>
 </p>
 
 <p align="center">
   <img src="misc/img_10.png" alt="Loss curve of model with ingredient+method as input in 520 epochs"/>
-  <br><em>Figure 10. Loss curve of model with ingredient+method as input in 520 epochs</em>
+  <br><em>Figure 12. Loss curve of model with ingredient+method as input in 520 epochs</em>
 </p>
 
 ## Contributions
